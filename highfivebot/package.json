@@ -1,0 +1,34 @@
+{
+  "name": "highfivebot",
+  "version": "0.1.0",
+  "description": "High Five IRC Bot",
+  "main": "./app.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cadecairos/highfivebot.git"
+  },
+  "author": "Christopher De Cairos <chris@chrisdecairos.ca>",
+  "contributors": [
+    {
+      "name": "Christopher De Cairos",
+      "email": "chris@chrisdecairos.ca"
+    }
+  ],
+  "license": "MPL-2.0",
+  "scripts": {
+    "test": "grunt"
+  },
+  "dependencies": {
+    "irc": "0.3.6",
+    "habitat": "0.4.2"
+  },
+  "devDependencies": {
+    "grunt": "0.4.1",
+    "grunt-contrib-csslint": "0.1.2",
+    "grunt-contrib-jshint": "0.6.2"
+  },
+  "engines": {
+    "node": ">=0.8.23",
+    "npm": ">=1.2.10"
+  }
+}
