@@ -1,0 +1,109 @@
+{
+    "nick": "Magic_Conch",
+    "ident": "Magic_Conch",
+    "channel": "#main",
+    "server": "coop.test.adtran.com",
+    "triggers": [
+        {
+            "pattern": "^.*:(?P<message>.*)$",
+            "message": [
+                ".*Magic[ _]Conch,.*\\s+where\\s+.*\\?.*$"
+            ],
+            "isAction": false,
+            "responses": [
+                "Follow the seahorse"
+            ]
+        },
+        {
+            "pattern": "^.*:(?P<message>.*)$",
+            "message": [
+                ".*Magic[ _]Conch,.*\\s+or\\s+.*\\?.*$"
+            ],
+            "isAction": false,
+            "responses": [
+                "Neither.",
+                "Both",
+                "The first one.",
+                "The second one."
+            ]
+        },
+        {
+            "pattern": "^.*:(?P<message>.*)$",
+            "message": [
+                ".*Magic[ _]Conch,.*What\\s+do.*\\?.*$"
+            ],
+            "isAction": false,
+            "responses": [
+                "Nothing.",
+                "Everything.",
+                "Very little.",
+                "Very much.",
+                "All the things."
+            ]
+        },
+                {
+            "pattern": "^.*:(?P<message>.*)$",
+            "message": [
+                "^.*Magic[ _]Conch,.*what\\s*is\\s*love.*\\?.*$"
+            ],
+            "isAction": false,
+            "responses": [
+                "Baby don't hurt me, don't hurt me, no more."
+            ]
+        },
+        {
+            "pattern": "^.*:(?P<message>.*)$",
+            "message": [
+                ".*Magic[ _]Conch,.*\\?.*$"
+            ],
+            "isAction": false,
+            "responses": [
+                "Maybe someday.",
+                "Follow the seahorse.",
+                "I don't think so.",
+                "No.",
+                "Yes.",
+                "Try asking again.",
+                "It is certain.",
+                "It is is decidedly so.",
+                "Without a doubt.",
+                "Yes definitely.",
+                "You may rely on it.",
+                "As I see it, yes.",
+                "Most likely.",
+                "Outlook good.",
+                "Signs point to yes.",
+                "Don't count on it.",
+                "My sources say no.",
+                "Outlook not so good.",
+                "Very doubtful."
+            ]
+        },
+        {
+            "pattern": "^.*:(?P<message>.*)$",
+            "message": [
+                "^.*ALL HAIL THE MAGIC CONCH.*$"
+            ],
+            "isAction": false,
+            "responses": [
+                "I am hailed!"
+            ]
+        },
+        {
+            "pattern": "^:(?P<nick>\\w+)!~*(?P<real>[\\w @\\.]+)\\s*PRIVMSG\\s*(.*):(?P<message>.*)$",
+            "nick": [
+                "mhill",
+                "jordan",
+                "JacobMason"
+            ],
+            "message": [
+                "\\s*quit\\s*"
+            ],
+            "isAction": false,
+            "isCommand": true,
+            "responses": [
+                "quit"
+            ]
+        }
+    ]
+}
