@@ -1,7 +1,7 @@
 {
     "nick": "Seahorse",
     "ident": "The Seahorse",
-    "channel": "#main",
+    "channel": "#magic_conch",
     "server": "coop.test.adtran.com",
     "triggers": [
         {
@@ -66,12 +66,22 @@
         {
             "pattern": "^.*:(?P<message>.*)$",
             "message": [
-                "hi test_horse",
-                "test"
+                ".*awoo.*",
+                ".*asquee.*",
+                ".*ayou.*", 
+                ".*(?<![a-z])ame.*",
+                ".*ahim.*",
+                ".*aher.*",
+                ".*achoo.*",
+                ".*aYEET.*",
+                ".*ayeet.*"
             ],
             "isAction": true,
             "responses": [
-                "wooo lit"
+                "awoo",
+                "aWOO",
+                "AWOO",
+                "AwOo"
             ]
            
         }
