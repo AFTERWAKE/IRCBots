@@ -18,6 +18,14 @@ module.exports.hiImDadTriggers = [
     new RegExp(/(^|\W+)i(')?m .*$/i)
 ];
 
+module.exports.goodMorning = [
+    new RegExp(/^(good)?\s?morning(,)?/i)
+];
+
+module.exports.goodBye = [
+    new RegExp(/^(good)?\s?bye(,)?/i)
+];
+
 module.exports.testRegexList = function (regexList, message) {
     match = false;
     regexList.forEach(function( regex ) {

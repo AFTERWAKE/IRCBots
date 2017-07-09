@@ -5,6 +5,12 @@ var request = require("request");
 var fs = require('fs');
 
 var re = require('./lib/regex.js');
+var testRegexList = re.testRegexList;
+var nameTriggers = re.dadNameTriggers;
+var hiImDadTriggers = re.hiImDadTriggers;
+var goodMorning = re.goodMorning;
+var goodBye = re.goodBye;
+
 var conf = require('./lib/config.js');
 
 var bot = new irc.Client(conf.ip, conf.dadName, {
@@ -23,7 +29,6 @@ bot.addListener('message#blah', function(from, message) {
 bot.addListener('message', function(from, to, message) {
     console.log('%s => %s: %s', from, to, message);
 
-	// TODO When someone says bye dad, respond with "bye [name], I love you."
 	// TODO When someone says thanks dad, respond with "I'm here all day" or something like that.
     // TODO make dad sad whenever someone (or just me) leaves
 	// TODO add quotes from Calvin and Hobbes
@@ -31,18 +36,19 @@ bot.addListener('message', function(from, to, message) {
     // TODO get mad when people start flooding him, perhaps even leave the channel:
         // Should I really give people a reason to flood him?
     // TODO when he quits it should say "Went to buy a pack of cigs and never came back"
-    // TODO add unit tests?
     // TODO require password along with admin commands, in git-ignored file
-	
-    if (re.testRegexList(re.dadNameTriggers, message) && message.match(/\?$/i)) {
+	// TODO add responses to object that also contains regex
+
+
+    if (testRegexList(nameTriggers, message) && message.match(/\?$/i)) {
         bot.say(to, "Ask your mother.");
     }
     // Hi _____, I'm dad
-    else if (re.testRegexList(re.hiImDadTriggers, message)) {
+    else if (testRegexList(hiImDadTriggers, message)) {
         var m = message.split(/(^|\W+)i(')?m\W+/i);
         var d = m[m.length - 1].trim().split(' ');
         // Trigger a different message if someone says they're dad
-        if (d.length == 1 && re.testRegexList(re.dadNameTriggers, d)){
+        if (d.length == 1 && testRegexList(nameTriggers, d)){
             setTimeout(function() { bot.say(to, "mmmmmmm", true) }, 250);
             setTimeout(function() { bot.say(to, "no", true) }, 750);
         }
@@ -54,11 +60,16 @@ bot.addListener('message', function(from, to, message) {
             bot.say(to, 'Hi ' + m[m.length - 1].trim().replace('.', '').replace('?', '') + ', I\'m dad');
         }
     }
-    else if (re.testRegexList(re.dadNameTriggers, message) && message.match(/^good morning(,)?/i)) {
-        bot.say(to, "good morning, " + who + "!");
+    else if (testRegexList(nameTriggers, message)) {
+        if (testRegexList(goodMorning, message)) {
+            bot.say(to, "good morning " + from + "!");
+        }
+        else if (testRegexList(goodBye, message)) {
+            bot.say(to, "bye " + from + ", I love you!");
+        }
     }
     // Just saying dad's name(s) (ignore if from mom)
-    else if (re.testRegexList(re.dadNameTriggers, message) && from != "mom") {
+    else if (testRegexList(nameTriggers, message) && from != "mom") {
         var jokeArray = fs.readFileSync('dadJokes.txt').toString().split("\n");
         var randomInt = Math.floor(Math.random() * (jokeArray.length));
         console.log(randomInt);
