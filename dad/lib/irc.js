@@ -28,7 +28,9 @@ var parseMessage = require('./parse_message');
 exports.colors = colors;
 var CyclingPingTimer = require('./cycling_ping_timer.js');
 
-var lineDelimiter = new RegExp('\r\n|\r|\n')
+var lineDelimiter = new RegExp('\r\n|\r|\n');
+
+var timeStamp = [];
 
 function Client(server, nick, opt) {
     var self = this;
@@ -1056,8 +1058,23 @@ Client.prototype._splitLongLines = function(words, maxLength, destination) {
     return this._splitLongLines(words.substring(cutPos + wsLength, words.length), maxLength, destination);
 };
 
-Client.prototype.say = function(target, text) {
-    this._speak('PRIVMSG', target, text);
+Client.prototype.say = function(target, text, throttle=false) {
+    time = Date.now();
+    var numMessages = 10;
+    var messageRate = 60000; // miliseconds
+    if (throttle) {
+        if (timeStamp.length == numMessages && time - timeStamp[0] >= messageRate
+            || timeStamp.length < numMessages) {
+            this._speak('PRIVMSG', target, text);
+            timeStamp.push(time);
+            if (timeStamp.length > numMessages) {
+                timeStamp.shift();
+            }
+        }
+    }
+    else {
+        this._speak('PRIVMSG', target, text);
+    }
 };
 
 Client.prototype.notice = function(target, text) {
