@@ -5,12 +5,11 @@ var request = require("request");
 var fs = require('fs');
 
 var re = require('./lib/regex.js');
+var conf = require('./lib/config.js');
 
-var admin = 'awest';
-var botName = 'dad';
-var bot = new irc.Client('localhost', botName, {
-    debug: true,
-    channels: ['#main']
+var bot = new irc.Client(conf.ip, conf.dadName, {
+    debug: conf.debug,
+    channels: conf.channels
 });
 
 bot.addListener('error', function(message) {
@@ -29,13 +28,11 @@ bot.addListener('message', function(from, to, message) {
     // TODO make dad sad whenever someone (or just me) leaves
 	// TODO add quotes from Calvin and Hobbes
 	// TODO "dad, noahsiano isn't letting me vote" do something to respond to things like this
-	// TODO If someone says I'm a ..., take out the 'a' as well in the response
     // TODO get mad when people start flooding him, perhaps even leave the channel:
         // Should I really give people a reason to flood him?
     // TODO when he quits it should say "Went to buy a pack of cigs and never came back"
-    // TODO move bot names and ip to shared file
-    // TODO move common functions and all regex to separate file
-    // TODO add script to start both bots
+    // TODO add unit tests?
+    // TODO require password along with admin commands, in git-ignored file
 	
     if (re.testRegexList(re.dadNameTriggers, message) && message.match(/\?$/i)) {
         bot.say(to, "Ask your mother.");
@@ -84,7 +81,7 @@ bot.addListener('pm', function(nick, message) {
 });
 bot.addListener('join', function(channel, who) {
     console.log('%s has joined %s', who, channel);
-    if (who != botName) {
+    if (who != conf.dadName) {
         bot.say(channel, "Welcome back, " + who + "!");
     }
 });
