@@ -2,7 +2,6 @@
 
 var irc = require('./');
 
-var mes = require('./lib/messenger.js');
 var re = require('./lib/regex.js');
 
 var botName = 'mom';
@@ -23,7 +22,7 @@ bot.addListener('message', function(from, to, message) {
     console.log('%s => %s: %s', from, to, message);
 
     if (testRegexList(re.nameTriggers, message) && message.match(/\?$/i)) {
-        mes.send(to, "Ask your father.");
+        bot.say(to, "Ask your father.");
     }
 });
 bot.addListener('pm', function(nick, message) {

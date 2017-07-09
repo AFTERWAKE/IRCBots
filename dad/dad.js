@@ -4,7 +4,6 @@ var irc = require('./');
 var request = require("request");
 var fs = require('fs');
 
-var mes = require('./lib/messenger.js');
 var re = require('./lib/regex.js');
 
 var admin = 'awest';
