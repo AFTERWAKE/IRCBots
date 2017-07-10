@@ -1,0 +1,80 @@
+{
+    "admin" : "awest",
+    "ip" : "localhost",
+    "channels" : [
+        "#main"
+    ],
+    "debug" : true,
+    "dadName" : "dad",
+    "momName" : "mom",
+    "speak" : 
+    {
+        "awoo" : {
+            "regex" : [
+                "(^|\\W+)awoo\\?($|\\W+)"
+            ],
+            "responses" : {
+                "normal" :
+                    ["awoo"]
+            }
+        },
+        "dadName" : {
+            "regex" : [
+                "(^|\\W+)dad(dy|a)?($|\\W+|,)",
+                "(^|\\W+)father($|\\W+|,)",
+                "(^|\\W+)(pop){1,2}(s)?($|\\W+|,)",
+                "(^|\\W+)(pa){1,2}($|\\W+|,)"
+            ],
+            "responses" : { 
+                "ask" :
+                    ["Ask your mother."]
+            }
+        },
+        "goodBye" : {
+            "regex" : [
+                "^(good)?\\s?bye(,)?"
+            ],
+            "responses" : {
+                "normal" :
+                    ["goodbye [a], I love you!"]
+            }
+        },
+        "goodMorning" : {
+            "regex" : [
+                "^(good)?\\s?morning(,)?"
+            ],
+            "responses" : {
+                "normal" : 
+                    ["good morning [a]!"]
+            }
+        },
+        "hiImDad" : {
+            "regex" : [
+                "(^|\\W+)i(')?m .*$"
+            ],
+            "responses" : {
+                "normal" : 
+                    [ "Hi [a], I'm dad"]
+                ,
+                "deny" :
+                    ["mmmmmmmmmm... no"]
+            }
+        },
+        "momName" :  {
+            "regex" : [
+                "(^|\\W+)mom(my|ma)?($|\\W+|,)",
+                "(^|\\W+)mother($|\\W+|,)",
+                "(^|\\W+)(ma){1,2}($|\\W+|,)"
+            ],
+            "responses" : {
+                "ask" :
+                    ["Ask your father."]
+            }
+        },
+        "question" : {
+            "regex" : [
+                "\\?$"
+            ]
+        }
+    }
+}

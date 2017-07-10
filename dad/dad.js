@@ -11,7 +11,8 @@ var hiImDadTriggers = re.hiImDadTriggers;
 var goodMorning = re.goodMorning;
 var goodBye = re.goodBye;
 
-var conf = require('./lib/config.js');
+var conf = require('./config.json');
+var speak = conf.speak;
 
 var bot = new irc.Client(conf.ip, conf.dadName, {
     debug: conf.debug,
@@ -29,6 +30,7 @@ bot.addListener('message#blah', function(from, message) {
 bot.addListener('message', function(from, to, message) {
     console.log('%s => %s: %s', from, to, message);
 
+	// TODO When someone says bye dad, respond with "bye [name], I love you."
 	// TODO When someone says thanks dad, respond with "I'm here all day" or something like that.
     // TODO make dad sad whenever someone (or just me) leaves
 	// TODO add quotes from Calvin and Hobbes
@@ -36,19 +38,17 @@ bot.addListener('message', function(from, to, message) {
     // TODO get mad when people start flooding him, perhaps even leave the channel:
         // Should I really give people a reason to flood him?
     // TODO when he quits it should say "Went to buy a pack of cigs and never came back"
+    // TODO add unit tests?
     // TODO require password along with admin commands, in git-ignored file
-	// TODO add responses to object that also contains regex
+	// TODO finish or remove jokesToJson (probably remove)
+    // TODO Read responses (except jokes) from json file
 
-
-    if (testRegexList(nameTriggers, message) && message.match(/\?$/i)) {
-        bot.say(to, "Ask your mother.");
-    }
     // Hi _____, I'm dad
-    else if (testRegexList(hiImDadTriggers, message)) {
+    if (testRegexList(speak.hiImDad.regex, message)) {
         var m = message.split(/(^|\W+)i(')?m\W+/i);
         var d = m[m.length - 1].trim().split(' ');
         // Trigger a different message if someone says they're dad
-        if (d.length == 1 && testRegexList(nameTriggers, d)){
+        if (d.length == 1 && testRegexList(speak.dadName.regex, d)){
             setTimeout(function() { bot.say(to, "mmmmmmm", true) }, 250);
             setTimeout(function() { bot.say(to, "no", true) }, 750);
         }
@@ -60,27 +60,35 @@ bot.addListener('message', function(from, to, message) {
             bot.say(to, 'Hi ' + m[m.length - 1].trim().replace('.', '').replace('?', '') + ', I\'m dad');
         }
     }
-    else if (testRegexList(nameTriggers, message)) {
-        if (testRegexList(goodMorning, message)) {
+    // Anything associated with dad's name
+    else if (testRegexList(speak.dadName.regex, message)) {
+        // Good morning
+        if (testRegexList(speak.goodMorning.regex, message)) {
             bot.say(to, "good morning " + from + "!");
         }
-        else if (testRegexList(goodBye, message)) {
+        // Good bye
+        else if (testRegexList(speak.goodBye.regex, message)) {
             bot.say(to, "bye " + from + ", I love you!");
         }
+        // Ask a question
+        else if (testRegexList(speak.question.regex, message)) {        
+            bot.say(to, speak.dadName.responses.ask);
+        }
+        // Just saying dad's name(s) (ignore if from mom)
+        else if (from != conf.momName) {
+            var jokeArray = fs.readFileSync('dadJokes.txt').toString().split("\n");
+            var randomInt = Math.floor(Math.random() * (jokeArray.length));
+            console.log(randomInt);
+            var line_one = jokeArray[randomInt].split('~')[0];
+            var line_two = jokeArray[randomInt].split('~')[1];
+            bot.say(to, line_one, true);
+            // Pause for dramatic effect
+            setTimeout(function() { bot.say(to, line_two, true) }, 4000);
+        }
     }
-    // Just saying dad's name(s) (ignore if from mom)
-    else if (testRegexList(nameTriggers, message) && from != "mom") {
-        var jokeArray = fs.readFileSync('dadJokes.txt').toString().split("\n");
-        var randomInt = Math.floor(Math.random() * (jokeArray.length));
-        console.log(randomInt);
-        var line_one = jokeArray[randomInt].split('~')[0];
-        var line_two = jokeArray[randomInt].split('~')[1];
-        bot.say(to, line_one, true);
-        // Pause for dramatic effect
-        setTimeout(function() { bot.say(to, line_two, true) }, 4000);
-    }
-    else if (message.match(/(^|\W+)awoo\?($|\W+)/i)){
-        bot.say(to, "awoo")
+    // Awoo <3
+    else if (testRegexList(speak.awoo.regex, message)){
+        bot.say(to, speak.awoo.responses.normal)
     }
     else {
         // private message
