@@ -1,78 +1,429 @@
 {
-    "admin" : "awest",
-    "ip" : "localhost",
-    "channels" : [
+    "admin": "awest",
+    "channels": [
         "#main"
     ],
-    "debug" : true,
-    "dadName" : "dad",
-    "momName" : "mom",
-    "speak" : 
-    {
-        "awoo" : {
-            "regex" : [
+    "dadName": "dad",
+    "debug": true,
+    "ip": "localhost",
+    "momName": "mom",
+    "speak": {
+        "awoo": {
+            "regex": [
                 "(^|\\W+)awoo\\?($|\\W+)"
             ],
-            "responses" : {
-                "normal" :
-                    ["awoo"]
+            "responses": {
+                "normal": [
+                    [
+                        "awoo"
+                    ]
+                ]
             }
         },
-        "dadName" : {
-            "regex" : [
+        "dadName": {
+            "regex": [
                 "(^|\\W+)dad(dy|a)?($|\\W+|,)",
                 "(^|\\W+)father($|\\W+|,)",
                 "(^|\\W+)(pop){1,2}(s)?($|\\W+|,)",
                 "(^|\\W+)(pa){1,2}($|\\W+|,)"
             ],
-            "responses" : { 
-                "ask" :
-                    ["Ask your mother."]
+            "responses": {
+                "ask": [
+                    [
+                        "Ask your mother."
+                    ]
+                ],
+                "joke": [
+                    [
+                        "\"Ill call you later.\"\nDon't call me later, call me Dad"
+                    ],
+                    [
+                        "Can February March?\nNo, but April May"
+                    ],
+                    [
+                        "Dad, can you put my shoes on?\nI don't think they'll fit me"
+                    ],
+                    [
+                        "Dad, can you put the cat out?\nI didn't know it was on fire"
+                    ],
+                    [
+                        "Dad, did you get a haircut?\nNo I got them all cut"
+                    ],
+                    [
+                        "Did you hear about the cheese factory that exploded in France?\nThere was nothing left but de Brie"
+                    ],
+                    [
+                        "Did you hear about the guy who invented the knock knock joke?\nHe won the 'no-bell' prize"
+                    ],
+                    [
+                        "Did you hear about the restaurant on the moon?\nGreat food, no atmosphere"
+                    ],
+                    [
+                        "Don't trust atoms\nThey make up everything"
+                    ],
+                    [
+                        "Have you heard of the band 1023MB?\nThey haven't got a gig yet"
+                    ],
+                    [
+                        "How many apples grow on a tree?\nAll of them"
+                    ],
+                    [
+                        "I am terrified of elevators,\nI'm going to start taking steps to avoid them"
+                    ],
+                    [
+                        "I bought shoes from a drug dealer once\nI don't know what he laced them with, but I was tripping all day"
+                    ],
+                    [
+                        "I hate jokes about german sausages\nThey're the wurst"
+                    ],
+                    [
+                        "I just watched a program about beavers\nIt was the best dam program I've ever seen"
+                    ],
+                    [
+                        "I knew I shouldn't have had the seafood\nI'm feeling a little eel"
+                    ],
+                    [
+                        "I used to hate facial hair,\nbut then it grew on me"
+                    ],
+                    [
+                        "I wouldn't buy anything with velcro\nIt's a total rip-off"
+                    ],
+                    [
+                        "I'd like to give a big shout out to all the sidewalks\nfor keeping me off the streets"
+                    ],
+                    [
+                        "I'm not addicted to brake fluid\nI can stop whenever I want"
+                    ],
+                    [
+                        "I'm reading a book on the history of glue\nI just can't seem to put it down"
+                    ],
+                    [
+                        "I've just been diagnosed as colorblind\nI know, it certainly has come out of the purple"
+                    ],
+                    [
+                        "If prisoners could take their own mug shots,\nthey'd be called cellfies"
+                    ],
+                    [
+                        "Is this pool safe for diving?\nIt deep ends"
+                    ],
+                    [
+                        "Last night I dreamt I was a muffler\nI woke up exhausted"
+                    ],
+                    [
+                        "My wife is on a tropical food diet, the house is full of the stuff\nIt's enough to make a mango crazy"
+                    ],
+                    [
+                        "Our wedding was so beautiful,\neven the cake was in tiers"
+                    ],
+                    [
+                        "This graveyard looks overcrowded,\npeople must be dying to get in there"
+                    ],
+                    [
+                        "Two satellites decided to get married\nThe wedding wasn't much, but the reception was incredible"
+                    ],
+                    [
+                        "Wanna hear a joke about paper?\nNevermind, it's tearable"
+                    ],
+                    [
+                        "What did the buffalo say to his son when he left for college?\nBison"
+                    ],
+                    [
+                        "What did the grape do when he got stepped on?\nHe let out a little wine"
+                    ],
+                    [
+                        "What did the officer molecule say to the suspect molecule?\nI've got my ion you"
+                    ],
+                    [
+                        "What do prisoners use to call each other?\nCell phones"
+                    ],
+                    [
+                        "What do you call a deer with no eyes?\nNo idea"
+                    ],
+                    [
+                        "What do you call a fake noodle?\nAn Impasta"
+                    ],
+                    [
+                        "What do you call a pony with a sore throat?\nA little horse"
+                    ],
+                    [
+                        "What do you call a sketchy Italian neighbour hood?\nThe Spaghetto"
+                    ],
+                    [
+                        "What do you call an Argentinian with a rubber toe?\nRoberto"
+                    ],
+                    [
+                        "What do you call cheese by itself?\nProvolone"
+                    ],
+                    [
+                        "What do you call cheese that isn't yours?\nNacho Cheese"
+                    ],
+                    [
+                        "What do you call somebody with no body and no nose?\nNobody knows"
+                    ],
+                    [
+                        "What do you get when you cross a snowman with a vampire\nFrostbite"
+                    ],
+                    [
+                        "What does an annoying pepper do?\nIt get's jalapeno face"
+                    ],
+                    [
+                        "What lies at the bottom of the ocean and twitches?\nA nervous wreck"
+                    ],
+                    [
+                        "Where do you learn to make ice cream?\nSunday school"
+                    ],
+                    [
+                        "Where does Fonzie like to go for lunch?\nChick-Fil-Eyyyyyyyy"
+                    ],
+                    [
+                        "Why can't you have a nose 12 inches long?\nBecause then it would be a foot"
+                    ],
+                    [
+                        "Why can't you hear a pterodactyl go to the bathroom?\nBecause the pee is silent"
+                    ],
+                    [
+                        "Why couldn't the bicycle stand up by itself?\nIt was two tired"
+                    ],
+                    [
+                        "Why did the can-crusher quit his job?\nBecause it was soda-pressing"
+                    ],
+                    [
+                        "Why did the coffee file a police report?\nIt got mugged"
+                    ],
+                    [
+                        "Why did the scarecrow win an award?\nBecause he was outstanding in his field"
+                    ],
+                    [
+                        "Why do bees hum?\nBecause they don't know the words"
+                    ],
+                    [
+                        "Why do crabs never give to charity?\nBecause they're shellfish."
+                    ],
+                    [
+                        "Why don't skeletons ever go trick or treating?\nBecause they have no body to go with"
+                    ],
+                    [
+                        "The Norwegian navy has started putting bar codes on their ships...\nSo they can scan da navy in..."
+                    ],
+                    [
+                        "Singing in the shower is all fun and games until you get shampoo in your mouth...\nThen it becomes a soap opera..."
+                    ],
+                    [
+                        "I have no children but I still tell dad jokes\nhe loves them"
+                    ],
+                    [
+                        "What's brown and sticky?\nA stick."
+                    ],
+                    [
+                        "What do you call crystal clear urine?\n1080pee"
+                    ],
+                    [
+                        "Today I found out that someone has been adding fertilizer to my front lawn.\nThe plot thickens..."
+                    ],
+                    [
+                        "What do you call a non-skiing Inuit?\nAn emo"
+                    ],
+                    [
+                        "I got a haircut last week...\nAt first I didn't like it, but it's growing on me"
+                    ],
+                    [
+                        "Wanna hear a little pickle joke?\n.....it's not that big of dill."
+                    ],
+                    [
+                        "Say, Ernie? Would you like some ice cream?\nYes, sherbert."
+                    ],
+                    [
+                        "Why did the old lady fall in the well?\nShe couldn't see that well"
+                    ],
+                    [
+                        "I was on the phone with my wife and said, \"I'm almost home, honey, please put the coffee maker on.\"\nAfter a twenty second pause, I asked, \"You still there sweetheart?\""
+                    ],
+                    [
+                        "What's the difference between a coyote and a flea?\nOne howls on the prairie and the other prowls on the hairy."
+                    ],
+                    [
+                        "A judge sentenced me to take a guy out to dinner.\nIt was a court mandate"
+                    ],
+                    [
+                        "How do you shoot a rocket?\nFire works"
+                    ],
+                    [
+                        "What time did the man go to the dentist?\nTooth Hurty"
+                    ],
+                    [
+                        "Every time we go over a railroad crossing, I tell my kids...\n\u00e2\u20ac\u0153Hey, a train just went by!\""
+                    ],
+                    [
+                        "Thought taking my shell of my racing snail would make it faster.\nTurns out that just made it more sluggish."
+                    ],
+                    [
+                        "If anybody knows any salad jokes.\nLettuce know......"
+                    ],
+                    [
+                        "A son asked his dad,\n\"Can you pass me my sunglasses?\""
+                    ],
+                    [
+                        "How do you feel?\nWith your hands"
+                    ],
+                    [
+                        "Did you hear about the guy thrown in jail for not taking a nap?\nHe was refusing a rest"
+                    ],
+                    [
+                        "I love ruining the plot of Dorian Gray for people\nNever gets old."
+                    ],
+                    [
+                        "Where do belly buttons go to college\nNaval Academy"
+                    ],
+                    [
+                        "Took my kids out to a Plane Factory for a tour.\nThey said it was Boeing."
+                    ],
+                    [
+                        "Buddhist monk walks into a pizza parlor...\nSays, \"Make me one with everything.\""
+                    ],
+                    [
+                        "Mums trying to stop me eating as she reckons its getting out of hand.\nLuckily, I've got a few Twix up my sleeve."
+                    ],
+                    [
+                        "Why did the first fishmonger go to hell?\nBecause he sold his sole to the devil."
+                    ],
+                    [
+                        "What does an oyster wear into battle?\nClamouflage"
+                    ],
+                    [
+                        "My daughter kept complaining that it was too cold.\nI told her to go stand in the corner, it's 90 degrees there."
+                    ],
+                    [
+                        "A dentist is working on a judge and promises one thing....\n....to take the tooth, the whole tooth, and nothing but the tooth."
+                    ],
+                    [
+                        "What did the green grape say to the purple grape?\nBREATHE!"
+                    ],
+                    [
+                        "My wife visited a holy city\nShe completely fell through it all."
+                    ],
+                    [
+                        "Do I enjoy making courthouse puns?\nGuilty."
+                    ],
+                    [
+                        "How do you know an egg is bad?\nWhen it's past the eggsperation date."
+                    ],
+                    [
+                        "What do you call a genie made of asbestos?\nA carcinojinn."
+                    ],
+                    [
+                        "My friend threatened to turn me into the police for bludgeoning his wife to death with a Super Nintendo\nSo I had to console him as well."
+                    ],
+                    [
+                        "Why do so many people invest in Ireland?\nBecause the capital is always Dublin!"
+                    ],
+                    [
+                        "What do you call someone with a very colorful personality?\nA hue-man"
+                    ],
+                    [
+                        "What do you call a man with no arms or legs lying in front of your door?\nMatt"
+                    ],
+                    [
+                        "RIP boiled water.\nYou will be mist."
+                    ],
+                    [
+                        "My gf told me she gets weirded out when I'm too literal.\nSo I gave her a piece of my mind."
+                    ],
+                    [
+                        "What is the difference between a fly and a bird?\nA bird can fly but a fly can't bird"
+                    ],
+                    [
+                        "I just bought a vintage Rolls Royce, but the budget didn't cover a driver.\nSo I spent all that money, and I've got nothing to chauffeur it."
+                    ],
+                    [
+                        "Why is Cyclops in charge of the X-Men?\nBecause Prof. X made him a supervisor."
+                    ],
+                    [
+                        "What would Forrest Gumps email password be?\n1Forrest1"
+                    ],
+                    [
+                        "I don't usually tell tell dad jokes\n............."
+                    ],
+                    [
+                        "What type of dog can do magic tricks?\nA labracadabrador"
+                    ],
+                    [
+                        "I used to collect cacti...\nbut agave that up years ago."
+                    ],
+                    [
+                        "I heard a beaver lost its home today.\nDam shame, too."
+                    ],
+                    [
+                        "Two guys are sitting in a boat.\nThey have a bunch of cigarettes, but neither of them brought any matches to light them. So one of the guys throws one cigarette off the boat, and the boat becomes a cigarette lighter."
+                    ],
+                    [
+                        "How come everyone in history has always settled for Shampoo?\nStop the madness! Demand Realpoo!"
+                    ],
+                    [
+                        "Know why the native Americans were here first?\n...because they had reservations."
+                    ],
+                    [
+                        "I saw an article about people snorting chocolate powder for a rush.\nThey wanted a Quik high."
+                    ]
+                ]
             }
         },
-        "goodBye" : {
-            "regex" : [
+        "goodBye": {
+            "regex": [
                 "^(good)?\\s?bye(,)?"
             ],
-            "responses" : {
-                "normal" :
-                    ["goodbye [a], I love you!"]
+            "responses": {
+                "normal": [
+                    [
+                        "goodbye [a], I love you!"
+                    ]
+                ]
             }
         },
-        "goodMorning" : {
-            "regex" : [
+        "goodMorning": {
+            "regex": [
                 "^(good)?\\s?morning(,)?"
             ],
-            "responses" : {
-                "normal" : 
-                    ["good morning [a]!"]
+            "responses": {
+                "normal": [
+                    [
+                        "good morning [a]!"
+                    ]
+                ]
             }
         },
-        "hiImDad" : {
-            "regex" : [
+        "hiImDad": {
+            "regex": [
                 "(^|\\W+)i(')?m .*$"
             ],
-            "responses" : {
-                "normal" : 
-                    [ "Hi [a], I'm dad"]
-                ,
-                "deny" :
-                    ["mmmmmmmmmm... no"]
+            "responses": {
+                "deny": [
+                    [
+                        "mmmmmmmmmm... no"
+                    ]
+                ],
+                "normal": [
+                    [
+                        "Hi [a], I'm dad"
+                    ]
+                ]
             }
         },
-        "momName" :  {
-            "regex" : [
+        "momName": {
+            "regex": [
                 "(^|\\W+)mom(my|ma)?($|\\W+|,)",
                 "(^|\\W+)mother($|\\W+|,)",
                 "(^|\\W+)(ma){1,2}($|\\W+|,)"
             ],
-            "responses" : {
-                "ask" :
-                    ["Ask your father."]
+            "responses": {
+                "ask": [
+                    [
+                        "Ask your father."
+                    ]
+                ]
             }
         },
-        "question" : {
-            "regex" : [
+        "question": {
+            "regex": [
                 "\\?$"
             ]
         }

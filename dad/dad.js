@@ -76,14 +76,7 @@ bot.addListener('message', function(from, to, message) {
         }
         // Just saying dad's name(s) (ignore if from mom)
         else if (from != conf.momName) {
-            var jokeArray = fs.readFileSync('dadJokes.txt').toString().split("\n");
-            var randomInt = Math.floor(Math.random() * (jokeArray.length));
-            console.log(randomInt);
-            var line_one = jokeArray[randomInt].split('~')[0];
-            var line_two = jokeArray[randomInt].split('~')[1];
-            bot.say(to, line_one, true);
-            // Pause for dramatic effect
-            setTimeout(function() { bot.say(to, line_two, true) }, 4000);
+            bot.say(to, speak.dadName.responses.joke, true);
         }
     }
     // Awoo <3

@@ -1060,7 +1060,7 @@ Client.prototype._splitLongLines = function(words, maxLength, destination) {
 
 Client.prototype.say = function(target, text, throttle=false) {
     time = Date.now();
-    var numMessages = 10;
+    var numMessages = 8;
     var messageRate = 60000; // miliseconds
     if (throttle) {
         if (timeStamp.length == numMessages && time - timeStamp[0] >= messageRate
@@ -1083,18 +1083,26 @@ Client.prototype.notice = function(target, text) {
 
 Client.prototype._speak = function(kind, target, text) {
     var self = this;
+    // Grab random line from array of responses
+    text = text[Math.floor(Math.random() * (text.length))];
+    var textIndex = 0;
+    var timeout = 0; // miliseconds
     var maxLength = Math.min(this.maxLineLength - target.length, this.opt.messageSplit);
     if (typeof text !== 'undefined') {
         text.toString().split(/\r?\n/).filter(function(line) {
             return line.length > 0;
         }).forEach(function(line) {
             var linesToSend = self._splitLongLines(line, maxLength, []);
+            if (textIndex > 0){
+                timeout = 2000; // add timeout to multi-lined messages
+            }
             linesToSend.forEach(function(toSend) {
-                self.send(kind, target, toSend);
+                setTimeout( function() {self.send(kind, target, toSend)}, timeout);
                 if (kind == 'PRIVMSG') {
-                    self.emit('selfMessage', target, toSend);
+                    setTimeout( function() {self.emit('selfMessage', target, toSend)}, timeout);
                 }
             });
+            textIndex++;
         });
     }
 };
