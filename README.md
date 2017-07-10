@@ -13,3 +13,5 @@ Source code for bots used in the coop IRC @ coop.test.adtran.com
 #### theCount
 - A legendary bot created by David Stidham. [Check out his github repo for his original source code](https://github.com/dstidham23/countBot)
 - Instructions are simple. At 8:30, 11:00, 1:30, and 4:00, theCount will start a counting game. You just keep counting until you reach the number theCount has chosen. For more indepth instructions, see `IRCBots/theCount/README.md`
+#### dad
+- For all things dad
