@@ -144,8 +144,8 @@ class countBot(irc.IRCClient):
         hour = int(self.getCurrentTime().split(':')[0])
         minute = int(self.getCurrentTime().split(':')[1])
         if ((hour != self.hourOfLastGame) and (hour > 7 and hour < 17)):
-            if (((hour == 8) and (minute == 30)) or ((hour == 11) and (minute == 0)) or
-            ((hour == 13) and (minute == 30)) or ((hour == 16) and (minute == 0))):
+            if (((hour == 8) and (minute >= 30)) or ((hour == 11) and (minute >= 0)) or
+            ((hour == 13) and (minute >= 30)) or ((hour == 16) and (minute >= 0))):
                 self.hourOfLastGame = hour
                 self.resetGame()
                 self.startGame()
