@@ -38,10 +38,11 @@ bot.addListener('message', function(from, to, message) {
     // TODO get mad when people start flooding him, perhaps even leave the channel:
         // Should I really give people a reason to flood him?
     // TODO when he quits it should say "Went to buy a pack of cigs and never came back"
-    // TODO add unit tests?
     // TODO require password along with admin commands, in git-ignored file
 	// TODO finish or remove jokesToJson (probably remove)
     // TODO Read responses (except jokes) from json file
+	// TODO Add list of least favorite children (i.e. people to ignore)
+	// TODO Add list of favorite children and give them special responses
 
     // Hi _____, I'm dad
     if (testRegexList(speak.hiImDad.regex, message)) {
@@ -49,26 +50,25 @@ bot.addListener('message', function(from, to, message) {
         var d = m[m.length - 1].trim().split(' ');
         // Trigger a different message if someone says they're dad
         if (d.length == 1 && testRegexList(speak.dadName.regex, d)){
-            setTimeout(function() { bot.say(to, "mmmmmmm", true) }, 250);
-            setTimeout(function() { bot.say(to, "no", true) }, 750);
+			bot.say(to, speak.dadName.responses.deny);
         }
         else {
             removeARegex = /^\s*(a|an)\W+/i;
             if (m[m.length - 1].match(removeARegex)) {
                 m = m[m.length - 1].split(removeARegex);
             }
-            bot.say(to, 'Hi ' + m[m.length - 1].trim().replace('.', '').replace('?', '') + ', I\'m dad');
+            bot.say(to, ['Hi ' + m[m.length - 1].trim().replace('.', '').replace('?', '') + ', I\'m dad']);
         }
     }
     // Anything associated with dad's name
     else if (testRegexList(speak.dadName.regex, message)) {
         // Good morning
         if (testRegexList(speak.goodMorning.regex, message)) {
-            bot.say(to, "good morning " + from + "!");
+            bot.say(to, ["good morning " + from + "!"]);
         }
         // Good bye
         else if (testRegexList(speak.goodBye.regex, message)) {
-            bot.say(to, "bye " + from + ", I love you!");
+        //    bot.say(to, "bye " + from + ", I love you!", true);
         }
         // Ask a question
         else if (testRegexList(speak.question.regex, message)) {        
@@ -81,7 +81,7 @@ bot.addListener('message', function(from, to, message) {
     }
     // Awoo <3
     else if (testRegexList(speak.awoo.regex, message)){
-        bot.say(to, speak.awoo.responses.normal)
+        bot.say(to, speak.awoo.responses.normal);
     }
     else {
         // private message
@@ -94,7 +94,7 @@ bot.addListener('pm', function(nick, message) {
 bot.addListener('join', function(channel, who) {
     console.log('%s has joined %s', who, channel);
     if (who != conf.dadName) {
-        bot.say(channel, "Welcome back, " + who + "!");
+    //    bot.say(channel, ["Welcome back, " + who + "!"]);
     }
 });
 bot.addListener('part', function(channel, who, reason) {

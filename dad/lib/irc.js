@@ -1060,7 +1060,7 @@ Client.prototype._splitLongLines = function(words, maxLength, destination) {
 
 Client.prototype.say = function(target, text, throttle=false) {
     time = Date.now();
-    var numMessages = 8;
+    var numMessages = 2;
     var messageRate = 60000; // miliseconds
     if (throttle) {
         if (timeStamp.length == numMessages && time - timeStamp[0] >= messageRate

@@ -5,7 +5,7 @@
     ],
     "dadName": "dad",
     "debug": true,
-    "ip": "localhost",
+    "ip": "coop.test.adtran.com",
     "momName": "mom",
     "speak": {
         "awoo": {
@@ -22,10 +22,10 @@
         },
         "dadName": {
             "regex": [
-                "(^|\\W+)dad(dy|a)?($|\\W+|,)",
-                "(^|\\W+)father($|\\W+|,)",
-                "(^|\\W+)(pop){1,2}(s)?($|\\W+|,)",
-                "(^|\\W+)(pa){1,2}($|\\W+|,)"
+                "(^|\\s+)dad(dy|a)?($|\\s+|,|.)",
+                "(^|\\s+)father($|\\W+|,)",
+                "(^|\\s+)(pop){1,2}(s)?($|\\s+|,|.)",
+                "(^|\\s+)(pa){1,2}($|\\s+|,|.)"
             ],
             "responses": {
                 "ask": [
@@ -410,9 +410,9 @@
         },
         "momName": {
             "regex": [
-                "(^|\\W+)mom(my|ma)?($|\\W+|,)",
-                "(^|\\W+)mother($|\\W+|,)",
-                "(^|\\W+)(ma){1,2}($|\\W+|,)"
+                "(^|\\s+)mom(my|ma)?($|\\s+|,|.)",
+                "(^|\\s+)mother($|\\s+|,|.)",
+                "(^|\\s+)(ma){1,2}($|\\s+|,|.)"
             ],
             "responses": {
                 "ask": [
