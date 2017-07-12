@@ -177,6 +177,8 @@ class countBot(irc.IRCClient):
             print 'Scores saved'
         elif (message.startswith(self.nickname + ', say')):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
+        elif (message.startswith(self.nickname + ', me')):
+            self.describe(self.chatroom, message[len(self.nickname)+5:])
         else:
             self.userCommands('Noah Siano', message)
 
