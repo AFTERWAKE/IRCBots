@@ -30,18 +30,14 @@ bot.addListener('message#blah', function(from, message) {
 bot.addListener('message', function(from, to, message) {
     console.log('%s => %s: %s', from, to, message);
 
-	// TODO When someone says bye dad, respond with "bye [name], I love you."
-	// TODO When someone says thanks dad, respond with "I'm here all day" or something like that.
     // TODO make dad sad whenever someone (or just me) leaves
-	// TODO add quotes from Calvin and Hobbes
 	// TODO "dad, noahsiano isn't letting me vote" do something to respond to things like this
     // TODO get mad when people start flooding him, perhaps even leave the channel:
         // Should I really give people a reason to flood him?
     // TODO when he quits it should say "Went to buy a pack of cigs and never came back"
-    // TODO add unit tests?
     // TODO require password along with admin commands, in git-ignored file
-	// TODO finish or remove jokesToJson (probably remove)
-    // TODO Read responses (except jokes) from json file
+	// TODO Add list of least favorite children (i.e. people to ignore)
+	// TODO Add list of favorite children and give them special responses
 
     // Hi _____, I'm dad
     if (testRegexList(speak.hiImDad.regex, message)) {
@@ -49,39 +45,31 @@ bot.addListener('message', function(from, to, message) {
         var d = m[m.length - 1].trim().split(' ');
         // Trigger a different message if someone says they're dad
         if (d.length == 1 && testRegexList(speak.dadName.regex, d)){
-            setTimeout(function() { bot.say(to, "mmmmmmm", true) }, 250);
-            setTimeout(function() { bot.say(to, "no", true) }, 750);
+			bot.say(to, speak.hiImDad.responses.deny, true);
         }
         else {
             removeARegex = /^\s*(a|an)\W+/i;
             if (m[m.length - 1].match(removeARegex)) {
                 m = m[m.length - 1].split(removeARegex);
             }
-            bot.say(to, 'Hi ' + m[m.length - 1].trim().replace('.', '').replace('?', '') + ', I\'m dad');
+            var hiImDadFiller = m[m.length - 1].trim().replace('.', '').replace('?', '');
+            bot.say(to, speak.hiImDad.responses.normal, false, hiImDadFiller);
         }
     }
     // Anything associated with dad's name
     else if (testRegexList(speak.dadName.regex, message)) {
         // Good morning
         if (testRegexList(speak.goodMorning.regex, message)) {
-            bot.say(to, "good morning " + from + "!");
-        }
-        // Good bye
-        else if (testRegexList(speak.goodBye.regex, message)) {
-            bot.say(to, "bye " + from + ", I love you!");
+            bot.say(to, speak.goodMorning.responses.normal, true, from);
         }
         // Ask a question
         else if (testRegexList(speak.question.regex, message)) {        
-            bot.say(to, speak.dadName.responses.ask);
+            bot.say(to, speak.dadName.responses.ask, true);
         }
         // Just saying dad's name(s) (ignore if from mom)
         else if (from != conf.momName) {
             bot.say(to, speak.dadName.responses.joke, true);
         }
-    }
-    // Awoo <3
-    else if (testRegexList(speak.awoo.regex, message)){
-        bot.say(to, speak.awoo.responses.normal)
     }
     else {
         // private message
@@ -93,9 +81,6 @@ bot.addListener('pm', function(nick, message) {
 });
 bot.addListener('join', function(channel, who) {
     console.log('%s has joined %s', who, channel);
-    if (who != conf.dadName) {
-        bot.say(channel, "Welcome back, " + who + "!");
-    }
 });
 bot.addListener('part', function(channel, who, reason) {
     console.log('%s has left %s: %s', who, channel, reason);

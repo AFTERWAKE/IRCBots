@@ -6,7 +6,8 @@ var re = require('./lib/regex.js');
 var testRegexList = re.testRegexList;
 var nameTriggers = re.momNameTriggers;
 
-var conf = require('./lib/config.js');
+var conf = require('./config.json');
+var speak = conf.speak;
 
 var bot = new irc.Client(conf.ip, conf.momName, {
     debug: conf.debug,
@@ -24,8 +25,8 @@ bot.addListener('message#blah', function(from, message) {
 bot.addListener('message', function(from, to, message) {
     console.log('%s => %s: %s', from, to, message);
 
-    if (testRegexList(nameTriggers, message) && message.match(/\?$/i)) {
-        bot.say(to, "Ask your father.");
+    if (testRegexList(speak.momName.regex, message) && testRegexList(speak.question.regex, message)) {
+        bot.say(to, speak.momName.responses.ask, true);
     }
 });
 bot.addListener('pm', function(nick, message) {
