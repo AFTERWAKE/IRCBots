@@ -79,10 +79,6 @@ bot.addListener('message', function(from, to, message) {
             bot.say(to, speak.dadName.responses.joke, true);
         }
     }
-    // Awoo <3
-    else if (testRegexList(speak.awoo.regex, message)){
-        bot.say(to, speak.awoo.responses.normal);
-    }
     else {
         // private message
         console.log('private message');

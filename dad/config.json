@@ -5,21 +5,9 @@
     ],
     "dadName": "dad",
     "debug": true,
-    "ip": "coop.test.adtran.com",
+    "ip": "localhost",
     "momName": "mom",
     "speak": {
-        "awoo": {
-            "regex": [
-                "(^|\\W+)awoo\\?($|\\W+)"
-            ],
-            "responses": {
-                "normal": [
-                    [
-                        "awoo"
-                    ]
-                ]
-            }
-        },
         "dadName": {
             "regex": [
                 "(^|\\s+)dad(dy|a)?($|\\s+|,|.)",
@@ -393,7 +381,7 @@
         },
         "hiImDad": {
             "regex": [
-                "(^|\\W+)i(')?m .*$"
+                "(^|\\W+)i(')?m(\\s\\w.*$)"
             ],
             "responses": {
                 "deny": [
