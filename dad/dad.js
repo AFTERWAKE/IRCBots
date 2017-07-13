@@ -53,7 +53,7 @@ bot.addListener('message', function(from, to, message) {
                 m = m[m.length - 1].split(removeARegex);
             }
             var hiImDadFiller = m[m.length - 1].trim().replace('.', '').replace('?', '');
-            bot.say(to, speak.hiImDad.responses.normal, false, hiImDadFiller);
+            bot.say(to, speak.hiImDad.responses.normal, true, hiImDadFiller);
         }
     }
     // Anything associated with dad's name
