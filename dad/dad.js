@@ -45,7 +45,7 @@ bot.addListener('message', function(from, to, message) {
         var d = m[m.length - 1].trim().split(' ');
         // Trigger a different message if someone says they're dad
         if (d.length == 1 && testRegexList(speak.dadName.regex, d)){
-			bot.say(to, speak.dadName.responses.deny);
+			bot.say(to, speak.hiImDad.responses.deny, true);
         }
         else {
             removeARegex = /^\s*(a|an)\W+/i;
@@ -60,11 +60,11 @@ bot.addListener('message', function(from, to, message) {
     else if (testRegexList(speak.dadName.regex, message)) {
         // Good morning
         if (testRegexList(speak.goodMorning.regex, message)) {
-            bot.say(to, speak.goodMorning.responses.normal, false, from);
+            bot.say(to, speak.goodMorning.responses.normal, true, from);
         }
         // Ask a question
         else if (testRegexList(speak.question.regex, message)) {        
-            bot.say(to, speak.dadName.responses.ask);
+            bot.say(to, speak.dadName.responses.ask, true);
         }
         // Just saying dad's name(s) (ignore if from mom)
         else if (from != conf.momName) {
