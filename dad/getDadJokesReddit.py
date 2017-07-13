@@ -3,7 +3,6 @@
 import praw
 import sys
 from jokesToJson import addJoke
-import subprocess
 
 def main():
     reddit = praw.Reddit(client_id='RDH7DCODcOC48g',
