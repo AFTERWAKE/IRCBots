@@ -1084,7 +1084,9 @@ Client.prototype.notice = function(target, text) {
 Client.prototype._speak = function(kind, target, text) {
     var self = this;
     // Grab random line from array of responses
-    text = text[Math.floor(Math.random() * (text.length))];
+    var randLine = Math.floor(Math.random() * (text.length));
+    console.log(randLine);
+    text = text[randLine];
     var textIndex = 0;
     var timeout = 0; // miliseconds
     var maxLength = Math.min(this.maxLineLength - target.length, this.opt.messageSplit);

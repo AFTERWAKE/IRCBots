@@ -2,6 +2,8 @@
 
 import praw
 import sys
+from jokesToJson import addJoke
+import subprocess
 
 def main():
     reddit = praw.Reddit(client_id='RDH7DCODcOC48g',
@@ -19,7 +21,7 @@ def main():
             print(line_two)
             save = input("Save this? [y/n] (default: n) ")
             if "y" in save:
-                file.write(line_one + "~" + line_two + "\n")
+                addJoke(line_one + "\n" + line_two)
 
 
 if __name__ == "__main__":
