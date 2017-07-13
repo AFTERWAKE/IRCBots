@@ -25,6 +25,8 @@ hi5regexes = [
   new RegExp( "(^|\\s)+very(\\s|$)+", "i")
 ];
 
+tenSeconds = 0;
+
 hi5regexes.forEach(function(s){ console.log( s );});
 
 client = new irc.Client( env.HOST, env.NICK, {
@@ -41,8 +43,12 @@ client.addListener( "message", function( from, to, message ) {
   hi5regexes.forEach(function( regex ) {
     console.log( regex, regex.test( message ) );
     if ( !responded && regex.test( message ) ) {
-      responded = true;
-      client.say( to, responseGenerator( from ) );
+      var tenSecondsTest = Math.round(new Date().getTime() / 10000);
+      if (tenSecondsTest != tenSeconds) {
+        responded = true;
+        client.say( to, responseGenerator( from ) );
+        tenSeconds = tenSecondsTest;
+      }
     }
   });
 });
