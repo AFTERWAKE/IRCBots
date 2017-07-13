@@ -1058,7 +1058,7 @@ Client.prototype._splitLongLines = function(words, maxLength, destination) {
     return this._splitLongLines(words.substring(cutPos + wsLength, words.length), maxLength, destination);
 };
 
-Client.prototype.say = function(target, text, throttle=false) {
+Client.prototype.say = function(target, text, throttle=false, fill=null) {
     time = Date.now();
     var numMessages = 2;
     var messageRate = 60000; // miliseconds
@@ -1073,7 +1073,7 @@ Client.prototype.say = function(target, text, throttle=false) {
         }
     }
     else {
-        this._speak('PRIVMSG', target, text);
+        this._speak('PRIVMSG', target, text, fill);
     }
 };
 
@@ -1081,12 +1081,16 @@ Client.prototype.notice = function(target, text) {
     this._speak('NOTICE', target, text);
 };
 
-Client.prototype._speak = function(kind, target, text) {
+Client.prototype._speak = function(kind, target, text, fill=null) {
     var self = this;
     // Grab random line from array of responses
     var randLine = Math.floor(Math.random() * (text.length));
     console.log(randLine);
-    text = text[randLine];
+    text = text[randLine][0];
+    console.log(text);
+    if (RegExp(/\[a\]/).test(text) && fill != null) {
+        text = text.replace("[a]", fill);
+    }
     var textIndex = 0;
     var timeout = 0; // miliseconds
     var maxLength = Math.min(this.maxLineLength - target.length, this.opt.messageSplit);

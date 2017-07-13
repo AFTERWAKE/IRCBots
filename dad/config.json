@@ -451,18 +451,6 @@
                 ]
             }
         },
-        "goodBye": {
-            "regex": [
-                "^(good)?\\s?bye(,)?"
-            ],
-            "responses": {
-                "normal": [
-                    [
-                        "goodbye [a], I love you!"
-                    ]
-                ]
-            }
-        },
         "goodMorning": {
             "regex": [
                 "^(good)?\\s?morning(,)?"
