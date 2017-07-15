@@ -5,7 +5,7 @@
     ],
     "dadName": "dad",
     "debug": true,
-    "ip": "coop.test.adtran.com",
+    "ip": "localhost",
     "momName": "mom",
     "speak": {
         "dadName": {
