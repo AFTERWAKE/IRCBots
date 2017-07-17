@@ -84,8 +84,8 @@ class countBot(irc.IRCClient):
         return
 
     def playLimit(self):
-        if self.numberForGame < 4:
-            self.numberPlayLimit = 2
+        if self.numberForGame < 6:
+            self.numberPlayLimit = 3
         else:
             self.numberPlayLimit = randrange(int(self.numberForGame/2)-1, int(self.numberForGame/2)+3)
         return
