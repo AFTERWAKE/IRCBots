@@ -1065,7 +1065,7 @@ Client.prototype.say = function(target, text, throttle=false) {
     if (throttle) {
         if (timeStamp.length == numMessages && time - timeStamp[0] >= messageRate
             || timeStamp.length < numMessages) {
-            this._speak('PRIVMSG', target, text, fill);
+            this._speak('PRIVMSG', target, text);
             timeStamp.push(time);
             if (timeStamp.length > numMessages) {
                 timeStamp.shift();
