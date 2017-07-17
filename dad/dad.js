@@ -19,6 +19,18 @@ var bot = new irc.Client(conf.ip, conf.dadName, {
     channels: conf.channels
 });
 
+// Join line to filler and/or get random response from list
+function getLine(text, fill=null) {
+    var randLine = Math.floor(Math.random() * (text.length));
+    // console.log(randLine);
+    text = text[randLine][0];
+    if (RegExp(/\[a\]/).test(text) && fill != null) {
+        text = text.replace("[a]", fill);
+    }
+    // console.log(text);
+    return text;
+}
+
 bot.addListener('error', function(message) {
     console.error('ERROR: %s: %s', message.command, message.args.join(' '));
 });
@@ -53,14 +65,14 @@ bot.addListener('message', function(from, to, message) {
                 m = m[m.length - 1].split(removeARegex);
             }
             var hiImDadFiller = m[m.length - 1].trim().replace('.', '').replace('?', '');
-            bot.say(to, speak.hiImDad.responses.normal, true, hiImDadFiller);
+            bot.say(to, getLine(speak.hiImDad.responses.normal, hiImDadFiller), true);
         }
     }
     // Anything associated with dad's name
     else if (testRegexList(speak.dadName.regex, message)) {
         // Good morning
         if (testRegexList(speak.goodMorning.regex, message)) {
-            bot.say(to, speak.goodMorning.responses.normal, true, from);
+            bot.say(to, getLine(speak.goodMorning.responses.normal, from), true);
         }
         // Ask a question
         else if (testRegexList(speak.question.regex, message)) {        
@@ -68,7 +80,7 @@ bot.addListener('message', function(from, to, message) {
         }
         // Just saying dad's name(s) (ignore if from mom)
         else if (from != conf.momName) {
-            bot.say(to, speak.dadName.responses.joke, true);
+            bot.say(to, getLine(speak.dadName.responses.joke), true);
         }
     }
     else {
