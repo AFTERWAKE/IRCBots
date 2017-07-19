@@ -150,6 +150,18 @@ class countBot(irc.IRCClient):
                 self.resetGame()
                 self.startGame()
 
+    def getWinningUser(self):
+        topUser = ''
+        firstLoop = True;
+        for user in range(len(self.nameList)):
+            if (self.nameList[user].timesWon > 0):
+                if (firstLoop):
+                    topUser = self.nameList[user]
+                    firstLoop = False
+                elif (self.nameList[user].timesWon > topUser.timesWon):
+                    topUser = self.nameList[user]
+        return topUser
+
     def adminCommands(self, message):
         if (message == self.nickname + ', quit'):
             self.resetGame()
@@ -270,7 +282,7 @@ class countBot(irc.IRCClient):
                  'noahsiano. If you have any problems with me, please defer to Noah. Have a nice day :) ' +
                  'Also... Bots are not allowed to play this game. Please don\'t ruin the fun.')
 
-    def userCommands(self, name, message):
+    def userCommands(self, name, message, isTopUser=False):
         if (message == self.nickname + ', help'):
             self.helpText()
         elif (message == self.nickname + ', winners'):
@@ -280,6 +292,10 @@ class countBot(irc.IRCClient):
             self.showLoserMsg(name)
         elif (message == self.nickname + ', losers'):
             self.displayLosers()
+        elif (message == self.nickname + ', top'):
+            self.msg(self.chatroom, 'The current number 1 player is: ' + self.getWinningUser().username)
+        elif (message.startswith(self.nickname + ', say') and isTopUser):
+            self.msg(self.chatroom, message[len(self.nickname)+6:])
 
     def showLoserMsg(self, name):
         self.msg(self.chatroom, 'LOSER: {}'.format(name))
@@ -348,6 +364,8 @@ class countBot(irc.IRCClient):
                 if (message.startswith(self.nickname)):
                     if (user.split('@')[1] == self.admin):
                         self.adminCommands(message)
+                    elif (user.split('!')[0] == self.getWinningUser().username):
+                        self.userCommands(user.split('!')[0], message, True)
                     else:
                         self.userCommands(user.split('!')[0], message)
         else:
