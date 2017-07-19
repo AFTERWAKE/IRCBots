@@ -4,12 +4,8 @@ var irc = require('./');
 var request = require("request");
 var fs = require('fs');
 
-var re = require('./lib/regex.js');
-var testRegexList = re.testRegexList;
-var nameTriggers = re.dadNameTriggers;
-var hiImDadTriggers = re.hiImDadTriggers;
-var goodMorning = re.goodMorning;
-var goodBye = re.goodBye;
+var res = require('./lib/response.js');
+var testMessage = res.testMessage;
 
 var conf = require('./config.json');
 var speak = conf.speak;
@@ -52,11 +48,11 @@ bot.addListener('message', function(from, to, message) {
 	// TODO Add list of favorite children and give them special responses
 
     // Hi _____, I'm dad
-    if (testRegexList(speak.hiImDad.regex, message)) {
+    if (testMessage(speak.hiImDad.regex, from, message)) {
         var m = message.split(/(^|\W+)i(')?m\W+/i);
         var d = m[m.length - 1].trim().split(' ');
         // Trigger a different message if someone says they're dad
-        if (d.length == 1 && testRegexList(speak.dadName.regex, d)){
+        if (d.length == 1 && testMessage(speak.dadName.regex, from, d)){
 			bot.say(to, speak.hiImDad.responses.deny, true);
         }
         else {
@@ -65,17 +61,17 @@ bot.addListener('message', function(from, to, message) {
                 m = m[m.length - 1].split(removeARegex);
             }
             var hiImDadFiller = m[m.length - 1].trim().replace('.', '').replace('?', '');
-            bot.say(to, getLine(speak.hiImDad.responses.normal, hiImDadFiller), true);
+            bot.say(to, getLine(speak.hiImDad.responses.normal, from, hiImDadFiller), true);
         }
     }
     // Anything associated with dad's name
-    else if (testRegexList(speak.dadName.regex, message)) {
+    else if (testMessage(speak.dadName.regex, from, message)) {
         // Good morning
-        if (testRegexList(speak.goodMorning.regex, message)) {
+        if (testMessage(speak.goodMorning.regex, from, message)) {
             bot.say(to, getLine(speak.goodMorning.responses.normal, from), true);
         }
         // Ask a question
-        else if (testRegexList(speak.question.regex, message)) {        
+        else if (testMessage(speak.question.regex, from, message)) {        
             bot.say(to, speak.dadName.responses.ask, true);
         }
         // Just saying dad's name(s) (ignore if from mom)

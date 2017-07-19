@@ -2,9 +2,8 @@
 
 var irc = require('./');
 
-var re = require('./lib/regex.js');
-var testRegexList = re.testRegexList;
-var nameTriggers = re.momNameTriggers;
+var res = require('./lib/response.js');
+var testMessage = res.testMessage;
 
 var conf = require('./config.json');
 var speak = conf.speak;
@@ -25,7 +24,7 @@ bot.addListener('message#blah', function(from, message) {
 bot.addListener('message', function(from, to, message) {
     console.log('%s => %s: %s', from, to, message);
 
-    if (testRegexList(speak.momName.regex, message) && testRegexList(speak.question.regex, message)) {
+    if (testMessage(speak.momName.regex, from, message) && testMessage(speak.question.regex, from, message)) {
         bot.say(to, speak.momName.responses.ask, true);
     }
 });

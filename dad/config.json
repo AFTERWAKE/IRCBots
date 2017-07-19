@@ -1,10 +1,16 @@
 {
     "admin": "awest",
     "channels": [
-        "#main"
+        "#rents"
     ],
     "dadName": "dad",
     "debug": true,
+	"ignore": [
+		"theCount",
+		"Doge",
+		"Magic_Conch",
+		"Seahorse"
+	],
     "ip": "coop.test.adtran.com",
     "momName": "mom",
     "speak": {
@@ -125,7 +131,7 @@
                         "What do prisoners use to call each other?\nCell phones"
                     ],
                     [
-                        "What do you call a deer with no eyes?\nNo idea"
+                        "What do you call a deer with no eyes?\nNo idear"
                     ],
                     [
                         "What do you call a fake noodle?\nAn Impasta"
