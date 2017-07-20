@@ -4,3 +4,4 @@ test.js
 getDadJokesNiceOneDad.py
 jokes.csv
 dadJokes.txt
+*.pyc

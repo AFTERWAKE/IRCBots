@@ -2,6 +2,7 @@
 
 import praw
 import sys
+import six
 from jokesToJson import addJoke
 
 def main():
@@ -11,14 +12,14 @@ def main():
 
     # TODO read these one by one, and I either approve or disapprove them 
     # to get sent to the dadJokes.txt file.
-    with open("dadJokes.txt", "a", encoding="utf-8") as file:
-		# Choose from new, hot, gilded, top, etc...
+    with open("dadJokes.txt", "a") as file:
+	# Choose from new, hot, gilded, top, etc...
         for submission in reddit.subreddit('dadjokes').new(limit=int(sys.argv[1])):
-            line_one = submission.title
-            line_two = submission.selftext.strip().split("\n")[0]
+            line_one = unicode(submission.title)
+            line_two = unicode(submission.selftext.strip().split("\n")[0])
             print("\n\n" + line_one)
             print(line_two)
-            save = input("Save this? [y/n] (default: n) ")
+            save = six.moves.input("Save this? [y/n] (default: n) ")
             if "y" in save:
                 addJoke(line_one + "\n" + line_two)
 
