@@ -49,18 +49,18 @@ bot.addListener('message', function(from, to, message) {
 
     // Hi _____, I'm dad
     if (testMessage(speak.hiImDad.regex, from, message)) {
-        var m = message.split(/(^|\W+)i(')?m\W+/i);
+        var m = message.split(/(^|\s+)i(')?m\s+/i);
         var d = m[m.length - 1].trim().split(' ');
         // Trigger a different message if someone says they're dad
         if (d.length == 1 && testMessage(speak.dadName.regex, from, d)){
 			bot.say(to, speak.hiImDad.responses.deny, true);
         }
         else {
-            removeARegex = /^\s*(a|an)\W+/i;
+            removeARegex = /^\s*(a|an)\s+/i;
             if (m[m.length - 1].match(removeARegex)) {
                 m = m[m.length - 1].split(removeARegex);
             }
-            var hiImDadFiller = m[m.length - 1].trim().replace('.', '').replace('?', '');
+            var hiImDadFiller = m[m.length - 1].trim().replace(/(\W+$)/i, '');
             bot.say(to, getLine(speak.hiImDad.responses.normal, hiImDadFiller), true);
         }
     }

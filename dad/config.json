@@ -1,7 +1,7 @@
 {
     "admin": "awest", 
     "channels": [
-        "#rents"
+        "#main"
     ], 
     "dadName": "dad", 
     "debug": true, 
@@ -11,7 +11,7 @@
         "Magic_Conch", 
         "Seahorse"
     ], 
-    "ip": "coop.test.adtran.com", 
+    "ip": "localhost", 
     "momName": "mom", 
     "speak": {
         "dadName": {
