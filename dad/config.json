@@ -560,17 +560,17 @@
         }, 
         "ignore": {
             "regex": [
-                "ignore "
+                "dad, ignore "
             ]
         },
         "ignored": {
             "regex": [
-                "ignored"
+                "dad, ignored"
             ]
         },
         "listen": {
             "regex": [
-                "listen "
+                "dad, listen "
             ]
         },
         "momName": {
@@ -590,6 +590,11 @@
         "question": {
             "regex": [
                 "\\?$"
+            ]
+        },
+        "say": {
+            "regex": [
+                "dad, say "
             ]
         }
     }

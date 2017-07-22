@@ -23,9 +23,10 @@ bot.addListener('message#blah', function(from, message) {
 
 bot.addListener('message', function(from, to, message) {
     console.log('%s => %s: %s', from, to, message);
+    var throttled = from != conf.admin;
 
-    if (testMessage(speak.momName.regex, from, message) && testMessage(speak.question.regex, from, message)) {
-        bot.say(to, speak.momName.responses.ask, true);
+    if (testMessage(speak.momName.regex, from, to, message) && testMessage(speak.question.regex, from, to, message)) {
+        bot.say(to, speak.momName.responses.ask, throttled);
     }
 });
 bot.addListener('pm', function(nick, message) {

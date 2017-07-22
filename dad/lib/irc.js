@@ -1101,6 +1101,7 @@ Client.prototype._speak = function(kind, target, text) {
                 }
             });
             textIndex++;
+            console.log("%s => %s: %s", kind, target, text);
         });
     }
 };

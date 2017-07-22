@@ -7,6 +7,7 @@ var fs = require('fs');
 var res = require('./lib/response.js');
 var testMessage = res.testMessage;
 var adminCommand = res.adminCommand;
+var userCommand = res.userCommand;
 
 var conf = require('./config.json');
 var speak = conf.speak;
@@ -15,18 +16,6 @@ var bot = new irc.Client(conf.ip, conf.dadName, {
     debug: conf.debug,
     channels: conf.channels
 });
-
-// Join line to filler and/or get random response from list
-function getLine(text, fill=null) {
-    var randLine = Math.floor(Math.random() * (text.length));
-    // console.log(randLine);
-    text = text[randLine][0];
-    if (RegExp(/\[a\]/).test(text) && fill != null) {
-        text = text.replace("[a]", fill);
-    }
-    // console.log(text);
-    return text;
-}
 
 bot.addListener('error', function(message) {
     console.error('ERROR: %s: %s', message.command, message.args.join(' '));
@@ -47,44 +36,23 @@ bot.addListener('message', function(from, to, message) {
     // TODO require password along with admin commands, in git-ignored file
 	// TODO Add list of least favorite children (i.e. people to ignore)
 	// TODO Add list of favorite children and give them special responses
-    
+    // TODO Make multiple channels work better (i.e. remove checks involving conf.channels[0])
+    // TODO Reuse more code for mom and dad.js
+
     if (to == conf.dadName) {
         if (from == conf.admin) {
-            adminCommand(bot, message);
+            adminCommand(bot, from, to, message);
         }
     }
-    // Hi _____, I'm dad
-    if (testMessage(speak.hiImDad.regex, from, message)) {
-        var m = message.split(/(^\s*i'?m\s+)/i);
-        var d = m[m.length - 1].trim().split(' ');
-        // Trigger a different message if someone says they're dad
-        if (d.length == 1 && testMessage(speak.dadName.regex, from, d)){
-			bot.say(to, speak.hiImDad.responses.deny, true);
+    else if (to == conf.channels[0]) {
+        if (from == conf.admin){
+            adminCommand(bot, from, to, message);
         }
         else {
-            removeARegex = /^\s*(a|an)\s+/i;
-            if (m[m.length - 1].match(removeARegex)) {
-                m = m[m.length - 1].split(removeARegex);
-            }
-            var hiImDadFiller = m[m.length - 1].trim().replace(/(\W+$)/i, '');
-            bot.say(to, getLine(speak.hiImDad.responses.normal, hiImDadFiller), true);
+            userCommand(bot, from, to, message);
         }
     }
-    // Anything associated with dad's name
-    else if (testMessage(speak.dadName.regex, from, message)) {
-        // Good morning
-        if (testMessage(speak.goodMorning.regex, from, message)) {
-            bot.say(to, getLine(speak.goodMorning.responses.normal, from), true);
-        }
-        // Ask a question
-        else if (testMessage(speak.question.regex, from, message)) {        
-            bot.say(to, speak.dadName.responses.ask, true);
-        }
-        // Just saying dad's name(s) (ignore if from mom)
-        else if (from != conf.momName) {
-            bot.say(to, getLine(speak.dadName.responses.joke), true);
-        }
-    }
+    
 });
 bot.addListener('pm', function(nick, message) {
     console.log('Got private message from %s: %s', nick, message);
