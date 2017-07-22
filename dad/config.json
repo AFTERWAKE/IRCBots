@@ -4,7 +4,7 @@
         "#main"
     ], 
     "dadName": "dad", 
-    "debug": true, 
+    "debug": false, 
     "ignore": [
         "theCount", 
         "Doge", 
@@ -558,6 +558,21 @@
                 ]
             }
         }, 
+        "ignore": {
+            "regex": [
+                "ignore "
+            ]
+        },
+        "ignored": {
+            "regex": [
+                "ignored"
+            ]
+        },
+        "listen": {
+            "regex": [
+                "listen "
+            ]
+        },
         "momName": {
             "regex": [
                 "(^|\\s+)mom(my|ma)?($|\\W+)", 

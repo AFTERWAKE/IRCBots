@@ -6,6 +6,7 @@ var fs = require('fs');
 
 var res = require('./lib/response.js');
 var testMessage = res.testMessage;
+var adminCommand = res.adminCommand;
 
 var conf = require('./config.json');
 var speak = conf.speak;
@@ -46,7 +47,12 @@ bot.addListener('message', function(from, to, message) {
     // TODO require password along with admin commands, in git-ignored file
 	// TODO Add list of least favorite children (i.e. people to ignore)
 	// TODO Add list of favorite children and give them special responses
-
+    
+    if (to == conf.dadName) {
+        if (from == conf.admin) {
+            adminCommand(bot, message);
+        }
+    }
     // Hi _____, I'm dad
     if (testMessage(speak.hiImDad.regex, from, message)) {
         var m = message.split(/(^\s*i'?m\s+)/i);
@@ -78,10 +84,6 @@ bot.addListener('message', function(from, to, message) {
         else if (from != conf.momName) {
             bot.say(to, getLine(speak.dadName.responses.joke), true);
         }
-    }
-    else {
-        // private message
-        console.log('private message');
     }
 });
 bot.addListener('pm', function(nick, message) {
