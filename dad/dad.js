@@ -49,7 +49,7 @@ bot.addListener('message', function(from, to, message) {
 
     // Hi _____, I'm dad
     if (testMessage(speak.hiImDad.regex, from, message)) {
-        var m = message.split(/(^|\s+)i(')?m\s+/i);
+        var m = message.split(/(^\s*i'?m\s+)/i);
         var d = m[m.length - 1].trim().split(' ');
         // Trigger a different message if someone says they're dad
         if (d.length == 1 && testMessage(speak.dadName.regex, from, d)){
