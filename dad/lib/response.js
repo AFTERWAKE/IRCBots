@@ -33,43 +33,12 @@ function testMessage (regexList, from, to, message) {
 
 function userCommand (bot, from, to, message) {
     // Limit responses to anyone who is not admin
-    var throttled = from != conf.admin;
-    // Hi _____, I'm dad
-    if (testMessage(speak.hiImDad.regex, from, to, message)) {
-        var m = message.split(/(^\s*i'?m\s+)/i);
-        var d = m[m.length - 1].trim().split(' ');
-        // Trigger a different message if someone says they're dad
-        if (d.length == 1 && testMessage(speak.dadName.regex, from, to, d)){
-            bot.say(to, speak.hiImDad.responses.deny, throttled);
-        }
-        else {
-            removeARegex = /^\s*(a|an)\s+/i;
-            if (m[m.length - 1].match(removeARegex)) {
-                m = m[m.length - 1].split(removeARegex);
-            }
-            var hiImDadFiller = m[m.length - 1].trim().replace(/(\W+$)/i, '');
-            bot.say(to, getLine(speak.hiImDad.responses.normal, hiImDadFiller), throttled);
-        }
+    var throttle = from != conf.admin;
+    if (bot.nick == conf.dadName) {
+        userCommandDad(bot, from, to, message, throttle);
     }
-    // Anything associated with dad's name
-    else if (testMessage(speak.dadName.regex, from, to, message)) {
-        // List ignored users
-        if (testMessage(speak.ignored.regex, from, to, message)) {
-            bot.say(conf.channels[0], "Here is a list of ignored users: ", throttled);
-            bot.say(conf.channels[0], conf.ignore.toString().replace(/,/g, ', '), throttled);
-        }
-        // Good morning
-        else if (testMessage(speak.goodMorning.regex, from, to, message)) {
-            bot.say(to, getLine(speak.goodMorning.responses.normal, from), throttled);
-        }
-        // Ask a question
-        else if (testMessage(speak.question.regex, from, to, message)) {        
-            bot.say(to, speak.dadName.responses.ask, throttled);
-        }
-        // Just saying dad's name(s) (ignore if from mom)
-        else if (from != conf.momName) {
-            bot.say(to, getLine(speak.dadName.responses.joke), throttled);
-        }
+    else if (bot.nick == conf.momName) {
+        userCommandMom(bot, from, to, message, throttle);
     }
 }
 
@@ -99,6 +68,53 @@ function adminCommand (bot, from, to, message) {
     }
     else {
         userCommand(bot, from, to, message);
+    }
+}
+
+function userCommandDad(bot, from, to, message, throttle) {
+    // Hi _____, I'm dad
+    if (testMessage(speak.hiImDad.regex, from, to, message)) {
+        var m = message.split(/(^\s*i'?m\s+)/i);
+        var d = m[m.length - 1].trim().split(' ');
+        // Trigger a different message if someone says they're dad
+        if (d.length == 1 && testMessage(speak.dadName.regex, from, to, d)){
+            bot.say(to, speak.hiImDad.responses.deny, throttle);
+        }
+        else {
+            removeARegex = /^\s*(a|an)\s+/i;
+            if (m[m.length - 1].match(removeARegex)) {
+                m = m[m.length - 1].split(removeARegex);
+            }
+            var hiImDadFiller = m[m.length - 1].trim().replace(/(\W+$)/i, '');
+            bot.say(to, getLine(speak.hiImDad.responses.normal, hiImDadFiller), throttle);
+        }
+    }
+    // Anything associated with dad's name
+    else if (testMessage(speak.dadName.regex, from, to, message)) {
+        // List ignored users
+        if (testMessage(speak.ignored.regex, from, to, message)) {
+            bot.say(conf.channels[0], "Here is a list of ignored users: ", throttle);
+            bot.say(conf.channels[0], conf.ignore.toString().replace(/,/g, ', '), throttle);
+        }
+        // Good morning
+        else if (testMessage(speak.goodMorning.regex, from, to, message)) {
+            bot.say(to, getLine(speak.goodMorning.responses.normal, from), throttle);
+        }
+        // Ask a question
+        else if (testMessage(speak.question.regex, from, to, message)) {
+            bot.say(to, speak.dadName.responses.ask, throttle);            
+        }
+        // Just saying dad's name(s) (ignore if from mom)
+        else if (from != conf.momName) {
+            bot.say(to, getLine(speak.dadName.responses.joke), throttle);
+        }
+    }
+}
+
+function userCommandMom(bot, from, to, message, throttle) {
+    if (testMessage(speak.momName.regex, from, to, message) && 
+             testMessage(speak.question.regex, from, to, message)) {
+        bot.say(to, speak.momName.responses.ask, throttle);
     }
 }
 
