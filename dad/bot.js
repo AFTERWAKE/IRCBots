@@ -28,6 +28,7 @@ function manageBot(bot) {
         // TODO when he quits it should say "Went to buy a pack of cigs and never came back"
         // TODO require password along with admin commands, in git-ignored file
         // TODO Make multiple channels work better (i.e. remove checks involving conf.channels[0])
+        // TODO Let dad talk to specific people or channels
 
         if (to == conf.dadName) {
             if (from == conf.admin) {

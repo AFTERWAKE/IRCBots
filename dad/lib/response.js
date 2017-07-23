@@ -43,6 +43,10 @@ function userCommand (bot, from, to, message) {
 }
 
 function adminCommand (bot, from, to, message) {
+    throttle = from != conf.admin;
+    if (to == bot.nick) {
+        to = conf.channels[0];
+    }
     if (testMessage(speak.ignore.regex, from, to, message)) {
         var temp = message.split(speak.ignore.regex);
         var who = temp[temp.length - 1];
@@ -65,6 +69,12 @@ function adminCommand (bot, from, to, message) {
                 updateConfig();
             }
         }
+    }
+    else if (testMessage(speak.say.regex, from, to, message)) {
+        var temp = message.split(speak.say.regex);
+        var say = temp[temp.length - 1];
+        console.log("requested say " + say);
+        bot.say(to, say, throttle);
     }
     else {
         userCommand(bot, from, to, message);
