@@ -355,11 +355,20 @@ class countBot(irc.IRCClient):
             index = self.handleUser(user[0])
             self.nameList[index].timesWon = int(user[1])
 
+    def isABot(self, name):
+        self.msg(self.chatroom, name + ", you dirty bot, you... " +
+                 '{} {} is what we\'re on.'.format(self.currentNumber, self.wordForGame))
+        return
+
     def privmsg(self, user, channel, message):
         if ((channel == self.chatroom) or (user.split('@')[1] == self.admin)):
             try:
                 if (int(message) == self.currentNumber and self.gameRunning):
                     print "{}: {}".format(user, message)
+                    hostname = user.split('!')[1].split('@')[0]
+                    if (hostname == '~nodebot'):
+                        self.isABot(user.split('!')[0])
+                        return
                     self.playGame(user.split('!')[0])
                 else:
                     self.automateStart()
