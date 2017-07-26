@@ -163,34 +163,38 @@ class countBot(irc.IRCClient):
         return topUser
 
     def adminCommands(self, message):
-        if (message == self.nickname + ', quit'):
+        if ((message == self.nickname + ', quit') or (message == self.nickname + ': quit')):
             self.resetGame()
             self.msg(self.chatroom, "The counting game has been quit.")
-        elif (message == self.nickname + ", start"):
+        elif ((message == self.nickname + ", start") or (message == self.nickname + ": start")):
             self.resetGame()
             self.startGame()
-        elif (message.startswith(self.nickname + ', set')):
+        elif ((message.startswith(self.nickname + ', set')) or (message.startswith(self.nickname + ': set'))):
             try:
                 self.setUserTimesWon(message)
             except:
                 return
-        elif (message.startswith(self.nickname + ', del')):
+        elif ((message.startswith(self.nickname + ', del')) or (message.startswith(self.nickname + ': del'))):
             try:
                 self.delUserFromList(message)
             except:
                 return
-        elif (message == self.nickname + ', users'):
+        elif ((message == self.nickname + ', users') or (message == self.nickname + ': users')):
             self.printAllUsers()
-        elif (message == self.nickname + ', restore'):
+        elif ((message == self.nickname + ', restore') or (message == self.nickname + ': restore')):
             self.restoreUsersFromFile()
             print 'Scores restored'
-        elif (message == self.nickname + ', save'):
+        elif ((message == self.nickname + ', save') or (message == self.nickname + ': save')):
             self.saveScores()
             print 'Scores saved'
-        elif (message.startswith(self.nickname + ', say')):
+        elif ((message.startswith(self.nickname + ', say')) or (message.startswith(self.nickname + ': say'))):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
-        elif (message.startswith(self.nickname + ', me')):
+        elif (message.startswith(self.nickname + ' say')):
+            self.msg(self.chatroom, message[len(self.nickname)+5:])
+        elif ((message.startswith(self.nickname + ', me')) or (message.startswith(self.nickname + ': me'))):
             self.describe(self.chatroom, message[len(self.nickname)+5:])
+        elif (message.startswith(self.nickname + ' me')):
+            self.describe(self.chatroom, message[len(self.nickname)+4:])
         else:
             self.userCommands('Noah Siano', message)
 
@@ -283,18 +287,18 @@ class countBot(irc.IRCClient):
                  'Also... Bots are not allowed to play this game. Please don\'t ruin the fun.')
 
     def userCommands(self, name, message, isTopUser=False):
-        if (message == self.nickname + ', help'):
+        if ((message == self.nickname + ', help') or (message == self.nickname + ': help')):
             self.helpText()
-        elif (message == self.nickname + ', winners'):
+        elif ((message == self.nickname + ', winners') or (message == self.nickname + ': winners')):
             self.sortUsersAscending()
             self.displayWinners()
-        elif (message == self.nickname + ', loser'):
+        elif ((message == self.nickname + ', loser') or (message == self.nickname + ': loser')):
             self.showLoserMsg(name)
-        elif (message == self.nickname + ', losers'):
+        elif ((message == self.nickname + ', losers') or (message == self.nickname + ': losers')):
             self.displayLosers()
-        elif (message == self.nickname + ', top'):
+        elif ((message == self.nickname + ', top') or (message == self.nickname + ': top')):
             self.msg(self.chatroom, 'The current number 1 player is: ' + self.getWinningUser().username)
-        elif (message.startswith(self.nickname + ', say') and isTopUser):
+        elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
 
     def showLoserMsg(self, name):
