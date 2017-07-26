@@ -355,6 +355,14 @@ class countBot(irc.IRCClient):
             index = self.handleUser(user[0])
             self.nameList[index].timesWon = int(user[1])
 
+    def userRenamed(self, oldname, newname):
+        if (self.gameRunning):
+            nameIndex = self.handleUser(newname)
+            if (self.nameList[nameIndex].isKicked):
+                self.alreadyKickedMessage(newname)
+            else:
+                self.kickUser(nameIndex, newname)
+
     def isABot(self, name):
         self.msg(self.chatroom, name + ", you dirty bot, you... " +
                  '{} {} is what we\'re on.'.format(self.currentNumber, self.wordForGame))
