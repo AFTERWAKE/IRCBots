@@ -127,7 +127,7 @@ function userCommandDad(bot, from, to, message, throttle) {
         }
         // Just saying dad's name(s) (ignore if from mom)
         else if (from != conf.momName) {
-            bot.say(to, getLine(speak.dadName.responses.joke), throttle);
+            bot.say(to, getFreshestRandomJoke(), throttle);
         }
     }
 }
@@ -141,14 +141,37 @@ function userCommandMom(bot, from, to, message, throttle) {
 
 // Join line to filler and/or get random response from list
 function getLine(text, fill=null) {
-    var randLine = Math.floor(Math.random() * (text.length));
-    // console.log(randLine);
-    text = text[randLine][0];
+	var randLine = Math.floor(Math.random() * (text.length));
+	// console.log(randLine);
+	text = text[randLine][0];
+	
     if (RegExp(/\[a\]/).test(text) && fill != null) {
         text = text.replace("[a]", fill);
     }
     // console.log(text);
     return text;
+}
+
+// Get least told joke. If there are multiple, pick randomly
+function getFreshestRandomJoke() {
+	var jokes = speak.dadName.responses.joke;
+	var freshest = Number.MAX_SAFE_INTEGER;
+	for (j in jokes) {
+		if (j[1] < freshest) {
+			freshest = j[1];
+		}
+	}
+	var freshJoke = null;
+	while (freshJoke == null) {
+		var randLine = Math.floor(Math.random() * jokes.length);
+		if (jokes[randLine][1] == freshest) {
+			freshJoke = jokes[randLine][0];
+			jokes[randLine][1]++;
+			updateConfig();
+		}
+	}
+	console.log("Joke is " + freshJoke);
+	return freshJoke;
 }
 
 function updateConfig () {

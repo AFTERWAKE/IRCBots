@@ -16,7 +16,7 @@ def addJoke(joke):
     data = None
     with open('config.json') as json_file:
         data = json.load(json_file)
-        data['speak']['dadName']['responses']['joke'].append([joke])
+        data['speak']['dadName']['responses']['joke'].append([joke, 0])
     rewriteJsonFile(data)
 
 def rewriteJsonFile(data):
