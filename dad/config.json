@@ -13,6 +13,10 @@
         "l"
     ],
     "ip": "coop.test.adtran.com",
+	"messageRate": {
+		"messages": "2",
+		"milliseconds": "60000"
+	},
     "momName": "mom",
     "speak": {
         "dadName": {
@@ -609,5 +613,6 @@
                 "dad, say "
             ]
         }
-    }
+    },
+	"timeout": "4000"
 }
