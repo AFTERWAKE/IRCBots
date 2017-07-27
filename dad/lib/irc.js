@@ -30,6 +30,8 @@ var CyclingPingTimer = require('./cycling_ping_timer.js');
 
 var lineDelimiter = new RegExp('\r\n|\r|\n');
 
+var conf = require('../config.json')
+
 var timeStamp = [];
 
 function Client(server, nick, opt) {
@@ -1060,8 +1062,8 @@ Client.prototype._splitLongLines = function(words, maxLength, destination) {
 
 Client.prototype.say = function(target, text, throttle=false) {
     time = Date.now();
-    var numMessages = 2;
-    var messageRate = 60000; // miliseconds
+    var numMessages = conf.messageRate.messages;
+    var messageRate = conf.messageRate.milliseconds;
     if (throttle) {
         if (timeStamp.length == numMessages && time - timeStamp[0] >= messageRate
             || timeStamp.length < numMessages) {
@@ -1092,7 +1094,7 @@ Client.prototype._speak = function(kind, target, text) {
         }).forEach(function(line) {
             var linesToSend = self._splitLongLines(line, maxLength, []);
             if (textIndex > 0){
-                timeout = 2000; // add timeout to multi-lined messages
+                timeout = conf.timeout; // add timeout to multi-lined messages
             }
             linesToSend.forEach(function(toSend) {
                 setTimeout( function() {self.send(kind, target, toSend)}, timeout);
