@@ -163,7 +163,7 @@ class countBot(irc.IRCClient):
         return topUser
 
     def adminCommands(self, message):
-        if ((message == self.nickname + ', quit') or (message == self.nickname + ': quit')):
+        if ((message == self.nickname + ', stop') or (message == self.nickname + ': stop')):
             self.resetGame()
             self.msg(self.chatroom, "The counting game has been quit.")
         elif ((message == self.nickname + ", start") or (message == self.nickname + ": start")):
@@ -195,6 +195,11 @@ class countBot(irc.IRCClient):
             self.describe(self.chatroom, message[len(self.nickname)+5:])
         elif (message.startswith(self.nickname + ' me')):
             self.describe(self.chatroom, message[len(self.nickname)+4:])
+        elif (message.startswith(self.nickname + ' quit')):
+            if (message[len(self.nickname)+6:]):
+                self.quit(message[len(self.nickname)+6:])
+            else:
+                self.quit('*ah..ah..ah :\'( goodbye.')
         else:
             self.userCommands('Noah Siano', message)
 
