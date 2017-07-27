@@ -1092,7 +1092,7 @@ Client.prototype._speak = function(kind, target, text) {
         }).forEach(function(line) {
             var linesToSend = self._splitLongLines(line, maxLength, []);
             if (textIndex > 0){
-                timeout = 2000; // add timeout to multi-lined messages
+                timeout = 4000; // add timeout to multi-lined messages
             }
             linesToSend.forEach(function(toSend) {
                 setTimeout( function() {self.send(kind, target, toSend)}, timeout);

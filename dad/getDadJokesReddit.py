@@ -10,8 +10,6 @@ def main():
                          client_secret='8sSHr0222SsEg9g9Og1VOUJJz7E',
                          user_agent='getDadJokes')
 
-    # TODO read these one by one, and I either approve or disapprove them 
-    # to get sent to the dadJokes.txt file.
     with open("dadJokes.txt", "a") as file:
 	# Choose from new, hot, gilded, top, etc...
         for submission in reddit.subreddit('dadjokes').new(limit=int(sys.argv[1])):

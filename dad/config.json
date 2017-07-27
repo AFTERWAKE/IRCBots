@@ -5,13 +5,14 @@
     ],
     "dadName": "dad",
     "debug": false,
-    "ignore": [
+    "grounded": [
         "theCount",
         "Doge",
         "Magic_Conch",
-        "Seahorse"
+        "Seahorse",
+        "l"
     ],
-    "ip": "localhost",
+    "ip": "coop.test.adtran.com",
     "momName": "mom",
     "speak": {
         "dadName": {
@@ -254,9 +255,6 @@
                         "If anybody knows any salad jokes.\nLettuce know......"
                     ],
                     [
-                        "A son asked his dad,\n\"Can you pass me my sunglasses?\""
-                    ],
-                    [
                         "How do you feel?\nWith your hands"
                     ],
                     [
@@ -386,7 +384,7 @@
                         "Why did the 2 Egyptian farters get along so well?\nBecause they had a Tutankhamen."
                     ],
                     [
-                        "I said to my wife, \"They say that childbirth is the most painful thing someone can experience...\"\n\"Now, maybe I was too young to remember, but I didn't think it hurt that much.\""
+                        "I said to my wife, \"They say that childbirth is the most painful thing someone can experience...\"\nNow, maybe I was too young to remember, but I didn't think it hurt that much."
                     ],
                     [
                         "What do you call a waffle on a California beach?\nA Sandy Eggo..."
@@ -558,20 +556,34 @@
                 ]
             }
         },
-        "ignore": {
+        "ground": {
             "regex": [
-                "dad, ignore "
+                "dad, ground "
+            ],
+            "responses": {
+                "normal": [
+                    [
+                        "That's it, you're grounded [a]!"
+                    ]
+                ]
+            }
+        },
+        "grounded": {
+            "regex": [
+                "dad, grounded"
             ]
         },
-        "ignored": {
+        "unground": {
             "regex": [
-                "dad, ignored"
-            ]
-        },
-        "listen": {
-            "regex": [
-                "dad, listen "
-            ]
+                "dad, unground "
+            ],
+            "responses": {
+                "normal": [
+                    [
+                        "[a], you're now ungrounded. Don't let me catch you misbehaving again."
+                    ]
+                ]
+            }
         },
         "momName": {
             "regex": [
