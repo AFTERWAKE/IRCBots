@@ -51,6 +51,7 @@ function adminCommand (bot, from, to, message) {
 		}
 		// Ground (ignore) specific user
 		if (testMessage(speak.ground.regex, from, to, message)) {
+			getConfigFileChanges();
 			var temp = message.split(speak.ground.regex);
 			var who = temp[temp.length - 1].trim();
 			var before = conf.grounded.length;
@@ -64,6 +65,7 @@ function adminCommand (bot, from, to, message) {
 		}
 		// Unground (listen to) specific user
 		else if (testMessage(speak.unground.regex, from, to, message)) {
+			getConfigFileChanges();
 			var temp = message.split(speak.unground.regex);
 			var who = temp[temp.length - 1].trim();
 			console.log("requested listen for " + who);
@@ -177,12 +179,21 @@ function getFreshestRandomJoke() {
 	return freshJoke;
 }
 
+function getConfigFileChanges() {
+	fs.readFile("./" + "config.json", "utf-8", function (err, data) {
+		if (err) console.error(err);
+		conf = JSON.parse(data);
+	});
+	console.log("Reloaded config file");
+}
+
 function updateConfig () {
     fs.writeFile("./" + "config.json", JSON.stringify(conf, null, 4), (err) => {
         if (err) {
             console.error(err);
             return;
         }
-        console.log("Config updated");
+        console.log("Config file updated");
     });
+	
 }

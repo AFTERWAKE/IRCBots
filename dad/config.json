@@ -10,7 +10,9 @@
         "Doge",
         "Magic_Conch",
         "Seahorse",
-        "l"
+        "l",
+        "jlong",
+        "noahsiano"
     ],
     "ip": "coop.test.adtran.com",
     "messageRate": {
@@ -39,7 +41,7 @@
                     ],
                     [
                         "Can February March?\nNo, but April May",
-                        0
+                        1
                     ],
                     [
                         "Dad, can you put my shoes on?\nI don't think they'll fit me",
@@ -631,7 +633,7 @@
                     ],
                     [
                         "My dad said if I use a hashtag one more time, he'd pound the sh*t out of me. I said #YOLO and woke up to this text the next morning...\n####################",
-                        0
+                        1
                     ],
                     [
                         "I spent a whole day making a belt with my old watches\nIt was a waist of time",
@@ -731,7 +733,7 @@
                     ],
                     [
                         "Mary had a little lamb\nand a side of veggies for dinner.",
-                        0
+                        1
                     ],
                     [
                         "Why do sharks swim in salt water?\nBecause pepper water makes them sneeze.",
