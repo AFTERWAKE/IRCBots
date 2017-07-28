@@ -8,10 +8,11 @@ ADMIN COMMANDS
          botNick, del <userNick> (delete a user from the list/winnings table)
          botNick, start (starts game)
          botNick, save (saves list of winners || also gets saved at the end of every game)
-         botNick, quit (quits current game)
+         botNick, stop (quits current game)
          botNick, users (prints list of users to console)
          botNick, restore (restores winners from save file || also restores automatically on run)
          botNick, say <msg> (sends message to channel as the bot)
+         botNick quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
 
   USER COMMANDS
 
@@ -19,3 +20,4 @@ ADMIN COMMANDS
          botNick, loser (LOSER: <user who called>)
          botNick, losers (list of losers)
          botNick, winners (shows list of winners)
+         botNick, rules (shows list of rules)

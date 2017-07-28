@@ -163,34 +163,43 @@ class countBot(irc.IRCClient):
         return topUser
 
     def adminCommands(self, message):
-        if (message == self.nickname + ', quit'):
+        if ((message == self.nickname + ', stop') or (message == self.nickname + ': stop')):
             self.resetGame()
             self.msg(self.chatroom, "The counting game has been quit.")
-        elif (message == self.nickname + ", start"):
+        elif ((message == self.nickname + ", start") or (message == self.nickname + ": start")):
             self.resetGame()
             self.startGame()
-        elif (message.startswith(self.nickname + ', set')):
+        elif ((message.startswith(self.nickname + ', set')) or (message.startswith(self.nickname + ': set'))):
             try:
                 self.setUserTimesWon(message)
             except:
                 return
-        elif (message.startswith(self.nickname + ', del')):
+        elif ((message.startswith(self.nickname + ', del')) or (message.startswith(self.nickname + ': del'))):
             try:
                 self.delUserFromList(message)
             except:
                 return
-        elif (message == self.nickname + ', users'):
+        elif ((message == self.nickname + ', users') or (message == self.nickname + ': users')):
             self.printAllUsers()
-        elif (message == self.nickname + ', restore'):
+        elif ((message == self.nickname + ', restore') or (message == self.nickname + ': restore')):
             self.restoreUsersFromFile()
             print 'Scores restored'
-        elif (message == self.nickname + ', save'):
+        elif ((message == self.nickname + ', save') or (message == self.nickname + ': save')):
             self.saveScores()
             print 'Scores saved'
-        elif (message.startswith(self.nickname + ', say')):
+        elif ((message.startswith(self.nickname + ', say')) or (message.startswith(self.nickname + ': say'))):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
-        elif (message.startswith(self.nickname + ', me')):
+        elif (message.startswith(self.nickname + ' say')):
+            self.msg(self.chatroom, message[len(self.nickname)+5:])
+        elif ((message.startswith(self.nickname + ', me')) or (message.startswith(self.nickname + ': me'))):
             self.describe(self.chatroom, message[len(self.nickname)+5:])
+        elif (message.startswith(self.nickname + ' me')):
+            self.describe(self.chatroom, message[len(self.nickname)+4:])
+        elif (message.startswith(self.nickname + ' quit')):
+            if (message[len(self.nickname)+6:]):
+                self.quit(message[len(self.nickname)+6:])
+            else:
+                self.quit('*ah..ah..ah :\'( goodbye.')
         else:
             self.userCommands('Noah Siano', message)
 
@@ -281,21 +290,32 @@ class countBot(irc.IRCClient):
                  'and fun counting game at 8:30, 11:00, 1:30, and 4. I can also be initialized by an admin, ' +
                  'noahsiano. If you have any problems with me, please defer to Noah. Have a nice day :) ' +
                  'Also... Bots are not allowed to play this game. Please don\'t ruin the fun.')
+    def rulesText(self):
+        self.msg(self.chatroom,
+        '1. No bots. If a bot is found playing, they will be banned in the future from playing.')
+        self.msg(self.chatroom,
+        '2. No changing your nickname during the game. You will be kicked.')
+        self.msg(self.chatroom,
+        '3. No joining in on a second IRC client to play twice. Your score will be removed.')
+        self.msg(self.chatroom,
+        '4. If you\'re found abusing the bot commands in any way, your domain may accidentally end up whitelisted.')
 
     def userCommands(self, name, message, isTopUser=False):
-        if (message == self.nickname + ', help'):
+        if ((message == self.nickname + ', help') or (message == self.nickname + ': help')):
             self.helpText()
-        elif (message == self.nickname + ', winners'):
+        elif ((message == self.nickname + ', winners') or (message == self.nickname + ': winners')):
             self.sortUsersAscending()
             self.displayWinners()
-        elif (message == self.nickname + ', loser'):
+        elif ((message == self.nickname + ', loser') or (message == self.nickname + ': loser')):
             self.showLoserMsg(name)
-        elif (message == self.nickname + ', losers'):
+        elif ((message == self.nickname + ', losers') or (message == self.nickname + ': losers')):
             self.displayLosers()
-        elif (message == self.nickname + ', top'):
+        elif ((message == self.nickname + ', top') or (message == self.nickname + ': top')):
             self.msg(self.chatroom, 'The current number 1 player is: ' + self.getWinningUser().username)
-        elif (message.startswith(self.nickname + ', say') and isTopUser):
+        elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
+        elif ((message.startswith(self.nickname + ', rules')) or (message.startswith(self.nickname + ': rules'))):
+            self.rulesText()
 
     def showLoserMsg(self, name):
         self.msg(self.chatroom, 'LOSER: {}'.format(name))
@@ -351,11 +371,28 @@ class countBot(irc.IRCClient):
             index = self.handleUser(user[0])
             self.nameList[index].timesWon = int(user[1])
 
+    def userRenamed(self, oldname, newname):
+        if (self.gameRunning):
+            nameIndex = self.handleUser(newname)
+            if (self.nameList[nameIndex].isKicked):
+                self.alreadyKickedMessage(newname)
+            else:
+                self.kickUser(nameIndex, newname)
+
+    def isABot(self, name):
+        self.msg(self.chatroom, name + ", you dirty bot, you... " +
+                 '{} {} is what we\'re on.'.format(self.currentNumber, self.wordForGame))
+        return
+
     def privmsg(self, user, channel, message):
         if ((channel == self.chatroom) or (user.split('@')[1] == self.admin)):
             try:
                 if (int(message) == self.currentNumber and self.gameRunning):
                     print "{}: {}".format(user, message)
+                    hostname = user.split('!')[1].split('@')[0]
+                    if (hostname == '~nodebot'):
+                        self.isABot(user.split('!')[0])
+                        return
                     self.playGame(user.split('!')[0])
                 else:
                     self.automateStart()
