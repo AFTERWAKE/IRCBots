@@ -95,18 +95,21 @@ function adminCommand (bot, from, to, message) {
 function userCommandDad(bot, from, to, message, throttle) {
     // Hi _____, I'm dad
     if (testMessage(speak.hiImDad.regex, from, to, message)) {
-        var m = message.split(/((^\s*|\s+)i'?m\s+)/i);
-        var d = m[m.length - 1].trim().split(' ');
+        // Separate "I'm" words from everything else
+		var m = message.split(/(?:^|\W+)(i'?m)\W+/i);
+		// Rejoin all but the first I'm (first index is "", second is "I'm")
+		m = m.slice(2, m.length).join(' ');
         // Trigger a different message if someone says they're dad
-        if (d.length == 1 && testMessage(speak.dadName.regex, from, to, d)){
+        if (testMessage(speak.dadName.regex, from, to, m)){
             bot.say(to, speak.hiImDad.responses.deny, throttle);
         }
         else {
             removeARegex = /^\s*(a|an)\s+/i;
-            if (m[m.length - 1].match(removeARegex)) {
-                m = m[m.length - 1].split(removeARegex);
+            if (m.match(removeARegex)) {
+                m = m.split(removeARegex);
+				m = m.slice(2, m.length).join(' ');
             }
-            var hiImDadFiller = m[m.length - 1].trim().replace(/(\W+$)/i, '');
+            var hiImDadFiller = m.replace(/(\W+$)/i, '');
             bot.say(to, getLine(speak.hiImDad.responses.normal, hiImDadFiller), throttle);
         }
     }
