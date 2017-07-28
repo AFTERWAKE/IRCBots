@@ -19,4 +19,5 @@ ADMIN COMMANDS
          botNick, help (help message)
          botNick, loser (LOSER: <user who called>)
          botNick, losers (list of losers)
-         botNick, winners (shows list of winners)         
+         botNick, winners (shows list of winners)
+         botNick, rules (shows list of rules)
