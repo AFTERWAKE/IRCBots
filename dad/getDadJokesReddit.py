@@ -11,8 +11,8 @@ def main():
 						 user_agent='getDadJokes')
 	# Choose from new, hot, gilded, top, etc...
 	for submission in reddit.subreddit('dadjokes').new(limit=int(sys.argv[1])):
-		line_one = unicode(submission.title).encode("utf-8")
-		line_two = unicode(submission.selftext.strip().split("\n")[0]).encode("utf-8")
+		line_one = submission.title
+		line_two = submission.selftext.strip().split("\n")[0]
 		print("\n\n" + line_one)
 		print(line_two)
 		save = six.moves.input("Save this? [y/n] (default: n) ")
