@@ -56,12 +56,21 @@ class Bot:
             else:
                 for item in self.triggers:
                     if item.attempt(ircmsg):
+                        print(item.get_response())
                         if item.command:
                             if item.get_response() == 'quit':
                                 self.sock.close()
                                 return
                         if item.action:
                             self.action(self.channel, item.get_response())
+                            break
+                        if item.get_response().strip() == "who":
+                            # look for a response of "who" and get a list of all in the channel
+                            msg = "NAMES %s \r\n" % (self.channel)
+                            self.send(msg)
+                            names = self.recv(2048).strip('\n\r')
+                            names = re.match(r".*:(.*)", names)[1].split()
+                            self.sendmsg(self.channel, "I choose %s!" % random.choice(names))
                             break
                         else:
                             self.sendmsg(self.channel, item.get_response())

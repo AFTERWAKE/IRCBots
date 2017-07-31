@@ -6,14 +6,28 @@
     "triggers": [
         {
             "pattern": "^.*:(?P<message>.*)$",
+            "message": [".*Magic[ _]Conch,.*who.*$"],
+            "isAction": false,
+            "responses":["who"]
+        },
+        {
+            "pattern": "^.*:(?P<message>.*)$",
             "message": [
-                ".*Magic[ _]Conch,.*\\s*how\\smany.*\\?.*$"
+                ".*Magic[ _]Conch,.*\\s*how\\smany.*\\?.*$",
+                ".*Magic[ _]Conch,.*\\s*how\\smuch.*\\?.*$"
             ],
             "isAction": false,
             "responses": [
                 "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", 
                 "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
-                "20"
+                "20",
+                "A lot",
+                "Some",
+                "Not many",
+                "Few",
+                "None",
+                "All of them",
+                "More than you'd expect"
             ]
         },
         {
@@ -42,7 +56,7 @@
         {
             "pattern": "^.*:(?P<message>.*)$",
             "message": [
-                ".*Magic[ _]Conch,.*What\\s+do.*\\?.*$"
+                ".*Magic[ _]Conch,,.*What\\s+do.*\\?.*$"
             ],
             "isAction": false,
             "responses": [
@@ -56,7 +70,7 @@
                 {
             "pattern": "^.*:(?P<message>.*)$",
             "message": [
-                "^.*Magic[ _]Conch,.*what\\s*is\\s*love.*\\?.*$"
+                "^.*Magic[ _]Conch,,.*what\\s*is\\s*love.*\\?.*$"
             ],
             "isAction": false,
             "responses": [
