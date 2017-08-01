@@ -151,7 +151,7 @@ class countBot(irc.IRCClient):
                 self.startGame()
 
     def getWinningUser(self):
-        topUser = ''
+        topUser = player("")
         firstLoop = True;
         for user in range(len(self.nameList)):
             if (self.nameList[user].timesWon > 0):
