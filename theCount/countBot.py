@@ -292,13 +292,10 @@ class countBot(irc.IRCClient):
                  'Also... Bots are not allowed to play this game. Please don\'t ruin the fun.')
     def rulesText(self):
         self.msg(self.chatroom,
-        '1. No bots. If a bot is found playing, they will be banned in the future from playing.')
-        self.msg(self.chatroom,
-        '2. No changing your nickname during the game. You will be kicked.')
-        self.msg(self.chatroom,
-        '3. No joining in on a second IRC client to play twice. Your score will be removed.')
-        self.msg(self.chatroom,
-        '4. If you\'re found abusing the bot commands in any way, your domain may accidentally end up whitelisted.')
+        '1- No bots. If a bot is found playing, they will be banned in the future from playing. ' +
+        '2- No changing your nickname during the game. You will be kicked. ' +
+        '3- No joining in on a second IRC client to play twice. Your score will be removed. ' +
+        '4- If you\'re found abusing the bot commands in any way, your domain may accidentally end up whitelisted.')
 
     def userCommands(self, name, message, isTopUser=False):
         if ((message == self.nickname + ', help') or (message == self.nickname + ': help')):
