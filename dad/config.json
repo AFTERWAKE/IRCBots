@@ -10,7 +10,9 @@
         "Doge",
         "Magic_Conch",
         "Seahorse",
-        "l"
+        "l",
+        "jlong",
+        "noahsiano"
     ],
     "ip": "coop.test.adtran.com",
     "messageRate": {
@@ -39,7 +41,7 @@
                     ],
                     [
                         "Can February March?\nNo, but April May",
-                        0
+                        1
                     ],
                     [
                         "Dad, can you put my shoes on?\nI don't think they'll fit me",
@@ -79,7 +81,7 @@
                     ],
                     [
                         "I am terrified of elevators,\nI'm going to start taking steps to avoid them",
-                        0
+                        1
                     ],
                     [
                         "I bought shoes from a drug dealer once\nI don't know what he laced them with, but I was tripping all day",
@@ -87,7 +89,7 @@
                     ],
                     [
                         "I hate jokes about german sausages\nThey're the wurst",
-                        0
+                        1
                     ],
                     [
                         "I just watched a program about beavers\nIt was the best dam program I've ever seen",
@@ -315,7 +317,7 @@
                     ],
                     [
                         "What time did the man go to the dentist?\nTooth Hurty",
-                        0
+                        1
                     ],
                     [
                         "Thought taking my shell of my racing snail would make it faster.\nTurns out that just made it more sluggish.",
@@ -523,7 +525,7 @@
                     ],
                     [
                         "I once started a hotdog business...\nIt was the wurst thing I ever did.",
-                        0
+                        1
                     ],
                     [
                         "I tried to catch clouds yesterday.\nMist. Guess i'll have to fog-et about it.",
@@ -531,7 +533,7 @@
                     ],
                     [
                         "Did you hear about the man who got hit in the head by a can of soda?\nDon't worry, he's fine. It was a soft drink.",
-                        0
+                        1
                     ],
                     [
                         "Did you hear about the mathematical breakthrough in algebra?\nIt was on the hypotenews",
@@ -555,7 +557,7 @@
                     ],
                     [
                         "If you need to start a fire by rubbing sticks together, make sure they are the same.\nThen you'll have a match.",
-                        0
+                        1
                     ],
                     [
                         "Why do med students use books to study anatomy?\nBecause books have spines.",
@@ -575,7 +577,7 @@
                     ],
                     [
                         "What do you call a van on fire?\nA vanpyre.",
-                        0
+                        1
                     ],
                     [
                         "I'm not huge into puns.\nSometimes eye roll with it.",
@@ -583,7 +585,7 @@
                     ],
                     [
                         "How do subatomic pirates mutiny?\nThey make the captain walk the planck.",
-                        0
+                        1
                     ],
                     [
                         "What happens on a clear day in Los Angeles?\nUCLA.",
@@ -599,7 +601,7 @@
                     ],
                     [
                         "What's the opposite of cinnamon toast crunch?\nAntonym toast crunch",
-                        0
+                        1
                     ],
                     [
                         "I was arrested for telling my dad the best joke ever...\nPolice said manslaughter was illegal",
@@ -631,7 +633,7 @@
                     ],
                     [
                         "My dad said if I use a hashtag one more time, he'd pound the sh*t out of me. I said #YOLO and woke up to this text the next morning...\n####################",
-                        0
+                        1
                     ],
                     [
                         "I spent a whole day making a belt with my old watches\nIt was a waist of time",
@@ -639,7 +641,7 @@
                     ],
                     [
                         "I've said it before and I'll say it again\nI've said it before",
-                        0
+                        1
                     ],
                     [
                         "What did the cookie say to the browser while running away?\n\"Cache me if you can!\"",
@@ -731,7 +733,7 @@
                     ],
                     [
                         "Mary had a little lamb\nand a side of veggies for dinner.",
-                        0
+                        1
                     ],
                     [
                         "Why do sharks swim in salt water?\nBecause pepper water makes them sneeze.",
@@ -791,6 +793,18 @@
                     ],
                     [
                         "Did you know that Abraham Lincoln was wrongly accused?\nTurns out he was in a cent.",
+                        0
+                    ],
+                    [
+                        "What did the man say when he finished cutting up a green citrus fruit?\nWell, I guess that's the end of the lime",
+                        0
+                    ],
+                    [
+                        "My jar of Miracle Whip tasted funny.\nLMAYO",
+                        0
+                    ],
+                    [
+                        "What's the best thing about living in Switzerland?\nI don't know but the flag is a big plus",
                         0
                     ]
                 ]
