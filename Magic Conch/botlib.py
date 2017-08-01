@@ -7,6 +7,8 @@ import random
 import time
 import re
 import json
+import requests
+from lxml import html
 
 
 class Bot:
@@ -21,6 +23,8 @@ class Bot:
         self.sock.send(("USER " + nick + " " + nick + " " + nick + " : " + ident + "\r\n").encode('utf-8'))
         self.sock.send(("NICK " + nick + "\r\n").encode('utf-8'))
         time.sleep(2)
+        if nick.upper() == "MAGIC_CONCH":
+            self.pokemon_list = get_pokemon()
 
     def sendmsg(self, chan, msg):
         self.send("PRIVMSG " + chan + " :" + msg + "\r\n")
@@ -64,14 +68,34 @@ class Bot:
                         if item.action:
                             self.action(self.channel, item.get_response())
                             break
-                        if item.get_response().strip() == "who":
+
+                        if re.match(r"who:*(\w*)", item.get_response()):
                             # look for a response of "who" and get a list of all in the channel
                             msg = "NAMES %s \r\n" % (self.channel)
                             self.send(msg)
                             names = self.recv(2048).strip('\n\r')
                             names = re.match(r".*:(.*)", names)[1].split()
-                            self.sendmsg(self.channel, "I choose %s!" % random.choice(names))
+
+                            # allow users to input custom conch messages
+                            m = re.match(r"who:*(.*)", item.get_response())
+                            if m[1] == "":
+                                msg = "I choose %s!"
+                            else:
+                                msg = m[1]
+                            print(msg)
+                            msg = msg % random.choice(names)
+                            self.sendmsg(self.channel, msg)
                             break
+                            
+                        if re.match(r"pokemon:*(\w*)", item.get_response()):
+                            m = re.match(r"pokemon:*(.*)", item.get_response())
+                            if m[1] == "":
+                                msg = "I choose %s!"
+                            else:
+                                msg = m[1]
+                            self.sendmsg(self.channel, msg % random.choice(self.pokemon_list))
+                            break
+
                         else:
                             self.sendmsg(self.channel, item.get_response())
                             break
@@ -110,4 +134,12 @@ class Group:
             if item.match(string):
                 return True
         return False
+
+def get_pokemon():
+    page = requests.get("https://pokemondb.net/pokedex/national")
+    tree = html.fromstring(page.content)
+    names = tree.find_class("ent-name")
+    for i in range(len(names)):
+        names[i] = names[i].text_content()
+    return names
 
