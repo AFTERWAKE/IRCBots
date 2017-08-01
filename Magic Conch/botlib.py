@@ -69,6 +69,7 @@ class Bot:
                             self.action(self.channel, item.get_response())
                             break
 
+                        # Choose someone random in the channel
                         if re.match(r"who:*(\w*)", item.get_response()):
                             # look for a response of "who" and get a list of all in the channel
                             msg = "NAMES %s \r\n" % (self.channel)
@@ -82,18 +83,26 @@ class Bot:
                                 msg = "I choose %s!"
                             else:
                                 msg = m[1]
-                            print(msg)
                             msg = msg % random.choice(names)
                             self.sendmsg(self.channel, msg)
                             break
                             
+                        # Choose a random pokemon from pokemondb.net
                         if re.match(r"pokemon:*(\w*)", item.get_response()):
                             m = re.match(r"pokemon:*(.*)", item.get_response())
                             if m[1] == "":
                                 msg = "I choose %s!"
                             else:
                                 msg = m[1]
-                            self.sendmsg(self.channel, msg % random.choice(self.pokemon_list))
+
+                            # choose random pokemon
+                            pokemon = random.choice(self.pokemon_list)
+
+                            # append link to pokemon 
+                            msg += " " + pokemon["link"]
+
+                            # send message with pokemon's name inserted
+                            self.sendmsg(self.channel, msg % pokemon["name"])
                             break
 
                         else:
@@ -138,8 +147,10 @@ class Group:
 def get_pokemon():
     page = requests.get("https://pokemondb.net/pokedex/national")
     tree = html.fromstring(page.content)
-    names = tree.find_class("ent-name")
-    for i in range(len(names)):
-        names[i] = names[i].text_content()
-    return names
+    pokemon_list = tree.find_class("ent-name")
+    for i in range(len(pokemon_list)):
+        mon = {"name":pokemon_list[i].text_content(),
+               "link":"https://pokemondb.net" + pokemon_list[i].attrib["href"]}
+        pokemon_list[i] = mon
+    return pokemon_list
 
