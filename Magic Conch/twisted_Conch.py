@@ -21,7 +21,7 @@ class theMagicConch(irc.IRCClient):
         self.pokemon_list = self.get_pokemon()
         self._namescallback = {}
 
-        print(self.msg("NAMES %s" % config["channel"])
+        print(self.msg("NAMES %s" % config["channel"]))
            
     def luserClient(self, info):
         print(info)
