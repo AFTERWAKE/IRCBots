@@ -1,6 +1,7 @@
 module.exports = function(){
 
   var RESPONSES = [
+    "{{nick}}, yeah dude!!! http://i.imgur.com/MAiIwW8.gifv",
     "\\o You Rock, {{nick}}",
     "{{nick}}, \\o!!!",
     "{{nick}}, http://24.media.tumblr.com/tumblr_m6h84mAoMS1rwcc6bo1_500.gif",
