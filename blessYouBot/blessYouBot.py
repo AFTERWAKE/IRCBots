@@ -20,27 +20,20 @@ class blessYouBot(irc.IRCClient):
         self.__d = enchant.Dict("en_US")
         self.__ex = set(string.punctuation)
 
-        self.__acronyms = []
         with open(acronyms.txt, 'r') as infile:
             for each in infile:
-                self.__acronyms.append(each)
+                self.__d.add(each)
 
-        self.__custom_words = []
         with open(custom_words.txt, 'r') as infile:
             for each in infile:
-                self.__custom_words.append(each)
+                self.__d.add(each)
 
-        self.__bot_list = []
         with open(bot_list.txt, 'r') as infile:
             for each in infile:
-                self.__bot_list.append(each)
+                self.__d.add(each)
 
         self.__user_list = []
 
-        print("acronyms:", self.__acronyms)
-        print("custom_words:", self.__custom_words)
-        print("bots:", self.__bot_list)
-           
     def luserClient(self, info):
         print(info)
 
@@ -71,23 +64,12 @@ class blessYouBot(irc.IRCClient):
         user = user.split('!')[0]
         if user not in self.__user_list:
             self.__user_list.append(user.lower())
+
         print(channel, user + ":", message)
         for word in message.split():
-            # ignore bots
-            if user in self.__bot_list:
-                return
-
             # strip punctuations and lowercase word
             word = ''.join(ch for ch in word if ch not in self.__ex).lower()
             if word == "":
-                pass
-
-            # ignore user's names
-            if word in self.__user_list:
-                pass
-
-            # accomodate for acronyms and non US words
-            elif word in self.__acronyms or word in self.__custom_words:
                 pass
 
             # match rip
