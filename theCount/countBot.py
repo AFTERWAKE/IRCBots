@@ -135,6 +135,13 @@ class countBot(irc.IRCClient):
         self.nameList[userIndex].isKicked = True
         return
 
+    def kickUserNickChange(self, userIndex, name):
+        self.msg(self.chatroom, name + " has been eliminated from the game. " +
+                 "No changing your nickname! " + '{} {} is what we\'re on.'
+                 .format(self.currentNumber, self.wordForGame))
+        self.nameList[userIndex].isKicked = True
+        return
+
     def alreadyKickedMessage(self, name):
         self.msg(self.chatroom, name + " has already been kicked. " +
                  '{} {} is what we\'re on.'.format(self.currentNumber, self.wordForGame))
@@ -374,7 +381,7 @@ class countBot(irc.IRCClient):
             if (self.nameList[nameIndex].isKicked):
                 self.alreadyKickedMessage(newname)
             else:
-                self.kickUser(nameIndex, newname)
+                self.kickUserNickChange(nameIndex, newname)
 
     def isABot(self, name):
         self.msg(self.chatroom, name + ", you dirty bot, you... " +
