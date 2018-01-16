@@ -51,7 +51,12 @@ class countBot(irc.IRCClient):
     numberForAlphabet = -1
 
     def __init__(self):
-        self.hourOfLastGame = int(self.getCurrentTime().split(':')[0])
+        currentHour = int(self.getCurrentTime().split(':')[0])
+        currentMinute = int(self.getCurrentTime().split(':')[1])
+        self.hourOfLastGame = currentHour
+        if ((currentHour == 8) or (currentHour == 13)):
+            if (currentMinute < 30):
+                self.hourOfLastGame = self.hourOfLastGame - 1
         try:
             self.restoreUsersFromFile()
             print 'Winners restored'
