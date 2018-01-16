@@ -26,7 +26,8 @@ from twisted.words.protocols import irc
 from random import (
                     seed,
                     randrange,
-                    choice
+                    choice,
+                    randint
                     )
 from datetime import datetime
 from re import match
@@ -259,6 +260,10 @@ class countBot(irc.IRCClient):
         self.msg(self.chatroom, 'Here is a list of winners in the format \'User: Times Won\'')
         self.msg(self.chatroom, self.getWinnerString())
 
+    def displayWieners(self, name):
+        self.msg(self.chatroom, 'Here is a list of wieners in the format \'User: Wiener Level\'')
+        self.msg(self.chatroom, name + ': ' + str(randint(0, 100)))
+
     def getWinnerString(self):
         winnerString = ''
         firstLoop = True
@@ -311,6 +316,9 @@ class countBot(irc.IRCClient):
         elif ((message == self.nickname + ', winners') or (message == self.nickname + ': winners')):
             self.sortUsersAscending()
             self.displayWinners()
+        elif ((message == self.nickname + ', wieners') or (message == self.nickname + ': wieners')):
+            self.sortUsersAscending()
+            self.displayWieners(name)
         elif ((message == self.nickname + ', loser') or (message == self.nickname + ': loser')):
             self.showLoserMsg(name)
         elif ((message == self.nickname + ', losers') or (message == self.nickname + ': losers')):
