@@ -149,7 +149,7 @@ class countBot(irc.IRCClient):
         return
 
     def automateStart(self):
-        if (!self.gameRunning):
+        if (self.gameRunning == False):
             hour = int(self.getCurrentTime().split(':')[0])
             minute = int(self.getCurrentTime().split(':')[1])
             if ((hour != self.hourOfLastGame) and (hour > 7 and hour < 17)):
