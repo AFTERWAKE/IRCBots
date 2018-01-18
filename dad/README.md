@@ -23,6 +23,8 @@
 - Command to change channels
 - Cleanup of dadbot.go overall
 - Add dad, help for list of admin commands
+- Better way to save config?
+- Bring back joke getting scripts
 
 #### ISSUES
 - Colon ":" can't be used in say command without specifying the destination due to how the destination is received

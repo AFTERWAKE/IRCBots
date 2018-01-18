@@ -51,10 +51,9 @@
         "Doge",
         "Magic_Conch",
         "Seahorse",
-        "l",
-        ""
+        "l"
     ],
-    "Ip": "localhost",
+    "Ip": "coop.test.adtran.com",
     "MessageRate": 10,
     "MomName": "mom",
     "MomSpeak": [
