@@ -13,7 +13,7 @@ serv_port = 6667
 channel = "#main"
 
 class blessYouBot(irc.IRCClient):
-    nickname = "blessYouBot"
+    nickname = "DootBot"
 
     def signedOn(self):
         self.join(channel)
@@ -96,15 +96,21 @@ class blessYouBot(irc.IRCClient):
                     self.__last_response = temp_time
                     return
 
-                # bless you
-                elif not self.__d.check(word):
-                    chance = random.randint(1,100)
-                    print("CATCH:", word, "chance: " + str(chance))
-                    responses = ["bless you %s", "hands %s a tissue"]
-                    if (chance <= 20):
-                        self.describe(channel, random.choice(responses) % user)
-                        self.__last_response = temp_time
-                    return
+                # :hr:
+                elif re.match(r".*:hr:.*", message.lower()):
+                    responses = ["HR"]
+                    self.msg(channel, random.choice(responses))
+                    self.__last_response = temp_time
+
+                # # bless you
+                # elif not self.__d.check(word):
+                #     chance = random.randint(1,100)
+                #     print("CATCH:", word, "chance: " + str(chance))
+                #     responses = ["bless you %s", "hands %s a tissue"]
+                #     if (chance <= 20):
+                #         self.describe(channel, random.choice(responses) % user)
+                #         self.__last_response = temp_time
+                #     return
 
                 else:
                     return
