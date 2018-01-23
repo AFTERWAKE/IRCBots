@@ -10,25 +10,27 @@ import string
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#test"
+channel = "#main"
 
 class blessYouBot(irc.IRCClient):
-    nickname = "blessYouBot"
+    nickname = "DootBot"
 
     def signedOn(self):
         self.join(channel)
         self.__d = enchant.Dict("en_US")
         self.__ex = set(string.punctuation)
+        self.__user_list = []
+        self.__last_response = 0
 
-        with open(acronyms.txt, 'r') as infile:
+        with open("acronyms.txt", 'r') as infile:
             for each in infile:
                 self.__d.add(each)
 
-        with open(custom_words.txt, 'r') as infile:
+        with open("custom_words.txt", 'r') as infile:
             for each in infile:
                 self.__d.add(each)
 
-        with open(bot_list.txt, 'r') as infile:
+        with open("bot_list.txt", 'r') as infile:
             for each in infile:
                 self.__d.add(each)
 
@@ -46,7 +48,7 @@ class blessYouBot(irc.IRCClient):
         print("LEFT:", channel, user)
         if user in self.__user_list:
             self.__user_list.remove(user.lower())
-   
+
     def userQuit(self, user, quitMessage):
         print("QUIT:", user)
         if user in self.__user_list:
@@ -61,33 +63,58 @@ class blessYouBot(irc.IRCClient):
             self.__user_list.append(user.lower())
 
     def privmsg(self, user, channel, message):
+        temp_time = time.time()
         user = user.split('!')[0]
         if user not in self.__user_list:
             self.__user_list.append(user.lower())
 
-        print(channel, user + ":", message)
-        for word in message.split():
-            # strip punctuations and lowercase word
-            word = ''.join(ch for ch in word if ch not in self.__ex).lower()
-            if word == "":
-                pass
+        print(channel, user, message)
+        if (temp_time - self.__last_response > 5):
+            for word in message.split():
+                # strip punctuations and lowercase word
+                word = ''.join(ch for ch in word if ch not in self.__ex).lower()
+                if word == "":
+                    pass
 
-            # match rip
-            elif re.match(r".*rip.*", message.lower()):
-                responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip"]
-                self.msg(channel, random.choice(responses))
-                return
+                # match rip
+                elif re.match(r".*rip.*", message.lower()):
+                    responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip"]
+                    self.msg(channel, random.choice(responses))
+                    self.__last_response = temp_time
+                    return
 
-            # bless you
-            elif not self.__d.check(word):
-                print("CATCH:", word)
-                responses = ["bless you %s", "/me hands %s a tissue"]
-                self.msg(channel, random.choice(responses) % user)
-                return
+                # doot doot
+                elif re.match(r"doot", message.lower()):
+                    self.describe(channel, "doot doot")
+                    self.__last_response = temp_time
+                    return
 
-            else:
-                return
-            
+                # achoo
+                elif re.match(r"achoo", message.lower()):
+                    responses = ["bless you %s", "hands %s a tissue"]
+                    self.describe(channel, random.choice(responses) % user)
+                    self.__last_response = temp_time
+                    return
+
+                # :hr:
+                elif re.match(r".*:hr:.*", message.lower()):
+                    responses = ["HR"]
+                    self.msg(channel, random.choice(responses))
+                    self.__last_response = temp_time
+
+                # # bless you
+                # elif not self.__d.check(word):
+                #     chance = random.randint(1,100)
+                #     print("CATCH:", word, "chance: " + str(chance))
+                #     responses = ["bless you %s", "hands %s a tissue"]
+                #     if (chance <= 20):
+                #         self.describe(channel, random.choice(responses) % user)
+                #         self.__last_response = temp_time
+                #     return
+
+                else:
+                    return
+
 
 
 
@@ -101,3 +128,13 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+'''
+TODO
+- fix "rip" regex
+- think of a way for the bot to dynamically update word list so that I don't have to update it every time
+    ooh or make a master command
+- implement so that the bot understands I'm the master
+    *note: look at how noah did it in theCount
+- recognize multiple doots
+'''
