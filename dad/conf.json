@@ -1,0 +1,971 @@
+{
+    "Admin": "awest",
+    "AdminSpeak": [
+        {
+            "Action": "ground",
+            "Regex": {
+                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), ground ",
+                "Variable": "\\S+"
+            },
+            "Response": [
+                {
+                    "Message": "That's it, you're grounded #c!",
+                    "Count": 28
+                }
+            ]
+        },
+        {
+            "Action": "message",
+            "Regex": {
+                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), say ",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#c",
+                    "Count": 285
+                }
+            ]
+        },
+        {
+            "Action": "unground",
+            "Regex": {
+                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), unground ",
+                "Variable": "\\S+"
+            },
+            "Response": [
+                {
+                    "Message": "#c, you're now ungrounded. Don't let me catch you misbehaving again.",
+                    "Count": 18
+                }
+            ]
+        }
+    ],
+    "Channels": [
+        "#main"
+    ],
+    "DadName": "dad",
+    "Debug": false,
+    "Grounded": [
+        "theCount",
+        "Doge",
+        "Magic_Conch",
+        "Seahorse",
+        "l"
+    ],
+    "Ip": "coop.test.adtran.com",
+    "MessageRate": 10,
+    "MomName": "mom",
+    "MomSpeak": [
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?\\s*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Ask your father.",
+                    "Count": 10
+                }
+            ]
+        }
+    ],
+    "Speak": [
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(good\\s+)?mornin(g|')?(,)?\\s+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})($|\\W+)",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "good morning #u!",
+                    "Count": 25
+                }
+            ]
+        },
+        {
+            "Action": "grounded",
+            "Regex": {
+                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), grounded",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Here is a list of grounded users:\n#c",
+                    "Count": 25
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i(')?m\\W+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "mmmmmmmmmm... no",
+                    "Count": 16
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i(')?m(\\W+a(n)?)?\\W+",
+                "Variable": "(\\w.*)"
+            },
+            "Response": [
+                {
+                    "Message": "Hi #v, I'm dad",
+                    "Count": 125
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Awww... I love you too, #u :v)",
+                    "Count": 22
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+\\w+\\W*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Well then why don't you marry it?",
+                    "Count": 21
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})(\\W+[^?]*)?\\?\\s*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Ask your mother.",
+                    "Count": 39
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])make\\W+me(\\W+a|\\W+an)\\W+",
+                "Variable": "\\w[\\w\\s]*"
+            },
+            "Response": [
+                {
+                    "Message": "Poof, you're #a #v!",
+                    "Count": 20
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])(([s]+[h]+[u]+[t]+\\s*[u]+[p]+|[f]+[u]+[c]+[k]+\\s*[y]+[o]+[u]+)\\s*(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})|[d]+[a]{2,}[d]+)",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": ":v)",
+                    "Count": 41
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})($|\\W+)",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "\"I'll call you later.\"\nDon't call me later, call me Dad",
+                    "Count": 2
+                },
+                {
+                    "Message": "Can February March?\nNo, but April May",
+                    "Count": 1
+                },
+                {
+                    "Message": "Dad, can you put my shoes on?\nI don't think they'll fit me",
+                    "Count": 1
+                },
+                {
+                    "Message": "Dad, can you put the cat out?\nI didn't know it was on fire",
+                    "Count": 1
+                },
+                {
+                    "Message": "Dad, did you get a haircut?\nNo I got them all cut",
+                    "Count": 1
+                },
+                {
+                    "Message": "Did you hear about the cheese factory that exploded in France?\nThere was nothing left but de Brie",
+                    "Count": 1
+                },
+                {
+                    "Message": "Did you hear about the guy who invented the knock knock joke?\nHe won the 'no-bell' prize",
+                    "Count": 1
+                },
+                {
+                    "Message": "Did you hear about the restaurant on the moon?\nGreat food, no atmosphere",
+                    "Count": 1
+                },
+                {
+                    "Message": "Don't trust atoms\nThey make up everything",
+                    "Count": 1
+                },
+                {
+                    "Message": "Have you heard of the band 1023MB?\nThey haven't got a gig yet",
+                    "Count": 1
+                },
+                {
+                    "Message": "How many apples grow on a tree?\nAll of them",
+                    "Count": 1
+                },
+                {
+                    "Message": "I am terrified of elevators,\nI'm going to start taking steps to avoid them",
+                    "Count": 1
+                },
+                {
+                    "Message": "I bought shoes from a drug dealer once\nI don't know what he laced them with, but I was tripping all day",
+                    "Count": 1
+                },
+                {
+                    "Message": "I hate jokes about german sausages\nThey're the wurst",
+                    "Count": 1
+                },
+                {
+                    "Message": "I just watched a program about beavers\nIt was the best dam program I've ever seen",
+                    "Count": 1
+                },
+                {
+                    "Message": "I knew I shouldn't have had the seafood\nI'm feeling a little eel",
+                    "Count": 1
+                },
+                {
+                    "Message": "I used to hate facial hair,\nbut then it grew on me",
+                    "Count": 1
+                },
+                {
+                    "Message": "I wouldn't buy anything with velcro\nIt's a total rip-off",
+                    "Count": 1
+                },
+                {
+                    "Message": "I'd like to give a big shout out to all the sidewalks\nfor keeping me off the streets",
+                    "Count": 1
+                },
+                {
+                    "Message": "I'm not addicted to brake fluid\nI can stop whenever I want",
+                    "Count": 2
+                },
+                {
+                    "Message": "I'm reading a book on the history of glue\nI just can't seem to put it down",
+                    "Count": 1
+                },
+                {
+                    "Message": "I've just been diagnosed as colorblind\nI know, it certainly has come out of the purple",
+                    "Count": 1
+                },
+                {
+                    "Message": "If prisoners could take their own mug shots,\nthey'd be called cellfies",
+                    "Count": 1
+                },
+                {
+                    "Message": "Is this pool safe for diving?\nIt deep ends",
+                    "Count": 1
+                },
+                {
+                    "Message": "Last night I dreamt I was a muffler\nI woke up exhausted",
+                    "Count": 1
+                },
+                {
+                    "Message": "My wife is on a tropical food diet, the house is full of the stuff\nIt's enough to make a mango crazy",
+                    "Count": 1
+                },
+                {
+                    "Message": "Our wedding was so beautiful,\neven the cake was in tiers",
+                    "Count": 1
+                },
+                {
+                    "Message": "This graveyard looks overcrowded,\npeople must be dying to get in there",
+                    "Count": 1
+                },
+                {
+                    "Message": "Two satellites decided to get married\nThe wedding wasn't much, but the reception was incredible",
+                    "Count": 1
+                },
+                {
+                    "Message": "Wanna hear a joke about paper?\nNevermind, it's tearable",
+                    "Count": 1
+                },
+                {
+                    "Message": "What did the buffalo say to his son when he left for college?\nBison",
+                    "Count": 1
+                },
+                {
+                    "Message": "What did the grape do when he got stepped on?\nHe let out a little wine",
+                    "Count": 1
+                },
+                {
+                    "Message": "What did the officer molecule say to the suspect molecule?\nI've got my ion you",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do prisoners use to call each other?\nCell phones",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a deer with no eyes?\nNo idear",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a fake noodle?\nAn Impasta",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a pony with a sore throat?\nA little horse",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a sketchy Italian neighbour hood?\nThe Spaghetto",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call an Argentinian with a rubber toe?\nRoberto",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call cheese by itself?\nProvolone",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call cheese that isn't yours?\nNacho Cheese",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call somebody with no body and no nose?\nNobody knows",
+                    "Count": 3
+                },
+                {
+                    "Message": "What do you get when you cross a snowman with a vampire\nFrostbite",
+                    "Count": 1
+                },
+                {
+                    "Message": "What does an annoying pepper do?\nIt get's jalapeno face",
+                    "Count": 1
+                },
+                {
+                    "Message": "What lies at the bottom of the ocean and twitches?\nA nervous wreck",
+                    "Count": 1
+                },
+                {
+                    "Message": "Where do you learn to make ice cream?\nSunday school",
+                    "Count": 1
+                },
+                {
+                    "Message": "Where does Fonzie like to go for lunch?\nChick-Fil-Eyyyyyyyy",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why can't you have a nose 12 inches long?\nBecause then it would be a foot",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why can't you hear a pterodactyl go to the bathroom?\nBecause the pee is silent",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why couldn't the bicycle stand up by itself?\nIt was two tired",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why did the can-crusher quit his job?\nBecause it was soda-pressing",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why did the coffee file a police report?\nIt got mugged",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why did the scarecrow win an award?\nBecause he was outstanding in his field",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why do bees hum?\nBecause they don't know the words",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why do crabs never give to charity?\nBecause they're shellfish.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why don't skeletons ever go trick or treating?\nBecause they have no body to go with",
+                    "Count": 1
+                },
+                {
+                    "Message": "The Norwegian navy has started putting bar codes on their ships...\nSo they can scan da navy in...",
+                    "Count": 1
+                },
+                {
+                    "Message": "Singing in the shower is all fun and games until you get shampoo in your mouth...\nThen it becomes a soap opera...",
+                    "Count": 1
+                },
+                {
+                    "Message": "I have no children but I still tell dad jokes\nhe loves them",
+                    "Count": 1
+                },
+                {
+                    "Message": "What's brown and sticky?\nA stick.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call crystal clear urine?\n1080pee",
+                    "Count": 1
+                },
+                {
+                    "Message": "Today I found out that someone has been adding fertilizer to my front lawn.\nThe plot thickens...",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a non-skiing Inuit?\nAn emo",
+                    "Count": 1
+                },
+                {
+                    "Message": "I got a haircut last week...\nAt first I didn't like it, but it's growing on me",
+                    "Count": 1
+                },
+                {
+                    "Message": "Wanna hear a little pickle joke?\n.....it's not that big of dill.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Say, Ernie? Would you like some ice cream?\nYes, sherbert.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why did the old lady fall in the well?\nShe couldn't see that well",
+                    "Count": 1
+                },
+                {
+                    "Message": "What's the difference between a coyote and a flea?\nOne howls on the prairie and the other prowls on the hairy.",
+                    "Count": 1
+                },
+                {
+                    "Message": "A judge sentenced me to take a guy out to dinner.\nIt was a court mandate",
+                    "Count": 1
+                },
+                {
+                    "Message": "How do you shoot a rocket?\nFire works",
+                    "Count": 1
+                },
+                {
+                    "Message": "What time did the man go to the dentist?\nTooth Hurty",
+                    "Count": 1
+                },
+                {
+                    "Message": "Thought taking my shell of my racing snail would make it faster.\nTurns out that just made it more sluggish.",
+                    "Count": 1
+                },
+                {
+                    "Message": "If anybody knows any salad jokes.\nLettuce know......",
+                    "Count": 1
+                },
+                {
+                    "Message": "How do you feel?\nWith your hands",
+                    "Count": 1
+                },
+                {
+                    "Message": "Did you hear about the guy thrown in jail for not taking a nap?\nHe was refusing a rest",
+                    "Count": 2
+                },
+                {
+                    "Message": "I love ruining the plot of Dorian Gray for people\nNever gets old.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Where do belly buttons go to college\nNaval Academy",
+                    "Count": 1
+                },
+                {
+                    "Message": "Took my kids out to a Plane Factory for a tour.\nThey said it was Boeing.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Buddhist monk walks into a pizza parlor...\nSays, \"Make me one with everything.\"",
+                    "Count": 1
+                },
+                {
+                    "Message": "Mums trying to stop me eating as she reckons its getting out of hand.\nLuckily, I've got a few Twix up my sleeve.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why did the first shoemaker go to hell?\nBecause he sold his sole to the devil.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What does an oyster wear into battle?\nClamouflage",
+                    "Count": 1
+                },
+                {
+                    "Message": "My daughter kept complaining that it was too cold.\nI told her to go stand in the corner, it's 90 degrees there.",
+                    "Count": 1
+                },
+                {
+                    "Message": "A dentist is working on a judge and promises one thing....\n....to take the tooth, the whole tooth, and nothing but the tooth.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What did the green grape say to the purple grape?\nBREATHE!",
+                    "Count": 1
+                },
+                {
+                    "Message": "My wife visited a holy city\nShe completely fell through it all.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Do I enjoy making courthouse puns?\nGuilty.",
+                    "Count": 2
+                },
+                {
+                    "Message": "How do you know an egg is bad?\nWhen it's past the eggsperation date.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a genie made of asbestos?\nA carcinojinn.",
+                    "Count": 1
+                },
+                {
+                    "Message": "My friend threatened to turn me into the police for bludgeoning his wife to death with a Super Nintendo\nSo I had to console him as well.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why do so many people invest in Ireland?\nBecause the capital is always Dublin!",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call someone with a very colorful personality?\nA hue-man",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a man with no arms or legs lying in front of your door?\nMatt",
+                    "Count": 1
+                },
+                {
+                    "Message": "RIP boiled water.\nYou will be mist.",
+                    "Count": 1
+                },
+                {
+                    "Message": "My gf told me she gets weirded out when I'm too literal.\nSo I gave her a piece of my mind.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What is the difference between a fly and a bird?\nA bird can fly but a fly can't bird",
+                    "Count": 1
+                },
+                {
+                    "Message": "I just bought a vintage Rolls Royce, but the budget didn't cover a driver.\nSo I spent all that money, and I've got nothing to chauffeur it.",
+                    "Count": 2
+                },
+                {
+                    "Message": "Why is Cyclops in charge of the X-Men?\nBecause Prof. X made him a supervisor.",
+                    "Count": 2
+                },
+                {
+                    "Message": "What would Forrest Gumps email password be?\n1Forrest1",
+                    "Count": 1
+                },
+                {
+                    "Message": "I don't usually tell tell dad jokes\n.............",
+                    "Count": 1
+                },
+                {
+                    "Message": "What type of dog can do magic tricks?\nA labracadabrador",
+                    "Count": 1
+                },
+                {
+                    "Message": "I used to collect cacti...\nbut agave that up years ago.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I heard a beaver lost its home today.\nDam shame, too.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Two guys are sitting in a boat.\nThey have a bunch of cigarettes, but neither of them brought any matches to light them. So one of the guys throws one cigarette off the boat, and the boat becomes a cigarette lighter.",
+                    "Count": 1
+                },
+                {
+                    "Message": "How come everyone in history has always settled for Shampoo?\nStop the madness! Demand Realpoo!",
+                    "Count": 1
+                },
+                {
+                    "Message": "Know why the native Americans were here first?\n...because they had reservations.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I saw an article about people snorting chocolate powder for a rush.\nThey wanted a Quik high.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What nationality are you when you're in the bathroom?\nEuropean.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What happened when the crustacean was late to work?\nShe LOBSTER job!",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why is fatty acid the coolest carbon chain?\nBecause it's fat with a pH",
+                    "Count": 1
+                },
+                {
+                    "Message": "Today I threw my dog in the ocean.\nHe was a good buoy.",
+                    "Count": 1
+                },
+                {
+                    "Message": "A ham sandwich walks into a bar and orders a beer.\nBartender says \"Sorry, we don't serve food here\"",
+                    "Count": 1
+                },
+                {
+                    "Message": "My boy asked me to hand him his sunglasses.\nI told him I'd do it as soon as he handed me my dadglasses",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why did the melons have a formal wedding?\nBecause they cantaloupe.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Was Noah an...\n...ark-itect?",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why did the 2 Egyptian farters get along so well?\nBecause they had a Tutankhamen.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I said to my wife, \"They say that childbirth is the most painful thing someone can experience...\"\nNow, maybe I was too young to remember, but I didn't think it hurt that much.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a waffle on a California beach?\nA Sandy Eggo...",
+                    "Count": 1
+                },
+                {
+                    "Message": "How do you fight off the flu?\nWith kung-flu",
+                    "Count": 1
+                },
+                {
+                    "Message": "I can understand 4 feet, 5 feet, 7 feet and 8 feet\nBut I can't fathom",
+                    "Count": 1
+                },
+                {
+                    "Message": "How do you make holy water?\nYou boil the hell out of it",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why did my TV start looking so good this year?\nIt was his new years resolution",
+                    "Count": 1
+                },
+                {
+                    "Message": "I once started a hotdog business...\nIt was the wurst thing I ever did.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I tried to catch clouds yesterday.\nMist. Guess i'll have to fog-et about it.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Did you hear about the man who got hit in the head by a can of soda?\nDon't worry, he's fine. It was a soft drink.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Did you hear about the mathematical breakthrough in algebra?\nIt was on the hypotenews",
+                    "Count": 1
+                },
+                {
+                    "Message": "I bought a gallon of White Out.\nBig Mistake..",
+                    "Count": 1
+                },
+                {
+                    "Message": "My Dad and I sighed at the same time today.\nHe said \"Wow, that was sighmultaneous.\"",
+                    "Count": 1
+                },
+                {
+                    "Message": "What did the waning full moon say to his girlfriend?\nAt least gibbous a kiss goodbye.",
+                    "Count": 1
+                },
+                {
+                    "Message": "How can guinea pigs cope so well in the cold?\nIt's Chile near where they're from.",
+                    "Count": 1
+                },
+                {
+                    "Message": "If you need to start a fire by rubbing sticks together, make sure they are the same.\nThen you'll have a match.",
+                    "Count": 2
+                },
+                {
+                    "Message": "Why do med students use books to study anatomy?\nBecause books have spines.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I just invented a machine that trims window coverings.\nPrepare to have your blinds mowed.",
+                    "Count": 1
+                },
+                {
+                    "Message": "To the mathematicians who thought of the idea of zero...\nThanks for nothing.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What did the sheep say to the shepherd?\nStop it!  You're herding me!!",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a van on fire?\nA vanpyre.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I'm not huge into puns.\nSometimes eye roll with it.",
+                    "Count": 1
+                },
+                {
+                    "Message": "How do subatomic pirates mutiny?\nThey make the captain walk the planck.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What happens on a clear day in Los Angeles?\nUCLA.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why did the ragdoll change her mind?\nIt was suede!",
+                    "Count": 1
+                },
+                {
+                    "Message": "My girlfriend is so good at drawing straight lines that she would thrive in an anarchist society...\n...because she doesn't need a ruler.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What's the opposite of cinnamon toast crunch?\nAntonym toast crunch",
+                    "Count": 1
+                },
+                {
+                    "Message": "I was arrested for telling my dad the best joke ever...\nPolice said manslaughter was illegal",
+                    "Count": 1
+                },
+                {
+                    "Message": "Dentist: Open up please\nMe: sometime I get sad and I don't know why",
+                    "Count": 1
+                },
+                {
+                    "Message": "I had to take down some scaffold that was in the way at work.\nIt held me up long enough.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I broke my finger today..\n..but on the other hand I'm completely fine.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Have you heard the rumor going around about butter?\nNevermind, I really shouldn't spread it.",
+                    "Count": 1
+                },
+                {
+                    "Message": "The people at my hair salon make me wanna..\nCurl up and dye.",
+                    "Count": 1
+                },
+                {
+                    "Message": "My dad said if I use a hashtag one more time, he'd pound the sh*t out of me. I said #YOLO and woke up to this text the next morning...\n####################",
+                    "Count": 1
+                },
+                {
+                    "Message": "I spent a whole day making a belt with my old watches\nIt was a waist of time",
+                    "Count": 1
+                },
+                {
+                    "Message": "I've said it before and I'll say it again\nI've said it before",
+                    "Count": 1
+                },
+                {
+                    "Message": "What did the cookie say to the browser while running away?\n\"Cache me if you can!\"",
+                    "Count": 1
+                },
+                {
+                    "Message": "Do you want me to call you an uber?\nYou're an uber.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call Mr. Bean on a boat?\nRowing Atkinson",
+                    "Count": 1
+                },
+                {
+                    "Message": "My friend keeps telling me to stop making Rogue One puns.\nShe's told me that like 10 Erso times.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I tell Dad Jokes but I'm not a dad..\nI'm a faux pa.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I went to the seafood disco last night...\nI pulled a muscle!",
+                    "Count": 1
+                },
+                {
+                    "Message": "I was surprised to hear that Adele uses a MacBook\nI always thought she'd use a Dell.",
+                    "Count": 1
+                },
+                {
+                    "Message": "6 was afraid of 7 because 7, 8, 9, but why did 7 eat 9?\nBecause you're supposed to eat 3 squared meals a day.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I don't know why Euthanasia is so controversial.\nI personally don't mind Asian kids.",
+                    "Count": 1
+                },
+                {
+                    "Message": "And the Lord said unto John; \"Come forth and receive eternal life!\nBut John came fifth and won a toaster.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Have you heard about the guy who had his whole left side chopped off?\nYeah he's all right now",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why do cows have hooves instead of feet?\nBecause they lactose.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Do you know what the first thing a couple says when they're married?\nI do",
+                    "Count": 1
+                },
+                {
+                    "Message": "I'd love to get into gardening...\n...now that I have more thyme on my hands.",
+                    "Count": 1
+                },
+                {
+                    "Message": "In the annual scientistific track and field meet, the geologists always lose\nProving once again that gneiss guys finish last.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Your argument is like a naked banana\nIt simply lacks a peel",
+                    "Count": 1
+                },
+                {
+                    "Message": "Got the perfect title for the 10th fast and furious movie.\nFast 10: your seatbelts",
+                    "Count": 1
+                },
+                {
+                    "Message": "How do porn actors say goodbye to each other?\nSo long.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What country is next to USA\nUSB",
+                    "Count": 1
+                },
+                {
+                    "Message": "It's hard to lose a radish.\nBecause a lot of the time they'll turn up",
+                    "Count": 1
+                },
+                {
+                    "Message": "What type of bagel can fly?\nA plain bagel.",
+                    "Count": 1
+                },
+                {
+                    "Message": "An apple a day\nPuts the doctors out of a job",
+                    "Count": 1
+                },
+                {
+                    "Message": "Mary had a little lamb\nand a side of veggies for dinner.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why do sharks swim in salt water?\nBecause pepper water makes them sneeze.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Did you hear the good news about O.J.?\nIt is part of a complete breakfast",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why does everybody hate averages?\nBecause they're mean",
+                    "Count": 1
+                },
+                {
+                    "Message": "I like the theory of the death penalty\nBut I have a problem with the execution.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Did you hear about the kidnapping in Denver?\nHe woke up.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why was the energizer bunny put in jail?\nHe was charged with battery",
+                    "Count": 1
+                },
+                {
+                    "Message": "I was recently in a boating accident...\nIt was quite an oar-deal.",
+                    "Count": 1
+                },
+                {
+                    "Message": "Why isn't a koala bear a real bear\nBecause they aren't koala-fied",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a minister that does shoe repair?\nPreach Cobbler",
+                    "Count": 1
+                },
+                {
+                    "Message": "My wife asked \"What's your favorite vegetable.\"\nBeets me!",
+                    "Count": 1
+                },
+                {
+                    "Message": "What do you call a tree who's limbs fell off in a storm?\nAn amputree",
+                    "Count": 1
+                },
+                {
+                    "Message": "One time I ate a whole bunch of cheese in one sitting....\nWhere there's a wheel there's a way.",
+                    "Count": 1
+                },
+                {
+                    "Message": "I don't think I can trust my pillow.\nIt's always lying behind my back.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What's red and smells like green paint\nRed paint",
+                    "Count": 1
+                },
+                {
+                    "Message": "Did you know that Abraham Lincoln was wrongly accused?\nTurns out he was in a cent.",
+                    "Count": 1
+                },
+                {
+                    "Message": "What did the man say when he finished cutting up a green citrus fruit?\nWell, I guess that's the end of the lime",
+                    "Count": 1
+                },
+                {
+                    "Message": "My jar of Miracle Whip tasted funny.\nLMAYO",
+                    "Count": 1
+                },
+                {
+                    "Message": "What's the best thing about living in Switzerland?\nI don't know but the flag is a big plus",
+                    "Count": 1
+                }
+            ]
+        }
+    ],
+    "Timeout": 4
+}

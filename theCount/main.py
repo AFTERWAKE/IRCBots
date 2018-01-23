@@ -6,7 +6,7 @@ def main():
     serv_ip = 'coop.test.adtran.com'
     serv_port = 6667
 
-    f = protocol.ClientFactory()
+    f = protocol.ReconnectingClientFactory()
     f.protocol = countBot.countBot
 
     reactor.connectTCP(serv_ip, serv_port, f)

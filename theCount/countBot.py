@@ -26,7 +26,8 @@ from twisted.words.protocols import irc
 from random import (
                     seed,
                     randrange,
-                    choice
+                    choice,
+                    randint
                     )
 from datetime import datetime
 from re import match
@@ -43,14 +44,19 @@ class countBot(irc.IRCClient):
     hourOfLastGame = 0
     gameRunning = False
     nameList = []
-    admin = "nsiano8300w7.adtran.com"
+    admin = "172.22.117.48"
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     numberForAlphabet = -1
 
     def __init__(self):
-        self.hourOfLastGame = int(self.getCurrentTime().split(':')[0])
+        currentHour = int(self.getCurrentTime().split(':')[0])
+        currentMinute = int(self.getCurrentTime().split(':')[1])
+        self.hourOfLastGame = currentHour
+        if ((currentHour == 8) or (currentHour == 13)):
+            if (currentMinute < 30):
+                self.hourOfLastGame = self.hourOfLastGame - 1
         try:
             self.restoreUsersFromFile()
             print 'Winners restored'
@@ -135,20 +141,28 @@ class countBot(irc.IRCClient):
         self.nameList[userIndex].isKicked = True
         return
 
+    def kickUserNickChange(self, userIndex, name):
+        self.msg(self.chatroom, name + " has been eliminated from the game. " +
+                 "No changing your nickname! " + '{} {} is what we\'re on.'
+                 .format(self.currentNumber, self.wordForGame))
+        self.nameList[userIndex].isKicked = True
+        return
+
     def alreadyKickedMessage(self, name):
         self.msg(self.chatroom, name + " has already been kicked. " +
                  '{} {} is what we\'re on.'.format(self.currentNumber, self.wordForGame))
         return
 
     def automateStart(self):
-        hour = int(self.getCurrentTime().split(':')[0])
-        minute = int(self.getCurrentTime().split(':')[1])
-        if ((hour != self.hourOfLastGame) and (hour > 7 and hour < 17)):
-            if (((hour == 8) and (minute >= 30)) or ((hour == 11) and (minute >= 0)) or
-            ((hour == 13) and (minute >= 30)) or ((hour == 16) and (minute >= 0))):
-                self.hourOfLastGame = hour
-                self.resetGame()
-                self.startGame()
+        if (self.gameRunning == False):
+            hour = int(self.getCurrentTime().split(':')[0])
+            minute = int(self.getCurrentTime().split(':')[1])
+            if ((hour != self.hourOfLastGame) and (hour > 7 and hour < 17)):
+                if (((hour == 8) and (minute >= 30)) or ((hour == 11) and (minute >= 0)) or
+                ((hour == 13) and (minute >= 30)) or ((hour == 16) and (minute >= 0))):
+                    self.hourOfLastGame = hour
+                    self.resetGame()
+                    self.startGame()
 
     def getWinningUser(self):
         topUser = player("")
@@ -251,6 +265,10 @@ class countBot(irc.IRCClient):
         self.msg(self.chatroom, 'Here is a list of winners in the format \'User: Times Won\'')
         self.msg(self.chatroom, self.getWinnerString())
 
+    def displayWieners(self, name):
+        self.msg(self.chatroom, 'Here is a list of wieners in the format \'User: Wiener Level\'')
+        self.msg(self.chatroom, name + ': ' + str(randint(0, 100)))
+
     def getWinnerString(self):
         winnerString = ''
         firstLoop = True
@@ -303,6 +321,9 @@ class countBot(irc.IRCClient):
         elif ((message == self.nickname + ', winners') or (message == self.nickname + ': winners')):
             self.sortUsersAscending()
             self.displayWinners()
+        elif ((message == self.nickname + ', wieners') or (message == self.nickname + ': wieners')):
+            self.sortUsersAscending()
+            self.displayWieners(name)
         elif ((message == self.nickname + ', loser') or (message == self.nickname + ': loser')):
             self.showLoserMsg(name)
         elif ((message == self.nickname + ', losers') or (message == self.nickname + ': losers')):
@@ -374,7 +395,7 @@ class countBot(irc.IRCClient):
             if (self.nameList[nameIndex].isKicked):
                 self.alreadyKickedMessage(newname)
             else:
-                self.kickUser(nameIndex, newname)
+                self.kickUserNickChange(nameIndex, newname)
 
     def isABot(self, name):
         self.msg(self.chatroom, name + ", you dirty bot, you... " +
