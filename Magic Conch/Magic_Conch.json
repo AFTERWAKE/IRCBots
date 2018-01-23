@@ -6,18 +6,6 @@
     "triggers": [
         {
             "pattern": "^.*:(?P<message>.*)$",
-            "message": [".*Magic[ _]Conch,.*which\\spokemon.*$"],
-            "isAction": false,
-            "responses":["pokemon",
-                         "pokemon:I think it was %s...",
-                         "pokemon:I believe it was %s",
-                         "pokemon:definitly %s!",
-                         "pokemon:absolutely %s!",
-                         "pokemon:not %s",
-                         "pokemon:definitly not %s"]
-        },
-        {
-            "pattern": "^.*:(?P<message>.*)$",
             "message": [".*Magic[ _]Conch,.*who.*$"],
             "isAction": false,
             "responses":["who",
