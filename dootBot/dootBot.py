@@ -11,8 +11,19 @@ serv_ip = "coop.test.adtran.com"
 serv_port = 6667
 channel = "#test"
 
+try:
+    with open("../admin_ip.txt", "r") as infile:
+        admin_ip = infile.readline().strip()
+except (IOError):
+    admin_ip = ""
+finally:
+    if admin_ip != "":
+        print("Admin IP:", admin_ip)
+    else:
+        print("WARNING: No Admin IP recognized")
+
 class blessYouBot(irc.IRCClient):
-    nickname = "DootBot"
+    nickname = "dootBot"
 
     def signedOn(self):
         self.join(channel)
@@ -63,7 +74,8 @@ class blessYouBot(irc.IRCClient):
 
     def privmsg(self, user, channel, message):
         temp_time = time.time()
-        user = user.split('!')[0]
+        # user = user_ip.split('!')[0]
+        # ip = user_ip.split('!')[1]
         if user not in self.__user_list:
             self.__user_list.append(user.lower())
 
@@ -77,7 +89,7 @@ class blessYouBot(irc.IRCClient):
 
                 # match rip
                 elif re.match(r"(\brip\b)", message.lower()):
-                    responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip"]
+                    responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip", "RIP"]
                     self.msg(channel, random.choice(responses))
                     self.__last_response = temp_time
                     return
@@ -86,25 +98,35 @@ class blessYouBot(irc.IRCClient):
                 elif re.match(r"(\bdoot\b)", message.lower()):
                     numDoots = message.count("doot")
                     if numDoots > 70:
-                        self.msg(channel, "... no")
+                        responses = ["...no", "ano", "BOI", "stahp", "Bruh chill"]
+                        self.msg(channel, random.choice(responses))
                         return
                     self.describe(channel, "doot " + "doot " * numDoots)
                     self.__last_response = temp_time
                     return
 
                 # achoo
-                elif re.match(r"(\bachoo\b)", message.lower()):
+                elif re.match(r"(\bachoo\b|\bsneeze\b|\basneeze\b)", message.lower()):
                     responses = ["bless you %s", "hands %s a tissue"]
                     self.describe(channel, random.choice(responses) % user)
                     self.__last_response = temp_time
                     return
 
                 # :hr:
-                elif re.match(r"(\:hr\:)", message.lower()):
+                elif re.match(r"(\:*hr\:*)", message.lower()):
                     responses = ["HR", "BECKY", "MEGAN", "HR HR HR HR"]
                     self.msg(channel, random.choice(responses))
                     self.__last_response = temp_time
                     return
+
+                # # ip test
+                # elif re.match(r"test", message.lower()):
+                #     print(user.split("@")[1], admin_ip)
+                #     if user.split("@")[1] == admin_ip:
+                #         self.msg(channel, user.split("!")[0] + random.choice(["is duh queen!", "knows de wey"]))
+                #     else:
+                #         self.msg(channel, user.split("!")[0] + random.choice(["is duh false queen!", "is not de wey", "spit on the false queen!"]))
+                #     return
 
                 # # bless you
                 # elif not self.__d.check(word):
