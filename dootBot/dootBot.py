@@ -22,7 +22,7 @@ finally:
     else:
         print("WARNING: No Admin IP recognized")
 
-class blessYouBot(irc.IRCClient):
+class dootBot(irc.IRCClient):
     nickname = "dootBot"
 
     def signedOn(self):
@@ -71,6 +71,10 @@ class blessYouBot(irc.IRCClient):
 
         if newname not in self.__user_list:
             self.__user_list.append(user.lower())
+
+    def isABot(self, name):
+        # hopefully this empty function will allow him to ignore bots
+        return
 
     def privmsg(self, user, channel, message):
         temp_time = time.time()
@@ -146,7 +150,7 @@ class blessYouBot(irc.IRCClient):
 
 def main():
     f = protocol.ClientFactory()
-    f.protocol = blessYouBot
+    f.protocol = dootBot
 
     reactor.connectTCP(serv_ip, serv_port, f)
     reactor.run()
