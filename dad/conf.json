@@ -66,7 +66,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 10
+                    "Count": 16
                 }
             ]
         }
@@ -133,7 +133,7 @@
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 22
+                    "Count": 21
                 }
             ]
         },
@@ -147,6 +147,19 @@
                 {
                     "Message": "Well then why don't you marry it?",
                     "Count": 21
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])papa($|\\W.*$)",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "gyroooooooooooooooossssssssssssssssssss!",
+                    "Count": 0
                 }
             ]
         },
@@ -198,7 +211,7 @@
             "Response": [
                 {
                     "Message": "\"I'll call you later.\"\nDon't call me later, call me Dad",
-                    "Count": 2
+                    "Count": 1
                 },
                 {
                     "Message": "Can February March?\nNo, but April May",
@@ -338,7 +351,7 @@
                 },
                 {
                     "Message": "What do you call a fake noodle?\nAn Impasta",
-                    "Count": 1
+                    "Count": 0
                 },
                 {
                     "Message": "What do you call a pony with a sore throat?\nA little horse",

@@ -26,10 +26,13 @@
 - Better way to save config?
 - Bring back joke getting scripts
 - Respond to "?!" questions
-- Attempt reconnect on drop 
+- Attempt reconnect on drop
+- Make mom more cynical. ex: "I love mom" -> "Ok"
+- Use more \\b in regex
 
 #### ISSUES
 - Colon ":" can't be used in say command without specifying the destination due to how the destination is received
+- Speak counter is broken
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag
