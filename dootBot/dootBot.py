@@ -78,8 +78,6 @@ class dootBot(irc.IRCClient):
 
     def privmsg(self, user, channel, message):
         temp_time = time.time()
-        # user = user_ip.split('!')[0]
-        # ip = user_ip.split('!')[1]
         if user not in self.__user_list:
             self.__user_list.append(user.lower())
 
@@ -92,14 +90,14 @@ class dootBot(irc.IRCClient):
                     pass
 
                 # match rip
-                elif re.match(r"(\brip\b)", message.lower()):
+                elif re.search(r"(\brip\b)", message.lower()):
                     responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip", "RIP"]
                     self.msg(channel, random.choice(responses))
                     self.__last_response = temp_time
                     return
 
                 # doot doot
-                elif re.match(r"(\bdoot\b)", message.lower()):
+                elif re.search(r"(\bdoot\b)", message.lower()):
                     numDoots = message.count("doot")
                     if numDoots > 70:
                         responses = ["...no", "ano", "BOI", "stahp", "Bruh chill"]
@@ -110,15 +108,22 @@ class dootBot(irc.IRCClient):
                     return
 
                 # achoo
-                elif re.match(r"(\bachoo\b|\bsneeze\b|\basneeze\b)", message.lower()):
+                elif re.search(r"(\bachoo\b|\bsneeze\b|\basneeze\b)", message.lower()):
                     responses = ["bless you %s", "hands %s a tissue"]
                     self.describe(channel, random.choice(responses) % user)
                     self.__last_response = temp_time
                     return
 
                 # :hr:
-                elif re.match(r"(\:*hr\:*)", message.lower()):
+                elif re.search(r"(\b\:hr\:\b|\bhr\b)", message.lower()):
                     responses = ["HR", "BECKY", "MEGAN", "HR HR HR HR"]
+                    self.msg(channel, random.choice(responses))
+                    self.__last_response = temp_time
+                    return
+
+                # show me de way
+                elif re.search(r"(\bway\?*\.*\:*\b)", message.lower()):
+                    responses = ["Sho me de wey", "Dat is not de wey", "DIS IS DE WEY"]
                     self.msg(channel, random.choice(responses))
                     self.__last_response = temp_time
                     return
