@@ -7,10 +7,9 @@ from twisted.internet import reactor, protocol
 import enchant
 import string
 
-
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#main"
+channel = "#test"
 
 class blessYouBot(irc.IRCClient):
     nickname = "DootBot"
@@ -77,30 +76,35 @@ class blessYouBot(irc.IRCClient):
                     pass
 
                 # match rip
-                elif re.match(r".*rip.*", message.lower()):
+                elif re.match(r"(\brip\b)", message.lower()):
                     responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip"]
                     self.msg(channel, random.choice(responses))
                     self.__last_response = temp_time
                     return
 
                 # doot doot
-                elif re.match(r"doot", message.lower()):
-                    self.describe(channel, "doot doot")
+                elif re.match(r"(\bdoot\b)", message.lower()):
+                    numDoots = message.count("doot")
+                    if numDoots > 70:
+                        self.msg(channel, "... no")
+                        return
+                    self.describe(channel, "doot " + "doot " * numDoots)
                     self.__last_response = temp_time
                     return
 
                 # achoo
-                elif re.match(r"achoo", message.lower()):
+                elif re.match(r"(\bachoo\b)", message.lower()):
                     responses = ["bless you %s", "hands %s a tissue"]
                     self.describe(channel, random.choice(responses) % user)
                     self.__last_response = temp_time
                     return
 
                 # :hr:
-                elif re.match(r".*:hr:.*", message.lower()):
-                    responses = ["HR"]
+                elif re.match(r"(\:hr\:)", message.lower()):
+                    responses = ["HR", "BECKY", "MEGAN", "HR HR HR HR"]
                     self.msg(channel, random.choice(responses))
                     self.__last_response = temp_time
+                    return
 
                 # # bless you
                 # elif not self.__d.check(word):

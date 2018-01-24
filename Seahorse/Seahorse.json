@@ -1,7 +1,7 @@
 {
     "nick": "Seahorse",
     "ident": "The Seahorse",
-    "channel": "#magic_conch",
+    "channel": "#main",
     "server": "coop.test.adtran.com",
     "triggers": [
         {
