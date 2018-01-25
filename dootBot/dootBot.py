@@ -162,10 +162,7 @@ if __name__ == "__main__":
 
 '''
 TODO
-- fix "rip" regex
-- think of a way for the bot to dynamically update word list so that I don't have to update it every time
-    ooh or make a master command
-- implement so that the bot understands I'm the master
-    *note: look at how noah did it in theCount
-- recognize multiple doots
+- add a admin mute command
+- do a unmute command too
+- make sure mute is done on host name
 '''

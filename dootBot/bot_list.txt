@@ -1,6 +1,8 @@
 dad
 mom
+theCount
 thecount
+theCount2
 thecount2
 doge
 

@@ -12,6 +12,16 @@ from twisted.internet import defer
 with open(r'Magic_Conch.json') as f:
     config = json.load(f)
 
+try:
+    with open(r'../admin_ip.txt', 'r') as infile:
+        admin_ip = infile.readline().strip()
+except (IOError):
+    admin_ip = ''
+finally:
+    if admin_ip != '':
+        print("Admin IP:", admin_ip)
+    else:
+        print("WARNING: No admin IP recognized")
 
 class theMagicConch(irc.IRCClient):
     nickname = config["nick"]
@@ -21,7 +31,7 @@ class theMagicConch(irc.IRCClient):
         self.pokemon_list = self.get_pokemon()
         self._namescallback = {}
 
-        print(self.msg("NAMES %s" % config["channel"]))
+        # print(self.msg("NAMES %s" % config["channel"]))  #idk what this was
            
     def luserClient(self, info):
         print(info)
@@ -39,6 +49,16 @@ class theMagicConch(irc.IRCClient):
         print(oldname, "is now known as", newname)
 
     def privmsg(self, user, channel, message):
+        user_ip = user.split("@")[1]
+
+        # bypass pms
+        if channel == config["nick"]:
+            if user_ip != admin_ip:
+                return
+            else:
+                self.msg(config["channel"], message)
+                return
+
         user = user.split('!')[0]
         print(channel, user + ":", message)
 
@@ -46,6 +66,7 @@ class theMagicConch(irc.IRCClient):
             for expression in trigger["message"]:
                 if re.match(expression, message):
                     response = random.choice(trigger["responses"])
+                    '''
                     if re.match(r"who:*(\w*)", response):
                         m = re.match(r"who:*(\w*)", response)
 
@@ -80,6 +101,10 @@ class theMagicConch(irc.IRCClient):
                     else:
                         self.msg(channel, response)
                         return
+                    '''
+                    self.msg(channel, response)
+                    return
+
 
     def names(self, channel):
         channel = channel.lower()
@@ -143,3 +168,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+'''
+TODO:
+    - throttle
+    - fix who
+'''
