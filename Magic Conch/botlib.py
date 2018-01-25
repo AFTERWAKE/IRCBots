@@ -75,14 +75,14 @@ class Bot:
                             msg = "NAMES %s \r\n" % (self.channel)
                             self.send(msg)
                             names = self.recv(2048).strip('\n\r')
-                            names = re.match(r".*:(.*)", names)[1].split()
+                            names = re.match(r".*:(.*)", names).group(1).split()
 
                             # allow users to input custom conch messages
                             m = re.match(r"who:*(.*)", item.get_response())
-                            if m[1] == "":
+                            if m.group(1) == "":
                                 msg = "I choose %s!"
                             else:
-                                msg = m[1]
+                                msg = m.group(1)
                             msg = msg % random.choice(names)
                             self.sendmsg(self.channel, msg)
                             break
@@ -90,10 +90,10 @@ class Bot:
                         # Choose a random pokemon from pokemondb.net
                         if re.match(r"pokemon:*(\w*)", item.get_response()):
                             m = re.match(r"pokemon:*(.*)", item.get_response())
-                            if m[1] == "":
+                            if m.group(1) == "":
                                 msg = "I choose %s!"
                             else:
-                                msg = m[1]
+                                msg = m.group(1)
 
                             # choose random pokemon
                             pokemon = random.choice(self.pokemon_list)

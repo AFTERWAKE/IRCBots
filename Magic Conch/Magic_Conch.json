@@ -1,7 +1,7 @@
 {
     "nick": "Magic_Conch",
     "ident": "Magic_Conch",
-    "channel": "#magic_conch",
+    "channel": "#main",
     "server": "coop.test.adtran.com",
     "triggers": [
         {
@@ -11,10 +11,10 @@
             "responses":["who",
                          "who:I think it was %s...",
                          "who:I believe it was %s",
-                         "who:definitly %s!",
+                         "who:definitely %s!",
                          "who:absolutely %s!",
                          "who:not %s",
-                         "who:definitly not %s"]
+                         "who:definitely not %s"]
         },
         {
             "pattern": "^.*:(?P<message>.*)$",
