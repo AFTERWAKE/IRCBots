@@ -4,12 +4,11 @@ import re
 
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
-import enchant
 import string
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#test"
+channel = "#main"
 
 try:
     with open("../admin_ip.txt", "r") as infile:
@@ -27,22 +26,13 @@ class dootBot(irc.IRCClient):
 
     def signedOn(self):
         self.join(channel)
-        self.__d = enchant.Dict("en_US")
-        self.__ex = set(string.punctuation)
         self.__user_list = []
         self.__last_response = 0
-
-        with open("acronyms.txt", 'r') as infile:
-            for each in infile:
-                self.__d.add(each)
-
-        with open("custom_words.txt", 'r') as infile:
-            for each in infile:
-                self.__d.add(each)
+        self.__bot_list = []
 
         with open("bot_list.txt", 'r') as infile:
             for each in infile:
-                self.__d.add(each)
+                self.__bot_list.append(infile.readline().strip())
 
         self.__user_list = []
 
@@ -70,11 +60,7 @@ class dootBot(irc.IRCClient):
             self.__user_list.remove(oldname.lower())
 
         if newname not in self.__user_list:
-            self.__user_list.append(user.lower())
-
-    def isABot(self, name):
-        # hopefully this empty function will allow him to ignore bots
-        return
+            self.__user_list.append(newname.lower())
 
     def privmsg(self, user, channel, message):
         temp_time = time.time()
@@ -82,7 +68,10 @@ class dootBot(irc.IRCClient):
             self.__user_list.append(user.lower())
 
         print(channel, user, message)
-        if (temp_time - self.__last_response > 5):
+        if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
+            user_name = user.split("!")[0]
+            if user_name in self.__bot_list:
+                return
             for word in message.split():
                 # strip punctuations and lowercase word
                 word = ''.join(ch for ch in word if ch not in self.__ex).lower()
@@ -110,7 +99,7 @@ class dootBot(irc.IRCClient):
                 # achoo
                 elif re.search(r"(\bachoo\b|\bsneeze\b|\basneeze\b)", message.lower()):
                     responses = ["bless you %s", "hands %s a tissue"]
-                    self.describe(channel, random.choice(responses) % user)
+                    self.describe(channel, random.choice(responses) % user_name)
                     self.__last_response = temp_time
                     return
 
@@ -122,9 +111,17 @@ class dootBot(irc.IRCClient):
                     return
 
                 # show me de way
-                elif re.search(r"(\bway\?*\.*\:*\b)", message.lower()):
-                    responses = ["Sho me de wey", "Dat is not de wey", "DIS IS DE WEY"]
-                    self.msg(channel, random.choice(responses))
+                elif re.search(r"(\bwey\?*\.*\:*\b)", message.lower()):
+                    responses = ["Sho me de wey", "Dat is not de wey", "DIS IS DE WEY", "Where is our queen?", "R u duh queen?"]
+                    chance = random.randint(1,100)
+                    if chance <= 75:
+                        self.msg(channel, random.choice(responses))
+                    else:
+                        chance = random.randint(1,100)
+                        if chance <= 50:
+                            self.describe(channel, "cluck " * random.randint(1,20))
+                        else:
+                            self.describe(channel, "bwah " * random.randint(1,20))
                     self.__last_response = temp_time
                     return
 
