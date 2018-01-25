@@ -32,7 +32,7 @@ class dootBot(irc.IRCClient):
 
         with open("bot_list.txt", 'r') as infile:
             for each in infile:
-                self.__bot_list.append(infile.readline().strip())
+                self.__bot_list.append(each.strip())
 
         self.__user_list = []
 
@@ -74,7 +74,6 @@ class dootBot(irc.IRCClient):
                 return
             for word in message.split():
                 # strip punctuations and lowercase word
-                word = ''.join(ch for ch in word if ch not in self.__ex).lower()
                 if word == "":
                     pass
 
