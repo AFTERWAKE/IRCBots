@@ -8,7 +8,7 @@ import string
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#main"
+channel = "#test"
 
 try:
     with open("../admin_ip.txt", "r") as infile:
@@ -17,7 +17,7 @@ except (IOError):
     admin_ip = ""
 finally:
     if admin_ip != "":
-        print("Admin IP:", admin_ip)
+        print("Admin IP: " + admin_ip)
     else:
         print("WARNING: No Admin IP recognized")
 
@@ -29,6 +29,8 @@ class dootBot(irc.IRCClient):
         self.__user_list = []
         self.__last_response = 0
         self.__bot_list = []
+        self.__channel = channel
+        print("Channel: " + self.__channel)
 
         with open("bot_list.txt", 'r') as infile:
             for each in infile:
@@ -70,8 +72,15 @@ class dootBot(irc.IRCClient):
         print(channel, user, message)
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
             user_name = user.split("!")[0]
+            user_ip = user.split("@")[1]
             if user_name in self.__bot_list:
                 return
+            if (channel == self.nickname):
+                if user_ip != admin_ip:
+                    return
+                else:
+                    self.msg(self.__channel, message)
+                    return
             for word in message.split():
                 # strip punctuations and lowercase word
                 if word == "":
