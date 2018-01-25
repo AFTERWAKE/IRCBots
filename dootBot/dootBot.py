@@ -28,13 +28,13 @@ class dootBot(irc.IRCClient):
         self.join(channel)
         self.__user_list = []
         self.__last_response = 0
-        self.__bot_list = []
+        self.__ignore = []
         self.__channel = channel
         print("Channel: " + self.__channel)
 
         with open("bot_list.txt", 'r') as infile:
             for each in infile:
-                self.__bot_list.append(each.strip())
+                self.__ignore.append(each.strip())
 
         self.__user_list = []
 
@@ -73,13 +73,26 @@ class dootBot(irc.IRCClient):
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
             user_name = user.split("!")[0]
             user_ip = user.split("@")[1]
-            if user_name in self.__bot_list:
+
+            # ignore list
+            if user_name in self.__ignore:
                 return
+
+            # pm privilages
             if (channel == self.nickname):
                 if user_ip != admin_ip:
                     return
                 else:
-                    self.msg(self.__channel, message)
+                    m = re.match(r"(\w+) (\w+)", message)
+                    if m:
+                        if m.group(1) == "mute":
+                            if m.group(2) not in self.__ignore:
+                                self.__ignore.append(m.group(2))
+                        if m.group(1) == "unmute":
+                            if m.group(2) in self.__ignore:
+                                self.__ignore.remove(m.group(2))
+                    else:
+                        self.msg(self.__channel, message)
                     return
             for word in message.split():
                 # strip punctuations and lowercase word
