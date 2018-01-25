@@ -10,7 +10,7 @@
             "Response": [
                 {
                     "Message": "That's it, you're grounded #c!",
-                    "Count": 28
+                    "Count": 29
                 }
             ]
         },
@@ -51,7 +51,8 @@
         "Doge",
         "Magic_Conch",
         "Seahorse",
-        "l"
+        "l",
+        "dootBot"
     ],
     "Ip": "coop.test.adtran.com",
     "MessageRate": 10,
@@ -107,7 +108,7 @@
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 16
+                    "Count": 17
                 }
             ]
         },
@@ -120,7 +121,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 125
+                    "Count": 195
                 }
             ]
         },
@@ -159,7 +160,7 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 0
+                    "Count": 17
                 }
             ]
         },
@@ -172,7 +173,7 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 39
+                    "Count": 42
                 }
             ]
         },
@@ -311,7 +312,7 @@
                 },
                 {
                     "Message": "My wife is on a tropical food diet, the house is full of the stuff\nIt's enough to make a mango crazy",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Our wedding was so beautiful,\neven the cake was in tiers",
@@ -319,7 +320,7 @@
                 },
                 {
                     "Message": "This graveyard looks overcrowded,\npeople must be dying to get in there",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Two satellites decided to get married\nThe wedding wasn't much, but the reception was incredible",
@@ -351,7 +352,7 @@
                 },
                 {
                     "Message": "What do you call a fake noodle?\nAn Impasta",
-                    "Count": 0
+                    "Count": 1
                 },
                 {
                     "Message": "What do you call a pony with a sore throat?\nA little horse",
@@ -379,7 +380,7 @@
                 },
                 {
                     "Message": "What do you get when you cross a snowman with a vampire\nFrostbite",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What does an annoying pepper do?\nIt get's jalapeno face",
@@ -403,7 +404,7 @@
                 },
                 {
                     "Message": "Why can't you hear a pterodactyl go to the bathroom?\nBecause the pee is silent",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why couldn't the bicycle stand up by itself?\nIt was two tired",
@@ -411,7 +412,7 @@
                 },
                 {
                     "Message": "Why did the can-crusher quit his job?\nBecause it was soda-pressing",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why did the coffee file a police report?\nIt got mugged",
@@ -439,7 +440,7 @@
                 },
                 {
                     "Message": "Singing in the shower is all fun and games until you get shampoo in your mouth...\nThen it becomes a soap opera...",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I have no children but I still tell dad jokes\nhe loves them",
@@ -471,7 +472,7 @@
                 },
                 {
                     "Message": "Say, Ernie? Would you like some ice cream?\nYes, sherbert.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why did the old lady fall in the well?\nShe couldn't see that well",
@@ -515,7 +516,7 @@
                 },
                 {
                     "Message": "Where do belly buttons go to college\nNaval Academy",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Took my kids out to a Plane Factory for a tour.\nThey said it was Boeing.",
@@ -523,7 +524,7 @@
                 },
                 {
                     "Message": "Buddhist monk walks into a pizza parlor...\nSays, \"Make me one with everything.\"",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Mums trying to stop me eating as she reckons its getting out of hand.\nLuckily, I've got a few Twix up my sleeve.",
@@ -567,11 +568,11 @@
                 },
                 {
                     "Message": "My friend threatened to turn me into the police for bludgeoning his wife to death with a Super Nintendo\nSo I had to console him as well.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why do so many people invest in Ireland?\nBecause the capital is always Dublin!",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call someone with a very colorful personality?\nA hue-man",
@@ -659,7 +660,7 @@
                 },
                 {
                     "Message": "My boy asked me to hand him his sunglasses.\nI told him I'd do it as soon as he handed me my dadglasses",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why did the melons have a formal wedding?\nBecause they cantaloupe.",
@@ -719,7 +720,7 @@
                 },
                 {
                     "Message": "My Dad and I sighed at the same time today.\nHe said \"Wow, that was sighmultaneous.\"",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What did the waning full moon say to his girlfriend?\nAt least gibbous a kiss goodbye.",
@@ -763,7 +764,7 @@
                 },
                 {
                     "Message": "What happens on a clear day in Los Angeles?\nUCLA.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why did the ragdoll change her mind?\nIt was suede!",
@@ -795,7 +796,7 @@
                 },
                 {
                     "Message": "Have you heard the rumor going around about butter?\nNevermind, I really shouldn't spread it.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "The people at my hair salon make me wanna..\nCurl up and dye.",
@@ -899,7 +900,7 @@
                 },
                 {
                     "Message": "An apple a day\nPuts the doctors out of a job",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Mary had a little lamb\nand a side of veggies for dinner.",

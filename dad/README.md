@@ -29,10 +29,16 @@
 - Attempt reconnect on drop
 - Make mom more cynical. ex: "I love mom" -> "Ok"
 - Use more \\b in regex
+- Listen briefly before speaking to see if any other bots were triggered by the message first, and ignore if one was
+- Add a list to track bots
+- Track users by name and IP
 
 #### ISSUES
 - Colon ":" can't be used in say command without specifying the destination due to how the destination is received
 - Speak counter is broken
+- im 10% luck 20% skill 15% concentrated power of will 5% pleasure 50% pain 100% reason to remember the name
+  - <dad> Hi 10%!l(MISSING)uck 20%!s(MISSING)kill 15%!c(MISSING)oncentrated power of will 5%!p(MISSING)leasure 50%!p(MISSING)ain 100%!r(MISSING)eason to remember the name, I'm dad
+- Grounding is broken?
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag
