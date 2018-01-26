@@ -32,9 +32,10 @@ class dootBot(irc.IRCClient):
         self.__channel = channel
         print("Channel: " + self.__channel)
 
-        with open("bot_list.txt", 'r') as infile:
+        with open("ignore_list.txt", 'r') as infile:
             for each in infile:
                 self.__ignore.append(each.strip())
+        print("Ignore list", self.__ignore)
 
         self.__user_list = []
 
@@ -73,27 +74,49 @@ class dootBot(irc.IRCClient):
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
             user_name = user.split("!")[0]
             user_ip = user.split("@")[1]
+            host = re.match(r"\w+!~(\w+)@", user).group(1)
 
-            # ignore list
-            if user_name in self.__ignore:
-                return
+            # admin commands
+            if user_ip == admin_ip:
+                m = re.match(self.nickname + r",*\s(\w+) (\w+)", message)
+                if m:
+                    if m.group(1) == "ignore":
+                        if m.group(2) not in self.__ignore:
+                            self.msg(self.__channel, "Now ignoring %s" % m.group(2))
+                            self.__ignore.append(m.group(2))
+                            print("Ignore list", self.__ignore)
+                            with open("ignore_list.txt", "w") as ofile:
+                                for each in self.__ignore:
+                                    ofile.write(each + "\n")
+                            return
+
+                    elif m.group(1) == "unignore":
+                        if m.group(2) in self.__ignore:
+                            self.msg(self.__channel, 
+                                    "Oh hi %s. How long have you been here?" % m.group(2))
+                            self.__ignore.remove(m.group(2))
+                            print("Ignore list", self.__ignore)
+                            with open("ignore_list.txt", "w") as ofile:
+                                for each in self.__ignore:
+                                    ofile.write(each + "\n")
+                            return
+
 
             # pm privilages
             if (channel == self.nickname):
                 if user_ip != admin_ip:
                     return
                 else:
-                    m = re.match(r"(\w+) (\w+)", message)
-                    if m:
-                        if m.group(1) == "mute":
-                            if m.group(2) not in self.__ignore:
-                                self.__ignore.append(m.group(2))
-                        if m.group(1) == "unmute":
-                            if m.group(2) in self.__ignore:
-                                self.__ignore.remove(m.group(2))
-                    else:
-                        self.msg(self.__channel, message)
+                    self.msg(self.__channel, message)
                     return
+
+            # ignore list
+            if host in self.__ignore:
+                chance = random.randint(1,100)
+                if chance <= 10:
+                    self.msg(channel, random.choice(["I don't know what that means"]))
+                return
+
             for word in message.split():
                 # strip punctuations and lowercase word
                 if word == "":
