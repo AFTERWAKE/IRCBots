@@ -44,7 +44,7 @@ class countBot(irc.IRCClient):
     hourOfLastGame = 0
     gameRunning = False
     nameList = []
-    admin = "172.22.117.48"
+    admin = ["172.22.117.48", "172.22.116.80"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -403,7 +403,7 @@ class countBot(irc.IRCClient):
         return
 
     def privmsg(self, user, channel, message):
-        if ((channel == self.chatroom) or (user.split('@')[1] == self.admin)):
+        if ((channel == self.chatroom) or (user.split('@')[1] in self.admin)):
             try:
                 if (int(message) == self.currentNumber and self.gameRunning):
                     print "{}: {}".format(user, message)
@@ -417,7 +417,7 @@ class countBot(irc.IRCClient):
             except:
                 self.automateStart()
                 if (message.startswith(self.nickname)):
-                    if (user.split('@')[1] == self.admin):
+                    if (user.split('@')[1] in self.admin):
                         self.adminCommands(message)
                     elif (user.split('!')[0] == self.getWinningUser().username):
                         self.userCommands(user.split('!')[0], message, True)
