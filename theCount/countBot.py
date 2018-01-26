@@ -32,23 +32,29 @@ from random import (
 from datetime import datetime
 from re import match
 from sys import exit
+import time
 
 
 class countBot(irc.IRCClient):
     nickname = "theCount"
     chatroom = "#main"
     scoresFilePath = "./scores.txt"
+    mutedFilePath = "./muted.txt"
     numberForGame = 17
     currentNumber = 0
     numberPlayLimit = 0
     hourOfLastGame = 0
     gameRunning = False
     nameList = []
-    admin = "172.22.117.48"
+    admin = ["172.22.117.48", "172.22.116.80"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     numberForAlphabet = -1
+    botList = ["~dad", "~mom", "~nodebot", "~Magic_Con", "~Seahorse", "~dootbot"]
+    mutedList = []
+    lastPinged = ''
+    muteMode = ''
 
     def __init__(self):
         currentHour = int(self.getCurrentTime().split(':')[0])
@@ -70,6 +76,11 @@ class countBot(irc.IRCClient):
             print 'Dictionary failed to load!'
             print 'Make sure you\'re running this on Linux!'
             exit('Dictionary fail')
+        try:
+            self.restoreMutedUsersFromFile()
+            print 'Muted Users Restored'
+        except:
+            print 'No Muted Users Found'
 
     def signedOn(self):
         self.join(self.chatroom)
@@ -214,6 +225,14 @@ class countBot(irc.IRCClient):
                 self.quit(message[len(self.nickname)+6:])
             else:
                 self.quit('*ah..ah..ah :\'( goodbye.')
+        elif (message.startswith(self.nickname + ', mute')):
+            self.mute(message[len(self.nickname)+7:].split(" ")[0])
+        elif (message.startswith(self.nickname + ' mute')):
+            self.mute(message[len(self.nickname)+6:].split(" ")[0])
+        elif (message.startswith(self.nickname + ', unmute')):
+            self.unmute(message[len(self.nickname)+9:].split(" ")[0])
+        elif (message.startswith(self.nickname + ' unmute')):
+            self.unmute(message[len(self.nickname)+8:].split(" ")[0])
         else:
             self.userCommands('Noah Siano', message)
 
@@ -376,6 +395,10 @@ class countBot(irc.IRCClient):
         saveFile.close()
         return
 
+    def saveMuted(self):
+        saveFile = open(self.mutedFilePath, 'w')
+        saveFile.write("\n".join(self.mutedList))
+
     def restoreUsersFromFile(self):
         returnFile = open(self.scoresFilePath, 'r')
         users = returnFile.readlines()
@@ -388,6 +411,17 @@ class countBot(irc.IRCClient):
             user = user.split(':')
             index = self.handleUser(user[0])
             self.nameList[index].timesWon = int(user[1])
+
+    def restoreMutedUsersFromFile(self):
+        returnFile = open(self.mutedFilePath, 'r')
+        users = returnFile.readlines()
+        returnFile.close()
+        self.restoreMuted(users)
+        return
+
+    def restoreMuted(self, users):
+        for user in users:
+            self.mutedList.append(user)
 
     def userRenamed(self, oldname, newname):
         if (self.gameRunning):
@@ -402,14 +436,57 @@ class countBot(irc.IRCClient):
                  '{} {} is what we\'re on.'.format(self.currentNumber, self.wordForGame))
         return
 
+    def isMuted(self, name):
+        self.msg(self.chatroom, name + ", someone told me not to trust you... " +
+                 '{} {} is what we\'re on.'.format(self.currentNumber, self.wordForGame))
+        return
+
+    def mute(self, name):
+        self.muteMode = 'mute'
+        self.ping(name)
+        return
+
+    def mute2(self, name):
+        ip = self.lastPinged.split('@')[1]
+        self.msg(self.chatroom, "I seem to have lost a little bit of my hearing... It's probably nothing.")
+        self.mutedList.append(ip)
+        self.saveMuted()
+
+    def pong(self, user, secs):
+        self.lastPinged = user
+        if (self.muteMode == 'mute'):
+            self.mute2(user)
+        elif (self.muteMode == 'unmute'):
+            self.unmute2(user)
+        self.muteMode = ''
+
+    def unmute(self, name):
+        self.muteMode = 'unmute'
+        self.ping(name)
+        return
+
+    def unmute2(self, name):
+        ip = self.lastPinged.split('@')[1]
+        try:
+            self.mutedList.remove(ip)
+            self.msg(self.chatroom, "Doc says my hearing is getting better!")
+        except:
+            self.msg(self.chatroom, "...really")
+        self.saveMuted()
+
     def privmsg(self, user, channel, message):
-        if ((channel == self.chatroom) or (user.split('@')[1] == self.admin)):
+        if ((channel == self.chatroom) or (user.split('@')[1] in self.admin)):
             try:
                 if (int(message) == self.currentNumber and self.gameRunning):
                     print "{}: {}".format(user, message)
-                    hostname = user.split('!')[1].split('@')[0]
-                    if (hostname == '~nodebot'):
+                    hostname = user.split('!')[1].split('@')
+                    if (hostname[0] in self.botList):
+                        print("Bot!")
                         self.isABot(user.split('!')[0])
+                        return
+                    if (hostname[1] in self.mutedList):
+                        print("Muted.")
+                        self.isMuted(user.split('!')[0])
                         return
                     self.playGame(user.split('!')[0])
                 else:
@@ -417,8 +494,12 @@ class countBot(irc.IRCClient):
             except:
                 self.automateStart()
                 if (message.startswith(self.nickname)):
-                    if (user.split('@')[1] == self.admin):
+                    if (user.split('@')[1] in self.admin):
                         self.adminCommands(message)
+                    elif (user.split('@')[1] in self.mutedList):
+                        return
+                    elif (user.split('!')[1] in self.botList):
+                        return
                     elif (user.split('!')[0] == self.getWinningUser().username):
                         self.userCommands(user.split('!')[0], message, True)
                     else:
