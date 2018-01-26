@@ -70,6 +70,11 @@ class dootBot(irc.IRCClient):
         if user not in self.__user_list:
             self.__user_list.append(user.lower())
 
+        # pm privilages
+        if (channel != self.__channel):
+            if user_ip != admin_ip:
+                return
+
         print(channel, user, message)
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
             user_name = user.split("!")[0]
@@ -101,14 +106,10 @@ class dootBot(irc.IRCClient):
                                     ofile.write(each + "\n")
                             return
 
+                    elif m.group(1) == "say":
+                        self.msg(self.__channel, message)
+                        return
 
-            # pm privilages
-            if (channel == self.nickname):
-                if user_ip != admin_ip:
-                    return
-                else:
-                    self.msg(self.__channel, message)
-                    return
 
             # ignore list
             if host in self.__ignore:
