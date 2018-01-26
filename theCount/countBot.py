@@ -49,6 +49,7 @@ class countBot(irc.IRCClient):
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     numberForAlphabet = -1
+    botList = ["~dad", "~mom", "~nodebot", "~Magic_Con", "~Seahorse", "~dootbot"]
 
     def __init__(self):
         currentHour = int(self.getCurrentTime().split(':')[0])
@@ -407,8 +408,9 @@ class countBot(irc.IRCClient):
             try:
                 if (int(message) == self.currentNumber and self.gameRunning):
                     print "{}: {}".format(user, message)
-                    hostname = user.split('!')[1].split('@')[0]
-                    if (hostname == '~nodebot'):
+                    hostname = user.split('!')[1].split('@')
+                    if (hostname[0] in self.botList):
+                        print("Bot!")
                         self.isABot(user.split('!')[0])
                         return
                     self.playGame(user.split('!')[0])
@@ -419,6 +421,8 @@ class countBot(irc.IRCClient):
                 if (message.startswith(self.nickname)):
                     if (user.split('@')[1] in self.admin):
                         self.adminCommands(message)
+                    elif (user.split('!')[1] in self.botList):
+                        return
                     elif (user.split('!')[0] == self.getWinningUser().username):
                         self.userCommands(user.split('!')[0], message, True)
                     else:
