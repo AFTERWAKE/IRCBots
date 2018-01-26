@@ -12,6 +12,16 @@ from twisted.internet import defer
 with open(r'Magic_Conch.json') as f:
     config = json.load(f)
 
+try:
+    with open(r'../admin_ip.txt', 'r') as infile:
+        admin_ip = infile.readline().strip()
+except (IOError):
+    admin_ip = ''
+finally:
+    if admin_ip != '':
+        print("Admin IP:", admin_ip)
+    else:
+        print("WARNING: No admin IP recognized")
 
 class theMagicConch(irc.IRCClient):
     nickname = config["nick"]
@@ -20,8 +30,16 @@ class theMagicConch(irc.IRCClient):
         self.join(config["channel"])
         self.pokemon_list = self.get_pokemon()
         self._namescallback = {}
+        self.__ignore = []
+        self.__channel = config["channel"]
+        print("Channel: " + self.__channel)
 
-        print(self.msg("NAMES %s" % config["channel"]))
+        with open("ignore_list.txt", 'r') as infile:
+            for each in infile:
+                self.__ignore.append(each.strip())
+        print("Ignore list", self.__ignore)
+
+        # print(self.msg("NAMES %s" % config["channel"]))  #idk what this was
            
     def luserClient(self, info):
         print(info)
@@ -39,13 +57,58 @@ class theMagicConch(irc.IRCClient):
         print(oldname, "is now known as", newname)
 
     def privmsg(self, user, channel, message):
-        user = user.split('!')[0]
         print(channel, user + ":", message)
+        user_ip = user.split("@")[1]
+        host = re.match(r"\w+!~(\w+)@", user).group(1)
+        user = user.split('!')[0]
+
+        # admin commands
+        if user_ip == admin_ip:
+            m = re.match(self.nickname + r",*\s(\w+) (\w+)", message)
+            if m:
+                if m.group(1) == "ignore":
+                    if m.group(2) not in self.__ignore:
+                        self.msg(self.__channel, "Now ignoring %s" % m.group(2))
+                        self.__ignore.append(m.group(2))
+                        print("Ignore list", self.__ignore)
+                        with open("ignore_list.txt", "w") as ofile:
+                            for each in self.__ignore:
+                                ofile.write(each + "\n")
+                        return
+
+                elif m.group(1) == "unignore":
+                    if m.group(2) in self.__ignore:
+                        self.msg(self.__channel, 
+                                "Oh hi %s. How long have you been here?" % m.group(2))
+                        self.__ignore.remove(m.group(2))
+                        print("Ignore list", self.__ignore)
+                        with open("ignore_list.txt", "w") as ofile:
+                            for each in self.__ignore:
+                                ofile.write(each + "\n")
+                        return
+
+        # bypass pms
+        if channel == config["nick"]:
+            if user_ip != admin_ip:
+                return
+            else:
+                self.msg(config["channel"], message)
+                return
+
+        # ignore list
+        if host in self.__ignore:
+            '''
+            chance = random.randint(1,100)
+            if chance <= 10:
+                self.msg(channel, random.choice(["I don't know what that means"]))
+            '''
+            return
 
         for trigger in config["triggers"]:
             for expression in trigger["message"]:
                 if re.match(expression, message):
                     response = random.choice(trigger["responses"])
+                    '''
                     if re.match(r"who:*(\w*)", response):
                         m = re.match(r"who:*(\w*)", response)
 
@@ -80,6 +143,10 @@ class theMagicConch(irc.IRCClient):
                     else:
                         self.msg(channel, response)
                         return
+                    '''
+                    self.msg(channel, response)
+                    return
+
 
     def names(self, channel):
         channel = channel.lower()
@@ -143,3 +210,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+'''
+TODO:
+    - throttle
+    - fix who
+'''

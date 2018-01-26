@@ -6,18 +6,6 @@
     "triggers": [
         {
             "pattern": "^.*:(?P<message>.*)$",
-            "message": [".*Magic[ _]Conch,.*who.*$"],
-            "isAction": false,
-            "responses":["who",
-                         "who:I think it was %s...",
-                         "who:I believe it was %s",
-                         "who:definitely %s!",
-                         "who:absolutely %s!",
-                         "who:not %s",
-                         "who:definitely not %s"]
-        },
-        {
-            "pattern": "^.*:(?P<message>.*)$",
             "message": [
                 ".*Magic[ _]Conch,.*\\s*how\\smany.*\\?.*$",
                 ".*Magic[ _]Conch,.*\\s*how\\smuch.*\\?.*$"
