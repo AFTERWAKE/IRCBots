@@ -8,7 +8,7 @@ import string
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#test"
+channel = "#main"
 
 try:
     with open("../admin_ip.txt", "r") as infile:
@@ -112,13 +112,15 @@ class dootBot(irc.IRCClient):
 
             # ignore list
             if host in self.__ignore:
+                '''
                 chance = random.randint(1,100)
                 if chance <= 10:
                     self.msg(channel, random.choice(["I don't know what that means"]))
+                '''
                 return
 
+            # triggers/responses
             for word in message.split():
-                # strip punctuations and lowercase word
                 if word == "":
                     pass
 
