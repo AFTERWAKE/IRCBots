@@ -54,7 +54,7 @@
         "l",
         "dootBot"
     ],
-    "Ip": "localhost",
+    "IP": "localhost",
     "MessageRate": 10,
     "MomName": "mom",
     "MomSpeak": [
@@ -173,7 +173,7 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 42
+                    "Count": 43
                 }
             ]
         },
@@ -199,7 +199,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 41
+                    "Count": 45
                 }
             ]
         },
@@ -916,7 +916,7 @@
                 },
                 {
                     "Message": "Why does everybody hate averages?\nBecause they're mean",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I like the theory of the death penalty\nBut I have a problem with the execution.",
