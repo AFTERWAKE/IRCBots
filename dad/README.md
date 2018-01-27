@@ -34,7 +34,7 @@
 - Track users by name and IP
 
 #### ISSUES
-- when multiple bots are running (both mom and dad), config doesn't seem to update with a bot's response count until the other bot gives a response, and vice-versa
+- None!?!
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag

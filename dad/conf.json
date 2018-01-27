@@ -67,7 +67,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 21
+                    "Count": 22
                 }
             ]
         }
@@ -121,7 +121,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 223
+                    "Count": 224
                 }
             ]
         },
