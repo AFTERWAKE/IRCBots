@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 285
+                    "Count": 287
                 }
             ]
         },
@@ -45,7 +45,7 @@
         "#main"
     ],
     "DadName": "dad",
-    "Debug": false,
+    "Debug": true,
     "Grounded": [
         "theCount",
         "Doge",
@@ -54,7 +54,7 @@
         "l",
         "dootBot"
     ],
-    "Ip": "coop.test.adtran.com",
+    "Ip": "localhost",
     "MessageRate": 10,
     "MomName": "mom",
     "MomSpeak": [
@@ -67,7 +67,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 16
+                    "Count": 21
                 }
             ]
         }
@@ -82,7 +82,7 @@
             "Response": [
                 {
                     "Message": "good morning #u!",
-                    "Count": 25
+                    "Count": 27
                 }
             ]
         },
@@ -121,7 +121,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 195
+                    "Count": 199
                 }
             ]
         },

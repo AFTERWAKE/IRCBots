@@ -34,11 +34,9 @@
 - Track users by name and IP
 
 #### ISSUES
-- Colon ":" can't be used in say command without specifying the destination due to how the destination is received
-- Speak counter is broken
+- when multiple bots are running (both mom and dad), config doesn't seem to update with a bot's response count until the other bot gives a response, and vice-versa
 - im 10% luck 20% skill 15% concentrated power of will 5% pleasure 50% pain 100% reason to remember the name
   - <dad> Hi 10%!l(MISSING)uck 20%!s(MISSING)kill 15%!c(MISSING)oncentrated power of will 5%!p(MISSING)leasure 50%!p(MISSING)ain 100%!r(MISSING)eason to remember the name, I'm dad
-- Grounding is broken?
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag
