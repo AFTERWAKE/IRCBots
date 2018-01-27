@@ -285,7 +285,7 @@ func PerformAction(reply Reply, speak SpeakData,
 func HandleTextReplacement(message *hbot.Message, response ResponseData,
 	variable string) string {
 	if strings.Contains(response.Message, "#a") {
-		// message.Content = AddArticle(message.Content)
+		// TODO this will probably need to return just the correct article at some point
 		variable = AddArticle(variable)
 		response.Message = strings.Replace(response.Message, "#a ", "", -1)
 	}
@@ -332,7 +332,6 @@ func FormatReply(message *hbot.Message, admin_speak bool, s_index int) Reply {
 		log.Debug(variable)
 	}
 	response.Message = HandleTextReplacement(message, response, variable)
-	log.Debug(fmt.Sprintf("response is %s", response.Message))
 	// If reply is non-empty, then bot will send it, so increment response count
 	if response.Message != "" {
 		speakData.Response[rand_index].Count++
@@ -364,7 +363,7 @@ func PerformReply(irc *hbot.Bot, m *hbot.Message, admin_speak bool) bool {
 			for _, line := range reply.Content {
 				// Make sure line is non-empty before sending
 				if len(line) > 0 {
-					irc.Msg(reply.To, fmt.Sprintf(line))
+					irc.Msg(reply.To, line)
 					numSent++
 				}
 				// Make sure there is a timeout between multiple lines in a reply
