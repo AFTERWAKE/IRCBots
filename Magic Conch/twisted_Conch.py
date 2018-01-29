@@ -33,6 +33,7 @@ class theMagicConch(irc.IRCClient):
         self.__ignore = []
         self.__channel = config["channel"]
         print("Channel: " + self.__channel)
+        print("Nick: " + self.nickname)
 
         with open("ignore_list.txt", 'r') as infile:
             for each in infile:
@@ -58,16 +59,13 @@ class theMagicConch(irc.IRCClient):
 
     def privmsg(self, user, channel, message):
         print(channel, user + ":", message)
-        # bypass pms
-        if channel == config["nick"]:
-            return
         user_ip = user.split("@")[1]
         host = re.match(r"\w+!~(\w+)@", user).group(1)
         user = user.split('!')[0]
 
         # admin commands
         if user_ip == admin_ip:
-            m = re.match(self.nickname + r",*\s(\w+) (\w+)", message)
+            m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
             if m:
                 if m.group(1) == "ignore":
                     if m.group(2) not in self.__ignore:
@@ -90,10 +88,13 @@ class theMagicConch(irc.IRCClient):
                                 ofile.write(each + "\n")
                         return
 
-                elif m.group(1) == "say":
-                    self.msg(self.__channel, message)
+                elif m.group(1) == "say": 
+                    self.msg(self.__channel, m.group(2))
                     return
 
+        # bypass pms
+        if channel == config["nick"]:
+            return
 
         # ignore list
         if host in self.__ignore:

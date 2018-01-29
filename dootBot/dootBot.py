@@ -75,14 +75,14 @@ class dootBot(irc.IRCClient):
             self.__user_list.append(user.lower())
 
         # pm privilages
-        if (channel == self.__channel) and user_ip != admin_ip:
+        if (channel == self.nickname) and user_ip != admin_ip:
             return
 
         print(channel, user, message)
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
             # admin commands
             if user_ip == admin_ip:
-                m = re.match(self.nickname + r",*\s(\w+) (\w+)", message)
+                m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
                 if m:
                     if m.group(1) == "ignore":
                         if m.group(2) not in self.__ignore:
@@ -105,8 +105,8 @@ class dootBot(irc.IRCClient):
                                     ofile.write(each + "\n")
                             return
 
-                    elif m.group(1) == "say":
-                        self.msg(self.__channel, message)
+                    elif m.group(1) == "say": 
+                        self.msg(self.__channel, m.group(2))
                         return
 
 
@@ -120,12 +120,10 @@ class dootBot(irc.IRCClient):
                 return
 
             # triggers/responses
-            for word in message.split():
-                if word == "":
-                    pass
+            else:
 
                 # match rip
-                elif re.search(r"(\brip\b)", message.lower()):
+                if re.search(r"(\brip\b)", message.lower()):
                     responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip", "RIP"]
                     self.msg(channel, random.choice(responses))
                     self.__last_response = temp_time
