@@ -66,21 +66,20 @@ class dootBot(irc.IRCClient):
             self.__user_list.append(newname.lower())
 
     def privmsg(self, user, channel, message):
+        user_name = user.split("!")[0]
+        user_ip = user.split("@")[1]
+        host = re.match(r"\w+!~(\w+)@", user).group(1)
+
         temp_time = time.time()
         if user not in self.__user_list:
             self.__user_list.append(user.lower())
 
         # pm privilages
-        if (channel != self.__channel):
-            if user_ip != admin_ip:
-                return
+        if (channel == self.__channel) and user_ip != admin_ip:
+            return
 
         print(channel, user, message)
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
-            user_name = user.split("!")[0]
-            user_ip = user.split("@")[1]
-            host = re.match(r"\w+!~(\w+)@", user).group(1)
-
             # admin commands
             if user_ip == admin_ip:
                 m = re.match(self.nickname + r",*\s(\w+) (\w+)", message)
