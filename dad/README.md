@@ -34,7 +34,7 @@
 - Track users by name and IP
 
 #### ISSUES
-- None!?!
+- Ungrounding leaves an empty string behind
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag
