@@ -10,7 +10,7 @@
             "Response": [
                 {
                     "Message": "That's it, you're grounded #c!",
-                    "Count": 29
+                    "Count": 30
                 }
             ]
         },
@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 285
+                    "Count": 330
                 }
             ]
         },
@@ -36,23 +36,24 @@
             "Response": [
                 {
                     "Message": "#c, you're now ungrounded. Don't let me catch you misbehaving again.",
-                    "Count": 18
+                    "Count": 19
                 }
             ]
         }
     ],
     "Channels": [
-        "#main"
+        "#rents"
     ],
     "DadName": "dad",
-    "Debug": false,
+    "Debug": true,
     "Grounded": [
         "theCount",
         "Doge",
         "Magic_Conch",
         "Seahorse",
         "l",
-        "dootBot"
+        "dootBot",
+        ""
     ],
     "Ip": "coop.test.adtran.com",
     "MessageRate": 10,
@@ -67,7 +68,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 16
+                    "Count": 22
                 }
             ]
         }
@@ -82,7 +83,7 @@
             "Response": [
                 {
                     "Message": "good morning #u!",
-                    "Count": 25
+                    "Count": 30
                 }
             ]
         },
@@ -95,7 +96,7 @@
             "Response": [
                 {
                     "Message": "Here is a list of grounded users:\n#c",
-                    "Count": 25
+                    "Count": 27
                 }
             ]
         },
@@ -108,7 +109,7 @@
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 17
+                    "Count": 19
                 }
             ]
         },
@@ -121,7 +122,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 195
+                    "Count": 228
                 }
             ]
         },
@@ -147,7 +148,7 @@
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 21
+                    "Count": 22
                 }
             ]
         },
@@ -160,7 +161,7 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 17
+                    "Count": 18
                 }
             ]
         },
@@ -173,7 +174,7 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 42
+                    "Count": 45
                 }
             ]
         },
@@ -186,7 +187,7 @@
             "Response": [
                 {
                     "Message": "Poof, you're #a #v!",
-                    "Count": 20
+                    "Count": 22
                 }
             ]
         },
@@ -199,7 +200,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 41
+                    "Count": 50
                 }
             ]
         },
@@ -256,7 +257,7 @@
                 },
                 {
                     "Message": "I am terrified of elevators,\nI'm going to start taking steps to avoid them",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I bought shoes from a drug dealer once\nI don't know what he laced them with, but I was tripping all day",
@@ -480,7 +481,7 @@
                 },
                 {
                     "Message": "What's the difference between a coyote and a flea?\nOne howls on the prairie and the other prowls on the hairy.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "A judge sentenced me to take a guy out to dinner.\nIt was a court mandate",
@@ -544,7 +545,7 @@
                 },
                 {
                     "Message": "A dentist is working on a judge and promises one thing....\n....to take the tooth, the whole tooth, and nothing but the tooth.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What did the green grape say to the purple grape?\nBREATHE!",
@@ -664,7 +665,7 @@
                 },
                 {
                     "Message": "Why did the melons have a formal wedding?\nBecause they cantaloupe.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Was Noah an...\n...ark-itect?",
@@ -672,7 +673,7 @@
                 },
                 {
                     "Message": "Why did the 2 Egyptian farters get along so well?\nBecause they had a Tutankhamen.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I said to my wife, \"They say that childbirth is the most painful thing someone can experience...\"\nNow, maybe I was too young to remember, but I didn't think it hurt that much.",
@@ -740,7 +741,7 @@
                 },
                 {
                     "Message": "I just invented a machine that trims window coverings.\nPrepare to have your blinds mowed.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "To the mathematicians who thought of the idea of zero...\nThanks for nothing.",
@@ -752,7 +753,7 @@
                 },
                 {
                     "Message": "What do you call a van on fire?\nA vanpyre.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I'm not huge into puns.\nSometimes eye roll with it.",
@@ -788,7 +789,7 @@
                 },
                 {
                     "Message": "I had to take down some scaffold that was in the way at work.\nIt held me up long enough.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I broke my finger today..\n..but on the other hand I'm completely fine.",
@@ -808,7 +809,7 @@
                 },
                 {
                     "Message": "I spent a whole day making a belt with my old watches\nIt was a waist of time",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I've said it before and I'll say it again\nI've said it before",
@@ -908,7 +909,7 @@
                 },
                 {
                     "Message": "Why do sharks swim in salt water?\nBecause pepper water makes them sneeze.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Did you hear the good news about O.J.?\nIt is part of a complete breakfast",
@@ -916,7 +917,7 @@
                 },
                 {
                     "Message": "Why does everybody hate averages?\nBecause they're mean",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I like the theory of the death penalty\nBut I have a problem with the execution.",
@@ -948,11 +949,11 @@
                 },
                 {
                     "Message": "What do you call a tree who's limbs fell off in a storm?\nAn amputree",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "One time I ate a whole bunch of cheese in one sitting....\nWhere there's a wheel there's a way.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I don't think I can trust my pillow.\nIt's always lying behind my back.",
