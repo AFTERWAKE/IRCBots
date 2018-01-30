@@ -11,7 +11,7 @@ from twisted.internet import defer
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#test"
+channel = "#main"
 
 with open(r'Magic_Conch.json') as f:
     config = json.load(f)
@@ -33,7 +33,7 @@ class theMagicConch(irc.IRCClient):
     def signedOn(self):
         self.join(channel)
         self.pokemon_list = self.get_pokemon()
-        self.roomlist = []
+        self.user_list = []
         self.__ignore = []
         self.__channel = channel
         print("Channel: " + self.__channel)
@@ -61,14 +61,14 @@ class theMagicConch(irc.IRCClient):
 
     def userRenamed(self, oldname, newname):
         print(oldname, "is now known as", newname)
-        for each in self.roomlist:
+        for each in self.user_list:
             if each["nick"] == oldname:
                 each["nick"] = newname
                 break
 
     def ignore(self, nick):
         # look up user in room list
-        for each in self.roomlist:
+        for each in self.user_list:
             if each["nick"] == nick:
                 host = each["host"]
                 break
@@ -85,7 +85,7 @@ class theMagicConch(irc.IRCClient):
 
     def unignore(self, nick):
         # look up user in room list
-        for each in self.roomlist:
+        for each in self.user_list:
             if each["nick"] == nick:
                 host = each["host"]
                 break
@@ -145,7 +145,7 @@ class theMagicConch(irc.IRCClient):
                         else:
                             msg = m.group(1)
 
-                        msg = msg % random.choice(self.roomlist)["nick"]
+                        msg = msg % random.choice(self.user_list)["nick"]
                         self.msg(channel, msg)
                         return
 
@@ -184,13 +184,13 @@ class theMagicConch(irc.IRCClient):
         usr["nick"] = nargs[1][5]
         usr["host"] = nargs[1][2]
         usr["ip"] = nargs[1][3]
-        self.roomlist.append(usr)
+        self.user_list.append(usr)
         
 
     def irc_RPL_ENDOFWHO(self, *nargs):
         "Called when WHO output is complete"
         print "Users:"
-        for each in self.roomlist:
+        for each in self.user_list:
             print each["nick"]
 
     def irc_unknown(self, prefix, command, params):
