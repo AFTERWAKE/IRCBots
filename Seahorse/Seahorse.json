@@ -35,20 +35,6 @@
             ]
         },
         {
-            "pattern": "^:(?P<nick>\\w+)!~*(?P<real>[\\w @\\.]+)\\s*PRIVMSG\\s*(.*):(?P<message>.*)$",
-            "nick": [
-                "mhill"
-            ],
-            "message": [
-                "\\s*quit\\s*"
-            ],
-            "isAction": false,
-            "isCommand": true,
-            "responses": [
-                "quit"
-            ]
-        },
-        {
             "pattern": "^.*:(?P<message>.*)$",
             "message": [
                 "(?!Follow the seahorse).*Seahorse",
