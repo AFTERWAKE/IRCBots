@@ -468,6 +468,7 @@ class countBot(irc.IRCClient):
         "(Server, [user-who-called-whois, username, hostname, IP, '*', realname])"
         ip = nargs[1][3]
         user = nargs[1][1]
+        username = nargs[1][2].split("~")[1]
         print 'WHOIS:', ip
         self.lastWHOIS = ip
         if (self.muteMode == 'mute'):
@@ -475,7 +476,7 @@ class countBot(irc.IRCClient):
         elif (self.muteMode == 'unmute'):
             self.unmute2(ip)
         elif (self.muteMode == 'just a whois'):
-            self.msg(self.chatroom, "%s's IP address is %s" % (user, ip))
+            self.msg(self.chatroom, "%s's username is %s and their IP address is %s" % (user, username, ip))
         self.muteMode = ''
 
     def mute2(self, ip):
