@@ -21,8 +21,8 @@ finally:
     else:
         print("WARNING: No Admin IP recognized")
 
-class dootBot(irc.IRCClient):
-    nickname = "dootBot"
+class memeBot(irc.IRCClient):
+    nickname = "MemeBot"
 
     def signedOn(self):
         self.join(channel)
@@ -196,7 +196,7 @@ class dootBot(irc.IRCClient):
 
 def main():
     f = protocol.ClientFactory()
-    f.protocol = dootBot
+    f.protocol = memeBot
 
     reactor.connectTCP(serv_ip, serv_port, f)
     reactor.run()
