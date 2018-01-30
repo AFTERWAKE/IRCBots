@@ -16,3 +16,6 @@ Source code for bots used in the coop IRC @ coop.test.adtran.com
 #### dad
 - For all things dad
 - Dad is in Golang now! [Original Repo](https://github.com/alecwest/godaddyirc.git)
+#### pointBot
+- A bot that keeps track of arbitrary points given out by IRC users.
+- Based off of theCount (Twisted IRC Client)
