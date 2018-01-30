@@ -51,7 +51,7 @@ class countBot(irc.IRCClient):
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     numberForAlphabet = -1
-    botList = ["~dad", "~mom", "~nodebot", "~Magic_Con", "~Seahorse", "~dootbot"]
+    botList = ["~dad", "~mom", "~nodebot", "~Magic_Con", "~Seahorse", "~dootbot", "~pointbot"]
     mutedList = []
     lastPinged = ''
     muteMode = ''
