@@ -1,3 +1,7 @@
+[![Made for IRC](https://img.shields.io/badge/Made%20for-IRC-brightgreen.svg)]()
+[![PRs Welcome](https://img.shields.io/badge/Pull%20Requests-Welcome-234bff.svg)]()
+[![Made with love](https://img.shields.io/badge/Built%20with-❤-f41621.svg)]()
+
 # IRCbots
 Source code for bots used in the coop IRC @ coop.test.adtran.com
 
