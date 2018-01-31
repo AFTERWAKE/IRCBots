@@ -345,25 +345,23 @@ class pointBot(irc.IRCClient):
 			sign = validMsg.group(1)
 			number = validMsg.group(2)
 			target = validMsg.group(4)
+			targetIndex = self.getUserIndex(target)
 			
-			# No self-points, and can't send more gift points than you currently have, can't send 0 points
+			# No self-points, can't send more gift points than you currently have, can't send 0 points, can't send to unknown/ignored user
 			if int(number) == 0:
 				self.msg(sender, "Nice try, dingus")
 				return
 			if self.userList[senderIndex].nick == target:
 				self.msg(sender, "Nice try, dingus")
 				return
+			if (targetIndex == -1) or (self.userList[targetIndex].nick in self.ignoreList):
+				self.msg(sender, "User " + target + " is not in the game. No points exchanged.")
+				return
 			if self.userList[senderIndex].giftPoints <= 0:
 				self.msg(sender, "You are out of gift points for the day! No points exchanged.")
 				return
 			if self.userList[senderIndex].giftPoints < int(number):
-				self.msg(sender, "You only have " + str(self.userList[userIndex].giftPoints) + " gift points remaining! No points exchanged.")
-				return
-			
-			# Can't send to a user who isn't in the game or has been ignored
-			targetIndex = self.getUserIndex(target)
-			if (targetIndex == -1) or (self.userList[targetIndex].nick in self.ignoreList):
-				self.msg(sender, "User " + target + " is not in the game. No points exchanged.")
+				self.msg(sender, "You only have " + str(self.userList[senderIndex].giftPoints) + " gift points remaining! No points exchanged.")
 				return
 				
 			if sign == '+':
