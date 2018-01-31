@@ -3,25 +3,25 @@ This is a simple IRC bot that uses the twisted IRC client. It keeps track of poi
 through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out every calendar day.
 
 ## Admin Commands:
-- pointBot, start (starts the point game [i.e. allows point exchanges])
-- pointBot, stop (ends game [i.e. disallows point exchanges])
-- pointBot, auto (automatically starts and stops the point game based on the time of day [see privmsg()])
-- pointBot, reset (refreshes user gift point totals)
-- pointBot, save (saves list of winners || also gets saved at the end of every day)
-- pointBot, restore (restores winners from save file || also restores automatically on run)
-- pointBot, say <msg> (sends message to channel as the bot)
-- pointBot, setpts <nick/all> <points> (set points for user)
-- pointBot, setgp <nick/all> <points> (set points for user)
-- pointBot, del <nick> (delete a user from the points table)
-- pointBot, ignore <nick> (adds user to the ignore list; removes from game)
-- pointBot, unignore <nick>
+- `pointBot, start` (starts the point game [i.e. allows point exchanges])
+- `pointBot, stop` (ends game [i.e. disallows point exchanges])
+- `pointBot, auto` (automatically starts and stops the point game based on the time of day [see privmsg()])
+- `pointBot, reset` (refreshes user gift point totals)
+- `pointBot, save` (saves list of winners || also gets saved at the end of every day)
+- `pointBot, restore` (restores winners from save file || also restores automatically on run)
+- `pointBot, say <msg>` (sends message to channel as the bot)
+- `pointBot, setpts <nick/all> <points>` (set points for user)
+- `pointBot, setgp <nick/all> <points>` (set points for user)
+- `pointBot, del <nick>` (delete a user from the points table)
+- `pointBot, ignore <nick>` (adds user to the ignore list; removes from game)
+- `pointBot, unignore <nick>` (removes a user from the ignore list; adds back to game)
 		 
  ## User Commands
-- pointBot, help (command list)
-- pointBot, rules (bot introduction)
-- pointBot, points (list of active players and points)
-- pointBot, unsub (adds user to the ignore list)
-- +/-<pts> [to] <nick> [reason]
+- `pointBot, help` (command list)
+- `pointBot, rules` (bot introduction)
+- `pointBot, points` (list of active players and points)
+- `pointBot, unsub` (adds user to the ignore list)
+- `+/-<pts> [to] <nick> [reason]` (point exchange)
 		 
 ## Usage Notes
 #### Setup
