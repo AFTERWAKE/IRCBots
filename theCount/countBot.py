@@ -55,6 +55,7 @@ class countBot(irc.IRCClient):
     mutedList = []
     lastWHOIS = ''
     muteMode = ''
+    timeLastCommand = 0
 
     def __init__(self):
         currentHour = int(self.getCurrentTime().split(':')[0])
@@ -519,9 +520,15 @@ class countBot(irc.IRCClient):
                     elif (user.split('!')[1] in self.botList):
                         return
                     elif (user.split('!')[0] == self.getWinningUser().username):
-                        self.userCommands(user.split('!')[0], message, True)
+                        timeRightNow = time.time()
+                        if (timeRightNow - self.timeLastCommand) > 5:
+                            self.timeLastCommand = time.time()
+                            self.userCommands(user.split('!')[0], message, True)
                     else:
-                        self.userCommands(user.split('!')[0], message)
+                        timeRightNow = time.time()
+                        if (timeRightNow - self.timeLastCommand) > 5:
+                            self.timeLastCommand = time.time()
+                            self.userCommands(user.split('!')[0], message)
         else:
             print user
         return
