@@ -82,7 +82,7 @@ class pointBot(irc.IRCClient):
 			ip = user.split('@')[1]
 			if nick in self.botList:
 				return
-			if (message.startswith(self.nickname + ", ")):
+			if (message.startswith("{}, ".format(self.nickname))):
 				if (ip == self.adminIP):
 					self.adminCommands(message.split(", ")[1])
 				else:
@@ -108,11 +108,11 @@ class pointBot(irc.IRCClient):
 			self.userList[index].nick = newname
 		return
 	
-	# Calls the /who command to get a list of users; used when we restore to grab everyone in the channel
+	# Calls the /who command to get a list of users; used when we join/a new user joins the channel
 	def irc_RPL_WHOREPLY(self, prefix, params):
 		ip = params[3]
 		nick = params[5]
-		if (nick not in self.botList) and (ip not in self.ignoreList):
+		if (nick not in self.botList):
 			for user in self.userList:
 				# Account for nick updates since last check
 				if (ip == user.ip):
@@ -144,6 +144,8 @@ class pointBot(irc.IRCClient):
 			self.restore()
 		elif (message.startswith("say ")):
 			self.msg(self.channel, message.split("say ")[1])
+		elif (message.startswith("me ")):
+			self.describe(self.channel, message.split("me ")[1])
 		elif (message.startswith("setpts ")):
 			setMsg = message.split(" ")
 			self.setUserPoints(setMsg[1], setMsg[2])
@@ -164,8 +166,8 @@ class pointBot(irc.IRCClient):
 		if (message == "help"):
 			if self.getCurrentTime() != self.lastHelp:
 				print("Admin Commands: start, stop, auto, reset, save, restore, say <msg>, setpts <user/all> <points>, setgp <user/all> <gp>, del <user>, ignore <user>, unignore <user>")
-				self.msg(self.channel, "User Commands: help, rules, points, unsub [e.g. pointBot, help]")
-				self.msg(self.channel, "Point Exchanges: +/-<pts> to <user> [reason] (e.g. +1 to pointBot for being awesome)")
+				self.msg(self.channel, "User Commands: help, rules, points, status, unsub [e.g. pointBot, help]")
+				self.msg(self.channel, "Point Exchanges: +/-<pts> [to] <user> [reason] (e.g. +1 to user for being awesome)")
 				self.lastHelp = self.getCurrentTime()
 		elif (message == "rules"):
 			if self.getCurrentTime() != self.lastRules:
@@ -178,6 +180,9 @@ class pointBot(irc.IRCClient):
 			if self.getCurrentTime() != self.lastPoints:
 				self.displayPoints()
 				self.lastPoints = self.getCurrentTime()
+		elif (message == "status"):
+			index = self.getUserIndex(nick)
+			self.msg(nick, "Gift points: {}\nTotal points: {}".format(self.userList[index].giftPoints, self.userList[index].totalPoints))
 		elif (message == "unsub"):
 			self.ignoreUser(nick)
 		elif (message.startswith('+') or message.startswith('-')):
@@ -199,13 +204,13 @@ class pointBot(irc.IRCClient):
 	def save(self):
 		pointsFile = open(self.pointsFilePath, 'w')
 		for user in self.userList:
-			pointsFile.write("{}:{}:{}:{}\n".format(user.nick, user.ip, user.totalPoints, user.giftPoints))
+			pointsFile.write("{}:{}:{}:{}\n".format(user.nick, user.ip, user.giftPoints, user.totalPoints))
 		pointsFile.close()
 		print("Points saved.")
 		
 		ignoreFile = open(self.ignoreFilePath, 'w')
 		for ignore in self.ignoreList:
-			ignoreFile.write(ignore + "\n")
+			ignoreFile.write("{}\n".format(ignore))
 		ignoreFile.close()
 		print("Ignore list saved.")
 		return
@@ -219,12 +224,12 @@ class pointBot(irc.IRCClient):
 			for user in users:
 				userString = user.split(':')
 				self.userList.append(player(userString[0], userString[1]))
-				self.userList[-1].totalPoints = int(userString[2])
-				self.userList[-1].giftPoints = int(userString[3].rstrip())
+				self.userList[-1].giftPoints = int(userString[2])
+				self.userList[-1].totalPoints = int(userString[3].rstrip())
 			pointsFile.close()
 			print("Points restored.")
 		except Exception, e:
-			print("Restore failed: " + str(e))
+			print("Restore failed: {}".format(str(e)))
 			exit("Points restore fail")
 		
 		try:
@@ -236,7 +241,7 @@ class pointBot(irc.IRCClient):
 			ignoreFile.close()
 			print("Ignore file restored.")
 		except Exception, e:
-			print("Restore failed: " + str(e))
+			print("Restore failed: ".format(str(e)))
 			exit("Ignore restore fail")
 
 		try:
@@ -248,7 +253,7 @@ class pointBot(irc.IRCClient):
 			botFile.close()
 			print("Bot file restored.")
 		except Exception, e:
-			print("Restore failed: " + str(e))
+			print("Restore failed: ".format(str(e)))
 			exit("Bot restore fail")
 		return
 	
@@ -257,14 +262,14 @@ class pointBot(irc.IRCClient):
 		if nick == "all":
 			for user in self.userList:
 				user.totalPoints = int(points);
-			print("all user points set to " + points)
+			print("all user points set to {}".format(points))
 		else:
 			index = self.getUserIndex(nick)
 			if (index == -1):
 				print("Invalid username.")
 				return
 			self.userList[index].totalPoints = int(points)
-			print(nick + " points set to " + points)
+			print("{} points set to {}".format(nick, points))
 		return
 		
 	# (Admin command) Sets a user's gift points
@@ -272,14 +277,14 @@ class pointBot(irc.IRCClient):
 		if nick == "all":
 			for user in self.userList:
 				user.giftPoints = int(gp);
-			print("all user gift points set to " + gp)
+			print("all user gift points set to {}".format(gp))
 		else:
 			index = self.getUserIndex(nick)
 			if (index == -1):
 				print("Invalid username.")
 				return
 			self.userList[index].giftPoints = int(gp)
-			print(nick + " gift points set to " + gp)
+			print("{} gift points set to {}".format(nick, gp))
 		return
 	
 	# (Admin command) Removes a user from the points list
@@ -300,7 +305,7 @@ class pointBot(irc.IRCClient):
 			
 		if self.userList[index].ip not in self.ignoreList:
 			self.ignoreList.append(self.userList[index].ip)
-			print(nick + " ignored")
+			print("{} ignored".format(nick))
 		return
 	
 	# (Admin command) Unignores a user
@@ -312,7 +317,7 @@ class pointBot(irc.IRCClient):
 			
 		if self.userList[index].ip in self.ignoreList:
 			self.ignoreList.remove(self.userList[index].ip)
-			print(nick + " unignored")
+			print("{} unignored".format(nick))
 		return
 	
 	# (User command) Displays points
@@ -323,9 +328,9 @@ class pointBot(irc.IRCClient):
 		for user in self.userList:
 			if user.ip not in self.ignoreList:
 				if user != self.userList[-1]:
-					pointsList += "{}: {}, ".format(user.nick, user.totalPoints)
+					pointsList += "_{}_: {}, ".format(user.nick, user.totalPoints)
 				else:
-					pointsList += "{}: {}".format(user.nick, user.totalPoints)
+					pointsList += "_{}_: {}".format(user.nick, user.totalPoints)
 		self.msg(self.channel, pointsList)
 		return
 		
@@ -355,13 +360,13 @@ class pointBot(irc.IRCClient):
 				self.msg(sender, "Nice try, dingus")
 				return
 			if (targetIndex == -1) or (self.userList[targetIndex].nick in self.ignoreList):
-				self.msg(sender, "User " + target + " is not in the game. No points exchanged.")
+				self.msg(sender, "User {} is not in the game. No points exchanged.".format(target))
 				return
 			if self.userList[senderIndex].giftPoints <= 0:
 				self.msg(sender, "You are out of gift points for the day! No points exchanged.")
 				return
 			if self.userList[senderIndex].giftPoints < int(number):
-				self.msg(sender, "You only have " + str(self.userList[senderIndex].giftPoints) + " gift points remaining! No points exchanged.")
+				self.msg(sender, "You only have {} gift points remaining! No points exchanged.".format(str(self.userList[senderIndex].giftPoints)))
 				return
 				
 			if sign == '+':
@@ -371,9 +376,9 @@ class pointBot(irc.IRCClient):
 			self.userList[senderIndex].giftPoints -= int(number)
 			
 			if self.userList[senderIndex].giftPoints <= 0:
-				self.msg(self.channel, sender + " has just run out of gift points for the day.")
+				self.msg(self.channel, "{} has just run out of gift points for the day.".format(sender))
 			
-			self.msg(sender, "You have gifted " + sign + number + " points to " + target + ". You have " + str(self.userList[senderIndex].giftPoints) + " gift points left for the day.")
+			self.msg(sender, "You have gifted {}{} points to {}. You have {} gift points left for the day.".format(sign, number, target, str(self.userList[senderIndex].giftPoints)))
 		return
 		
 	"""
