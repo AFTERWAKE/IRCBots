@@ -1,3 +1,7 @@
+[![Made for IRC](https://img.shields.io/badge/Made%20for-IRC-brightgreen.svg)](https://www.reddit.com/r/irc/)
+[![PRs Welcome](https://img.shields.io/badge/Pull%20Requests-Welcome-234bff.svg)](http://makeapullrequest.com/)
+[![Made with love](https://img.shields.io/badge/Built%20with-❤-f41621.svg)](https://www.merriam-webster.com/dictionary/love)
+
 # IRCbots
 Source code for bots used in the coop IRC @ coop.test.adtran.com
 
@@ -16,3 +20,6 @@ Source code for bots used in the coop IRC @ coop.test.adtran.com
 #### dad
 - For all things dad
 - Dad is in Golang now! [Original Repo](https://github.com/alecwest/godaddyirc.git)
+#### pointBot
+- A bot that keeps track of arbitrary points given out by IRC users.
+- Based off of theCount (Twisted IRC Client)

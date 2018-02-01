@@ -42,7 +42,7 @@
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
     "DadName": "dad",
     "Debug": true,
@@ -52,8 +52,7 @@
         "Magic_Conch",
         "Seahorse",
         "l",
-        "dootBot",
-        ""
+        "dootBot"
     ],
     "Ip": "coop.test.adtran.com",
     "MessageRate": 10,
@@ -68,7 +67,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 22
+                    "Count": 23
                 }
             ]
         }
@@ -109,7 +108,7 @@
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 19
+                    "Count": 21
                 }
             ]
         },
@@ -122,7 +121,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 228
+                    "Count": 281
                 }
             ]
         },
@@ -161,7 +160,7 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 18
+                    "Count": 20
                 }
             ]
         },
@@ -200,7 +199,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 50
+                    "Count": 51
                 }
             ]
         },
@@ -433,7 +432,7 @@
                 },
                 {
                     "Message": "Why don't skeletons ever go trick or treating?\nBecause they have no body to go with",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "The Norwegian navy has started putting bar codes on their ships...\nSo they can scan da navy in...",
@@ -465,7 +464,7 @@
                 },
                 {
                     "Message": "I got a haircut last week...\nAt first I didn't like it, but it's growing on me",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Wanna hear a little pickle joke?\n.....it's not that big of dill.",
@@ -793,7 +792,7 @@
                 },
                 {
                     "Message": "I broke my finger today..\n..but on the other hand I'm completely fine.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Have you heard the rumor going around about butter?\nNevermind, I really shouldn't spread it.",
@@ -821,11 +820,11 @@
                 },
                 {
                     "Message": "Do you want me to call you an uber?\nYou're an uber.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call Mr. Bean on a boat?\nRowing Atkinson",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "My friend keeps telling me to stop making Rogue One puns.\nShe's told me that like 10 Erso times.",
@@ -845,7 +844,7 @@
                 },
                 {
                     "Message": "6 was afraid of 7 because 7, 8, 9, but why did 7 eat 9?\nBecause you're supposed to eat 3 squared meals a day.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I don't know why Euthanasia is so controversial.\nI personally don't mind Asian kids.",

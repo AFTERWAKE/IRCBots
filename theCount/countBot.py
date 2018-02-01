@@ -51,9 +51,9 @@ class countBot(irc.IRCClient):
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     numberForAlphabet = -1
-    botList = ["~dad", "~mom", "~nodebot", "~Magic_Con", "~Seahorse", "~dootbot"]
+    botList = ["~dad", "~mom", "~nodebot", "~Magic_Con", "~Seahorse", "~dootbot", "~pointbot"]
     mutedList = []
-    lastPinged = ''
+    lastWHOIS = ''
     muteMode = ''
 
     def __init__(self):
@@ -233,6 +233,8 @@ class countBot(irc.IRCClient):
             self.unmute(message[len(self.nickname)+9:].split(" ")[0])
         elif (message.startswith(self.nickname + ' unmute')):
             self.unmute(message[len(self.nickname)+8:].split(" ")[0])
+        elif (message.startswith(self.nickname + ', whois')):
+            self._whois(message[len(self.nickname)+8:].split(" ")[0])
         else:
             self.userCommands('Noah Siano', message)
 
@@ -443,30 +445,46 @@ class countBot(irc.IRCClient):
 
     def mute(self, name):
         self.muteMode = 'mute'
-        self.ping(name)
+        self.who(name)
         return
 
-    def mute2(self, name):
-        ip = self.lastPinged.split('@')[1]
+    def unmute(self, name):
+        self.muteMode = 'unmute'
+        self.who(name)
+        return
+
+    def _whois(self, name):
+        self.muteMode = 'just a whois'
+        self.who(name)
+
+    def who(self, user):
+        "Get the user's name, hostname, and IP Address"
+        "usage: client.whois('testUser')"
+        self.sendLine('WHOIS %s' % user)
+
+    def irc_RPL_WHOISUSER(self, *nargs):
+        "Receive WHOIS reply from server"
+        "nargs in the format:"
+        "(Server, [user-who-called-whois, username, hostname, IP, '*', realname])"
+        ip = nargs[1][3]
+        user = nargs[1][1]
+        username = nargs[1][2].split("~")[1]
+        print 'WHOIS:', ip
+        self.lastWHOIS = ip
+        if (self.muteMode == 'mute'):
+            self.mute2(ip)
+        elif (self.muteMode == 'unmute'):
+            self.unmute2(ip)
+        elif (self.muteMode == 'just a whois'):
+            self.msg(self.chatroom, "%s's username is %s and their IP address is %s" % (user, username, ip))
+        self.muteMode = ''
+
+    def mute2(self, ip):
         self.msg(self.chatroom, "I seem to have lost a little bit of my hearing... It's probably nothing.")
         self.mutedList.append(ip)
         self.saveMuted()
 
-    def pong(self, user, secs):
-        self.lastPinged = user
-        if (self.muteMode == 'mute'):
-            self.mute2(user)
-        elif (self.muteMode == 'unmute'):
-            self.unmute2(user)
-        self.muteMode = ''
-
-    def unmute(self, name):
-        self.muteMode = 'unmute'
-        self.ping(name)
-        return
-
-    def unmute2(self, name):
-        ip = self.lastPinged.split('@')[1]
+    def unmute2(self, ip):
         try:
             self.mutedList.remove(ip)
             self.msg(self.chatroom, "Doc says my hearing is getting better!")
