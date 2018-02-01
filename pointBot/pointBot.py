@@ -74,7 +74,7 @@ class pointBot(irc.IRCClient):
 		if nick in self.botList:
 			return
 		# Accept admin PMs, messages on our channel, or status requests
-		if (message.startswith("{}, status ".format(self.nickname))):
+		if (message.startswith("{}, status ".format(self.nickname)) and channel == self.nickname):
 			self.statusUser(nick, message.split("status ")[1])
 		elif ((channel == self.channel) or (user.split('@')[1] == self.adminIP)):
 			# In automatic mode, run the game during work hours and refresh gift points in the morning
