@@ -7,7 +7,9 @@
 '''
 from twisted.words.protocols import irc
 from datetime import datetime
+from time import time
 from re import match
+from shutil import copyfile
 from sys import exit
 
 class player:
@@ -24,7 +26,6 @@ class pointBot(irc.IRCClient):
 	# IRC info
 	nickname = "pointBot"
 	channel = "#main"
-	adminNick = "jlong"
 	adminIP = "172.22.116.14"
 	
 	# Game state
@@ -36,6 +37,7 @@ class pointBot(irc.IRCClient):
 	pointsFilePath = ".\\points.txt"
 	ignoreFilePath = ".\\ignore.txt"
 	botFilePath = ".\\botlist.txt"
+	archivePath = ".\\archive\\"
 	userList = []
 	ignoreList = []
 	botList = []
@@ -45,9 +47,9 @@ class pointBot(irc.IRCClient):
 	stopHour = 17
 	
 	# Anti-spam
-	lastHelp = ("", "")
-	lastRules = ("", "")
-	lastPoints = ("", "")
+	lastHelp = 0
+	lastRules = 0
+	lastPoints = 0
 
 	def __init__(self):
 		self.restore()
@@ -77,6 +79,7 @@ class pointBot(irc.IRCClient):
 				elif self.gameRunning:
 					self.stopGame()
 					self.save()
+					self.archive()
 			print ("{}: {}".format(user, message))
 			nick = user.split('!')[0]
 			ip = user.split('@')[1]
@@ -95,7 +98,8 @@ class pointBot(irc.IRCClient):
 	
 	# Called when a user joins the channel. Currently used for auto-kick when testing + polling new users
 	def userJoined(self, user, channel):
-		if (user != self.adminNick and self.testing):
+		index = self.getUserIndex(user)
+		if (self.userList[index].ip != self.adminIP and self.testing):
 			self.kick(channel, user, reason="I'm testing, please do not disturb :^)")
 		else:
 			self.sendLine("WHO {}".format(user))
@@ -159,34 +163,35 @@ class pointBot(irc.IRCClient):
 		elif (message.startswith("unignore ")):
 			self.unignoreUser(message.split(" ")[1])
 		else:
-			self.userCommands(self.adminNick, message)
+			for user in self.userList:
+				if user.ip == self.adminIP:
+					self.userCommands(user.nick, message)
+					return
+			print("Error finding admin nick")
 		return
 		
 	def userCommands(self, nick, message):
 		if (message == "help"):
-			if self.getCurrentTime() != self.lastHelp:
+			if (time() - self.lastHelp) > 60:
 				print("Admin Commands: start, stop, auto, reset, save, restore, say <msg>, setpts <user/all> <points>, setgp <user/all> <gp>, del <user>, ignore <user>, unignore <user>")
 				self.msg(self.channel, "User Commands: help, rules, points, status, unsub [e.g. pointBot, help]")
 				self.msg(self.channel, "Point Exchanges: +/-<pts> [to] <user> [reason] (e.g. +1 to user for being awesome)")
-				self.lastHelp = self.getCurrentTime()
+				self.lastHelp = time()
 		elif (message == "rules"):
-			if self.getCurrentTime() != self.lastRules:
+			if (time() - self.lastRules) > 60:
 				self.msg(self.channel, "Hello, it's me, pointBot. I keep track of +s and -s handed out in the IRC. " +
 					 "You get 10 points to give away every day, and these points are refreshed every morning at 8 AM. " +
 					 "Using bots is not allowed. If you run into any issues, talk to the admin (J. Long). " +
 					 "Have a day.")
-				self.lastRules = self.getCurrentTime()
+				self.lastRules = time()
 		elif (message == "points"):
-			if self.getCurrentTime() != self.lastPoints:
+			if (time() - self.lastPoints) > 60:
 				self.displayPoints()
-				self.lastPoints = self.getCurrentTime()
-		elif (message == "status"):
-			index = self.getUserIndex(nick)
-			self.msg(nick, "Gift points: {}\nTotal points: {}".format(self.userList[index].giftPoints, self.userList[index].totalPoints))
+				self.lastPoints = time()
+		elif (message.startswith("status ")):
+			self.statusUser(nick, message.split(" ")[1])
 		elif (message == "unsub"):
 			self.ignoreUser(nick)
-		elif (message.startswith('+') or message.startswith('-')):
-			self.pointMessage(nick, message)
 		return
 		
 	"""
@@ -334,6 +339,15 @@ class pointBot(irc.IRCClient):
 		self.msg(self.channel, pointsList)
 		return
 		
+	# (User command) Returns status of player via PM
+	def statusUser(self, sender, target):
+		index = self.getUserIndex(target)
+		if (index == -1):
+			self.msg(sender, "{} is not in the game.".format(target))
+			return
+		self.msg(sender, "{} status:\nGift points: {}\nTotal points: {}".format(target, self.userList[index].giftPoints, self.userList[index].totalPoints))
+		return
+		
 	# (User command) Exchanges points between two players
 	def pointMessage(self, sender, message):
 		# Message format: +/-<pts> to <user> [reason]
@@ -400,3 +414,10 @@ class pointBot(irc.IRCClient):
 	def getCurrentTime():
 		time = match('^(\d+):(\d+)', str(datetime.now().time()))
 		return time.group(1), time.group(2)
+		
+	# Used to archive the points file at the end of the day for backup purposes
+	def archive(self):
+		date = str(datetime.now()).split(' ')[0]
+		copyfile(self.pointsFile, "{}{}.txt".format(self.archivePath, date))
+		print("Points archived.")
+		return
