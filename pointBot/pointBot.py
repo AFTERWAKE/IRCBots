@@ -68,8 +68,15 @@ class pointBot(irc.IRCClient):
 	# We use this to add someone to the game whenever they first send a message
 	#  as well as handle admin/user commands and point exchanges.
 	def privmsg(self, user, channel, message):
-		# Accept admin PMs or messages on our channel
-		if ((channel == self.channel) or (user.split('@')[1] == self.adminIP)):
+		nick = user.split('!')[0]
+		ip = user.split('@')[1]
+		print ("{}: {} @ {}".format(user, message, channel))
+		if nick in self.botList:
+			return
+		# Accept admin PMs, messages on our channel, or status requests
+		if (message.startswith("{}, status ".format(self.nickname))):
+			self.statusUser(nick, message.split("status ")[1])
+		elif ((channel == self.channel) or (user.split('@')[1] == self.adminIP)):
 			# In automatic mode, run the game during work hours and refresh gift points in the morning
 			if self.autoMode:
 				hour = int(self.getCurrentTime()[0])
@@ -80,11 +87,6 @@ class pointBot(irc.IRCClient):
 					self.stopGame()
 					self.save()
 					self.archive()
-			print ("{}: {}".format(user, message))
-			nick = user.split('!')[0]
-			ip = user.split('@')[1]
-			if nick in self.botList:
-				return
 			if (message.startswith("{}, ".format(self.nickname))):
 				if (ip == self.adminIP):
 					self.adminCommands(message.split(", ")[1])
@@ -92,8 +94,6 @@ class pointBot(irc.IRCClient):
 					self.userCommands(nick, message.split(", ")[1])
 			elif (message.startswith('+') or message.startswith('-')):
 				self.pointMessage(nick, message)
-		else:
-			print user
 		return
 	
 	# Called when a user joins the channel. Currently used for auto-kick when testing + polling new users
@@ -174,7 +174,7 @@ class pointBot(irc.IRCClient):
 		if (message == "help"):
 			if (time() - self.lastHelp) > 60:
 				print("Admin Commands: start, stop, auto, reset, save, restore, say <msg>, setpts <user/all> <points>, setgp <user/all> <gp>, del <user>, ignore <user>, unignore <user>")
-				self.msg(self.channel, "User Commands: help, rules, points, status, unsub [e.g. pointBot, help]")
+				self.msg(self.channel, "User Commands: help, rules, points, unsub, status <nick> (PM only) [e.g. pointBot, help]")
 				self.msg(self.channel, "Point Exchanges: +/-<pts> [to] <user> [reason] (e.g. +1 to user for being awesome)")
 				self.lastHelp = time()
 		elif (message == "rules"):
@@ -188,8 +188,6 @@ class pointBot(irc.IRCClient):
 			if (time() - self.lastPoints) > 60:
 				self.displayPoints()
 				self.lastPoints = time()
-		elif (message.startswith("status ")):
-			self.statusUser(nick, message.split(" ")[1])
 		elif (message == "unsub"):
 			self.ignoreUser(nick)
 		return
@@ -339,15 +337,6 @@ class pointBot(irc.IRCClient):
 		self.msg(self.channel, pointsList)
 		return
 		
-	# (User command) Returns status of player via PM
-	def statusUser(self, sender, target):
-		index = self.getUserIndex(target)
-		if (index == -1):
-			self.msg(sender, "{} is not in the game.".format(target))
-			return
-		self.msg(sender, "{} status:\nGift points: {}\nTotal points: {}".format(target, self.userList[index].giftPoints, self.userList[index].totalPoints))
-		return
-		
 	# (User command) Exchanges points between two players
 	def pointMessage(self, sender, message):
 		# Message format: +/-<pts> to <user> [reason]
@@ -393,6 +382,15 @@ class pointBot(irc.IRCClient):
 				self.msg(self.channel, "{} has just run out of gift points for the day.".format(sender))
 			
 			self.msg(sender, "You have gifted {}{} points to {}. You have {} gift points left for the day.".format(sign, number, target, str(self.userList[senderIndex].giftPoints)))
+		return
+		
+	# (User command) Returns status of player via PM
+	def statusUser(self, sender, target):
+		index = self.getUserIndex(target)
+		if (index == -1):
+			self.msg(sender, "{} is not in the game.".format(target))
+			return
+		self.msg(sender, "{} status:\nGift points: {}\nTotal points: {}".format(target, self.userList[index].giftPoints, self.userList[index].totalPoints))
 		return
 		
 	"""

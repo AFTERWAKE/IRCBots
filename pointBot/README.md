@@ -21,7 +21,7 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 - `pointBot, help` (command list)
 - `pointBot, rules` (bot introduction)
 - `pointBot, points` (list of active players and points)
-- `pointBot, status [nick]` (tells you the amount of gift points and total points a player has)
+- `pointBot, status <nick>` (tells you the amount of gift points and total points a player has; must be sent as PM to pointBot)
 - `pointBot, unsub` (adds user to the ignore list)
 - `+/-<pts> [to] <nick> [reason]` (point exchange)
 		 
