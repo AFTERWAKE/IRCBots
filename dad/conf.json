@@ -42,7 +42,7 @@
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
     "DadName": "dad",
     "Debug": true,
@@ -52,8 +52,7 @@
         "Magic_Conch",
         "Seahorse",
         "l",
-        "dootBot",
-        ""
+        "dootBot"
     ],
     "Ip": "coop.test.adtran.com",
     "MessageRate": 10,
@@ -68,7 +67,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 22
+                    "Count": 23
                 }
             ]
         }
@@ -433,7 +432,7 @@
                 },
                 {
                     "Message": "Why don't skeletons ever go trick or treating?\nBecause they have no body to go with",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "The Norwegian navy has started putting bar codes on their ships...\nSo they can scan da navy in...",
@@ -821,11 +820,11 @@
                 },
                 {
                     "Message": "Do you want me to call you an uber?\nYou're an uber.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call Mr. Bean on a boat?\nRowing Atkinson",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "My friend keeps telling me to stop making Rogue One puns.\nShe's told me that like 10 Erso times.",

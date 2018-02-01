@@ -35,6 +35,8 @@
 
 #### ISSUES
 - Ungrounding leaves an empty string behind
+- I'm panicking returns 'mmmmmmmmmm no'
+- Dad isn't rate limiting anymore?
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag

@@ -1,9 +1,33 @@
 {
     "nick": "Magic_Conch",
     "ident": "Magic_Conch",
-    "channel": "#main",
+    "channel": "#magic_conch",
     "server": "coop.test.adtran.com",
     "triggers": [
+        {
+            "pattern": "^.*:(?P<message>.*)$",
+            "message": [".*Magic[ _]Conch,.*which\\spokemon.*$"],
+            "isAction": false,
+            "responses":["pokemon",
+                         "pokemon:I think it was %s...",
+                         "pokemon:I believe it was %s",
+                         "pokemon:definitly %s!",
+                         "pokemon:absolutely %s!",
+                         "pokemon:not %s",
+                         "pokemon:definitly not %s"]
+        },
+        {
+            "pattern": "^.*:(?P<message>.*)$",
+            "message": [".*Magic[ _]Conch,.*who.*$"],
+            "isAction": false,
+            "responses":["who",
+                         "who:I think it was %s...",
+                         "who:I believe it was %s",
+                         "who:definitly %s!",
+                         "who:absolutely %s!",
+                         "who:not %s",
+                         "who:definitly not %s"]
+        },
         {
             "pattern": "^.*:(?P<message>.*)$",
             "message": [
@@ -50,7 +74,7 @@
         {
             "pattern": "^.*:(?P<message>.*)$",
             "message": [
-                ".*Magic[ _]Conch,,.*What\\s+do.*\\?.*$"
+                ".*Magic[ _]Conch,.*what\\s+do.*\\?.*$"
             ],
             "isAction": false,
             "responses": [
@@ -64,7 +88,7 @@
                 {
             "pattern": "^.*:(?P<message>.*)$",
             "message": [
-                "^.*Magic[ _]Conch,,.*what\\s*is\\s*love.*\\?.*$"
+                "^.*Magic[ _]Conch,.*what\\s*is\\s*love.*\\?.*$"
             ],
             "isAction": false,
             "responses": [
@@ -108,5 +132,6 @@
             "responses": [
                 "I am hailed!"
             ]
-        }    ]
+        }
+    ]
 }

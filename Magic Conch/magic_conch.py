@@ -9,6 +9,10 @@ import requests
 
 from twisted.internet import defer
 
+serv_ip = "coop.test.adtran.com"
+serv_port = 6667
+channel = "#main"
+
 with open(r'Magic_Conch.json') as f:
     config = json.load(f)
 
@@ -27,11 +31,11 @@ class theMagicConch(irc.IRCClient):
     nickname = config["nick"]
 
     def signedOn(self):
-        self.join(config["channel"])
+        self.join(channel)
         self.pokemon_list = self.get_pokemon()
-        self._namescallback = {}
+        self.user_list = []
         self.__ignore = []
-        self.__channel = config["channel"]
+        self.__channel = channel
         print("Channel: " + self.__channel)
         print("Nick: " + self.nickname)
 
@@ -41,26 +45,94 @@ class theMagicConch(irc.IRCClient):
         print("Ignore list", self.__ignore)
 
         # print(self.msg("NAMES %s" % config["channel"]))  #idk what this was
+        self.who(channel)
            
     def luserClient(self, info):
         print(info)
 
     def userJoined(self, user, channel):
         print("JOINED:", channel, user)
+        self.who(channel)
 
     def userLeft(self, user, channel):
         print("LEFT:", channel, user)
-    
+        self.who(channel)
+
     def userQuit(self, user, quitMessage):
         print("QUIT:", user)
+        self.who(channel)
 
     def userRenamed(self, oldname, newname):
-        print(oldname, "is now known as", newname)
+        print(oldname, "is now known as", newname.lower())
+        self.who(channel)
+
+    def who(self, channel):
+        "List the users in 'channel', usage: client.who('#testroom')"
+        self.user_list = []
+        self.sendLine('WHO %s' % channel)
+
+    def irc_RPL_WHOREPLY(self, *nargs):
+        "Receive WHO reply from server"
+        usr = {}
+        usr["nick"] = nargs[1][5]
+        usr["host"] = nargs[1][2]
+        usr["ip"] = nargs[1][3]
+        self.user_list.append(usr)
+
+    def irc_RPL_ENDOFWHO(self, *nargs):
+        "Called when WHO output is complete"
+        print "Users:"
+        for each in self.user_list:
+            print each["nick"],
+        print
+        return
+
+    def irc_unknown(self, prefix, command, params):
+        '''
+        "Print all unhandled replies, for debugging."
+        print 'UNKNOWN:', prefix, command, params
+        '''
+        return
+
+    def ignore(self, nick):
+        # look up user in room list
+        for each in self.user_list:
+            if each["nick"] == nick:
+                host = each["host"]
+                break
+
+        if host not in self.__ignore:
+            # add host to ignore list
+            self.msg(self.__channel, "Now ignoring %s" % nick)
+            self.__ignore.append(host)
+            print "Ignore list", self.__ignore
+            with open("ignore_list.txt", "w") as ofile:
+                for each in self.__ignore:
+                    ofile.write(each + "\n")
+        return
+
+    def unignore(self, nick):
+        # look up user in room list
+        for each in self.user_list:
+            if each["nick"] == nick:
+                host = each["host"]
+                break
+
+        if host in self.__ignore:
+            # remove host from ignore list
+            self.msg(self.__channel, 
+                    "Oh hi %s. How long have you been here?" % nick)
+            self.__ignore.remove(host)
+            print "Ignore list", self.__ignore
+            with open("ignore_list.txt", "w") as ofile:
+                for each in self.__ignore:
+                    ofile.write(each + "\n")
+        return
 
     def privmsg(self, user, channel, message):
         print(channel, user + ":", message)
         user_ip = user.split("@")[1]
-        host = re.match(r"\w+!~(\w+)@", user).group(1)
+        host = re.match(r"\w+!(~\w+)@", user).group(1)
         user = user.split('!')[0]
 
         # admin commands
@@ -68,48 +140,29 @@ class theMagicConch(irc.IRCClient):
             m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
             if m:
                 if m.group(1) == "ignore":
-                    if m.group(2) not in self.__ignore:
-                        self.msg(self.__channel, "Now ignoring %s" % m.group(2))
-                        self.__ignore.append(m.group(2))
-                        print("Ignore list", self.__ignore)
-                        with open("ignore_list.txt", "w") as ofile:
-                            for each in self.__ignore:
-                                ofile.write(each + "\n")
-                        return
+                    self.ignore(m.group(2))
+                    return
 
                 elif m.group(1) == "unignore":
-                    if m.group(2) in self.__ignore:
-                        self.msg(self.__channel, 
-                                "Oh hi %s. How long have you been here?" % m.group(2))
-                        self.__ignore.remove(m.group(2))
-                        print("Ignore list", self.__ignore)
-                        with open("ignore_list.txt", "w") as ofile:
-                            for each in self.__ignore:
-                                ofile.write(each + "\n")
-                        return
+                    self.unignore(m.group(2))
+                    return
 
                 elif m.group(1) == "say": 
                     self.msg(self.__channel, m.group(2))
                     return
 
         # bypass pms
-        if channel == config["nick"]:
+        if channel != self.__channel:
             return
 
         # ignore list
         if host in self.__ignore:
-            '''
-            chance = random.randint(1,100)
-            if chance <= 10:
-                self.msg(channel, random.choice(["I don't know what that means"]))
-            '''
             return
 
         for trigger in config["triggers"]:
             for expression in trigger["message"]:
                 if re.match(expression, message):
                     response = random.choice(trigger["responses"])
-                    '''
                     if re.match(r"who:*(\w*)", response):
                         m = re.match(r"who:*(\w*)", response)
 
@@ -120,11 +173,12 @@ class theMagicConch(irc.IRCClient):
                         else:
                             msg = m.group(1)
 
-                        msg = msg % random.choice(["dummy_name"])
+                        msg = msg % random.choice(self.user_list)["nick"]
                         self.msg(channel, msg)
                         return
 
-                    elif re.match(r"pokemon:*(.*)", response):
+                    # Pokemon
+                    if re.match(r"pokemon:*(.*)", response):
                         m = re.match(r"pokemon:*(.*)", response)
                         if m.group(1) == "":
                             msg = "I choose %s!"
@@ -144,50 +198,10 @@ class theMagicConch(irc.IRCClient):
                     else:
                         self.msg(channel, response)
                         return
-                    '''
+
                     self.msg(channel, response)
                     return
 
-
-    def names(self, channel):
-        channel = channel.lower()
-        d = defer.Deferred()
-        if channel not in self._namescallback:
-            self._namescallback[channel] = ([], [])
-
-        self._namescallback[channel][0].append(d)
-        self.sendLine("NAMES %s" % channel)
-        return d
-
-    def irc_RPL_NAMREPLY(self, prefix, params):
-        channel = params[2].lower()
-        nicklist = params[3].split(' ')
-
-        if channel not in self._namescallback:
-            return
-
-        n = self._namescallback[channel][1]
-        n += nicklist
-
-    def irc_RPL_ENDOFNAMES(self, prefix, params):
-        channel = params[1].lower()
-        if channel not in self._namescallback:
-            return
-
-        callbacks, namelist = self._namescallback[channel]
-
-        for cb in callbacks:
-            cb.callback(namelist)
-
-        del self._namescallback[channel]
-
-    def update_room_list(self):
-        print(defer.gatherResults(self.names(config["channel"])))
-
-    def populate(self, nicklist):
-        for each in nicklist:
-            print(each)
-    
     def get_pokemon(self):
         page = requests.get("https://pokemondb.net/pokedex/national")
         tree = html.fromstring(page.content)
@@ -199,9 +213,6 @@ class theMagicConch(irc.IRCClient):
         return pokemon_list
 
 def main():
-    serv_ip = "coop.test.adtran.com"
-    serv_port = 6667
-
     f = protocol.ClientFactory()
     f.protocol = theMagicConch
 
