@@ -35,6 +35,7 @@
 
 #### ISSUES
 - Ungrounding leaves an empty string behind
+- I'm panicking returns 'mmmmmmmmmm no'
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag
