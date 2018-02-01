@@ -26,53 +26,105 @@ class memeBot(irc.IRCClient):
 
     def signedOn(self):
         self.join(channel)
-        self.__user_list = []
+        self.user_list = []
         self.__last_response = 0
         self.__ignore = []
         self.__channel = channel
         print("Channel: " + self.__channel)
+        self.who(channel)
 
         with open("ignore_list.txt", 'r') as infile:
             for each in infile:
                 self.__ignore.append(each.strip())
         print("Ignore list", self.__ignore)
 
-        self.__user_list = []
-
     def luserClient(self, info):
         print(info)
 
     def userJoined(self, user, channel):
         print("JOINED:", channel, user)
-        if user not in self.__user_list:
-            self.__user_list.append(user.lower())
+        self.who(channel)
 
     def userLeft(self, user, channel):
         print("LEFT:", channel, user)
-        if user in self.__user_list:
-            self.__user_list.remove(user.lower())
+        self.who(channel)
 
     def userQuit(self, user, quitMessage):
         print("QUIT:", user)
-        if user in self.__user_list:
-            self.__user_list.remove(user.lower())
+        self.who(channel)
 
     def userRenamed(self, oldname, newname):
         print(oldname, "is now known as", newname.lower())
-        if oldname in self.__user_list:
-            self.__user_list.remove(oldname.lower())
+        self.who(channel)
 
-        if newname not in self.__user_list:
-            self.__user_list.append(newname.lower())
+    def who(self, channel):
+        "List the users in 'channel', usage: client.who('#testroom')"
+        self.user_list = []
+        self.sendLine('WHO %s' % channel)
+
+    def irc_RPL_WHOREPLY(self, *nargs):
+        "Receive WHO reply from server"
+        usr = {}
+        usr["nick"] = nargs[1][5]
+        usr["host"] = nargs[1][2]
+        usr["ip"] = nargs[1][3]
+        self.user_list.append(usr)
+
+    def irc_RPL_ENDOFWHO(self, *nargs):
+        "Called when WHO output is complete"
+        print "Users:"
+        for each in self.user_list:
+            print each["nick"],
+        print
+        return
+
+    def irc_unknown(self, prefix, command, params):
+        '''
+        "Print all unhandled replies, for debugging."
+        print 'UNKNOWN:', prefix, command, params
+        '''
+        return
+
+    def ignore(self, nick):
+        # look up user in room list
+        for each in self.user_list:
+            if each["nick"] == nick:
+                host = each["host"]
+                break
+
+        if host not in self.__ignore:
+            # add host to ignore list
+            self.msg(self.__channel, "Now ignoring %s" % nick)
+            self.__ignore.append(host)
+            print "Ignore list", self.__ignore
+            with open("ignore_list.txt", "w") as ofile:
+                for each in self.__ignore:
+                    ofile.write(each + "\n")
+        return
+
+    def unignore(self, nick):
+        # look up user in room list
+        for each in self.user_list:
+            if each["nick"] == nick:
+                host = each["host"]
+                break
+
+        if host in self.__ignore:
+            # remove host from ignore list
+            self.msg(self.__channel, 
+                    "Oh hi %s. How long have you been here?" % nick)
+            self.__ignore.remove(host)
+            print "Ignore list", self.__ignore
+            with open("ignore_list.txt", "w") as ofile:
+                for each in self.__ignore:
+                    ofile.write(each + "\n")
+        return
 
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
-        host = re.match(r"\w+!~(\w+)@", user).group(1)
-
+        host = re.match(r"\w+!(~\w+)@", user).group(1)
         temp_time = time.time()
-        if user not in self.__user_list:
-            self.__user_list.append(user.lower())
 
         # pm privilages
         if (channel == self.nickname) and user_ip != admin_ip:
@@ -85,25 +137,12 @@ class memeBot(irc.IRCClient):
                 m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
                 if m:
                     if m.group(1) == "ignore":
-                        if m.group(2) not in self.__ignore:
-                            self.msg(self.__channel, "Now ignoring %s" % m.group(2))
-                            self.__ignore.append(m.group(2))
-                            print("Ignore list", self.__ignore)
-                            with open("ignore_list.txt", "w") as ofile:
-                                for each in self.__ignore:
-                                    ofile.write(each + "\n")
-                            return
+                        self.ignore(m.group(2).strip())
+                        return
 
                     elif m.group(1) == "unignore":
-                        if m.group(2) in self.__ignore:
-                            self.msg(self.__channel, 
-                                    "Oh hi %s. How long have you been here?" % m.group(2))
-                            self.__ignore.remove(m.group(2))
-                            print("Ignore list", self.__ignore)
-                            with open("ignore_list.txt", "w") as ofile:
-                                for each in self.__ignore:
-                                    ofile.write(each + "\n")
-                            return
+                        self.unignore(m.group(2).strip())
+                        return
 
                     elif m.group(1) == "say": 
                         self.msg(self.__channel, m.group(2))

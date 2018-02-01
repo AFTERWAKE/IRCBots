@@ -52,19 +52,47 @@ class theMagicConch(irc.IRCClient):
 
     def userJoined(self, user, channel):
         print("JOINED:", channel, user)
+        self.who(channel)
 
     def userLeft(self, user, channel):
         print("LEFT:", channel, user)
-    
+        self.who(channel)
+
     def userQuit(self, user, quitMessage):
         print("QUIT:", user)
+        self.who(channel)
 
     def userRenamed(self, oldname, newname):
-        print(oldname, "is now known as", newname)
+        print(oldname, "is now known as", newname.lower())
+        self.who(channel)
+
+    def who(self, channel):
+        "List the users in 'channel', usage: client.who('#testroom')"
+        self.user_list = []
+        self.sendLine('WHO %s' % channel)
+
+    def irc_RPL_WHOREPLY(self, *nargs):
+        "Receive WHO reply from server"
+        usr = {}
+        usr["nick"] = nargs[1][5]
+        usr["host"] = nargs[1][2]
+        usr["ip"] = nargs[1][3]
+        self.user_list.append(usr)
+
+    def irc_RPL_ENDOFWHO(self, *nargs):
+        "Called when WHO output is complete"
+        print "Users:"
         for each in self.user_list:
-            if each["nick"] == oldname:
-                each["nick"] = newname
-                break
+            print each["nick"],
+        print
+        return
+
+    def irc_unknown(self, prefix, command, params):
+        '''
+        "Print all unhandled replies, for debugging."
+        print 'UNKNOWN:', prefix, command, params
+        '''
+        return
 
     def ignore(self, nick):
         # look up user in room list
@@ -173,30 +201,6 @@ class theMagicConch(irc.IRCClient):
 
                     self.msg(channel, response)
                     return
-
-    def who(self, channel):
-        "List the users in 'channel', usage: client.who('#testroom')"
-        self.sendLine('WHO %s' % channel)
-
-    def irc_RPL_WHOREPLY(self, *nargs):
-        "Receive WHO reply from server"
-        usr = {}
-        usr["nick"] = nargs[1][5]
-        usr["host"] = nargs[1][2]
-        usr["ip"] = nargs[1][3]
-        self.user_list.append(usr)
-        
-
-    def irc_RPL_ENDOFWHO(self, *nargs):
-        "Called when WHO output is complete"
-        print "Users:"
-        for each in self.user_list:
-            print each["nick"]
-
-    def irc_unknown(self, prefix, command, params):
-        "Print all unhandled replies, for debugging."
-        print 'UNKNOWN:', prefix, command, params
-
 
     def get_pokemon(self):
         page = requests.get("https://pokemondb.net/pokedex/national")
