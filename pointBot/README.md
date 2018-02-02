@@ -11,6 +11,7 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 - `pointBot, restore` (restores winners from save file || also restores automatically on run)
 - `pointBot, say <msg>` (sends message to channel as the bot)
 - `pointBot, me <action>` (performs a /me command as the bot)
+- `pointBot, status <user>` (returns status of player via PM; also triggered by user PMs)
 - `pointBot, setpts <nick/all> <points>` (set points for user)
 - `pointBot, setgp <nick/all> <points>` (set points for user)
 - `pointBot, del <nick>` (delete a user from the points table)
@@ -21,9 +22,9 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 - `pointBot, help` (command list)
 - `pointBot, rules` (bot introduction)
 - `pointBot, points` (list of active players and points)
-- `pointBot, status <nick>` (tells you the amount of gift points and total points a player has; must be sent as PM to pointBot)
 - `pointBot, unsub` (adds user to the ignore list)
 - `+/-<pts> [to] <nick> [reason]` (point exchange)
+- A PM to pointBot will show you your current status (gift points and total points)
 		 
 ## Usage Notes
 #### Setup
@@ -42,5 +43,7 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 - The points file stores users as last_nick:ip:gift_points:total_points. This should not be edited manually.
 - The ignore file stores only IPs. This should not be edited manually.
 - The bot file stores nicks (since bot names should not change often). This SHOULD be edited manually.
-
 NOTE: I've run into a couple issues with multiple nicks on the same IP (account stuck logged in) and even IPs changing due to modem testing, but this is uncommon enough that it can be dealt with by adding nicks to the bot list, ignoring users ("ignore"), or deleting point entries ("del").
+
+## TO-DO
+- Refactor ignore/botlist functionality. Just mutes/sub status? Creating issues with repeats in scorelist (same nick in 2 entries and can't del, etc.)
