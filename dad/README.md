@@ -25,7 +25,6 @@
 - Add dad, help for list of admin commands
 - Better way to save config?
 - Bring back joke getting scripts
-- Respond to "?!" questions
 - Attempt reconnect on drop
 - Make mom more cynical. ex: "I love mom" -> "Ok"
 - Use more \\b in regex
@@ -34,9 +33,7 @@
 - Track users by name and IP
 
 #### ISSUES
-- Ungrounding leaves an empty string behind
-- I'm panicking returns 'mmmmmmmmmm no'
-- Dad isn't rate limiting anymore?
+- None?
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag

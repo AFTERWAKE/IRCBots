@@ -159,9 +159,7 @@ func Unground(name string) {
 	if i == -1 {
 		return
 	}
-	Dbot.Conf.Grounded[len(Dbot.Conf.Grounded)-1], Dbot.Conf.Grounded[i] =
-		Dbot.Conf.Grounded[i], Dbot.Conf.Grounded[len(Dbot.Conf.Grounded)-1]
-	Dbot.Conf.Grounded = Dbot.Conf.Grounded[:len(Dbot.Conf.Grounded)-1]
+	Dbot.Conf.Grounded = append(Dbot.Conf.Grounded[:i], Dbot.Conf.Grounded[i+1:]...)
 }
 
 // TestMessage tests the passed message against the passed regex and returns
@@ -257,16 +255,20 @@ func FormatMessage(message string, s SpeakData) (string, string) {
 func PerformAction(reply Reply, speak SpeakData,
 	variable string) (Reply, string) {
 	// Handle any included action
-	if strings.Contains(speak.Action, "ground") {
+	ground := regexp.MustCompile("(?i)^ground$")
+	unground := regexp.MustCompile("(?i)^unground$")
+	grounded := regexp.MustCompile("(?i)^grounded$")
+	message := regexp.MustCompile("(?i)^message$")
+	if ground.MatchString(speak.Action) {
 		Ground(variable)
 	}
-	if strings.Contains(speak.Action, "unground") {
+	if unground.MatchString(speak.Action) {
 		Unground(variable)
 	}
-	if strings.Contains(speak.Action, "grounded") {
+	if grounded.MatchString(speak.Action) {
 		variable = strings.Join(Dbot.Conf.Grounded, ", ")
 	}
-	if strings.Contains(speak.Action, "message") {
+	if message.MatchString(speak.Action) {
 		to, msg := FormatMessage(variable, speak)
 		if len(to) > 0 {
 			reply.To = to
@@ -329,7 +331,7 @@ func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 
 	if !strings.Contains(speakData.Action, "none") {
 		reply, variable = PerformAction(reply, speakData, variable)
-		log.Debug(variable)
+		// log.Debug(variable)
 	}
 	response.Message = HandleTextReplacement(message, response, variable)
 	// If reply is non-empty, then bot will send it, so increment response count
@@ -366,14 +368,16 @@ func PerformReply(irc *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
 					irc.Msg(reply.To, line)
 					numSent++
 				}
+				if numSent == 1 {
+					// Record time of first line being sent
+					Dbot.LastReply = reply
+				}
 				// Make sure there is a timeout between multiple lines in a reply
 				if len(reply.Content) > 1 && numSent > 0 {
 					time.Sleep(time.Duration(Dbot.Conf.Timeout) * time.Second)
 				}
 			}
 			if numSent > 0 {
-				// Record last sent message
-				Dbot.LastReply = reply
 				UpdateConfig()
 				return true
 			}
