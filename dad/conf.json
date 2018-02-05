@@ -61,7 +61,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?\\s*$",
+                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
                 "Variable": ""
             },
             "Response": [
@@ -167,7 +167,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})(\\W+[^?]*)?\\?\\s*$",
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
                 "Variable": ""
             },
             "Response": [

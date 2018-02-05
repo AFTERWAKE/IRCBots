@@ -33,3 +33,9 @@ HOST: The URL of the IRC server
 NICK: The nick of the bot
 
 CHANNELS: A comma delimited string of channels. channels can be optionally prefixed with '#'
+
+
+Troubleshooting
+---------------
+
+If `npm install` is not working, [install nvm](https://github.com/creationix/nvm#installation) and run the command `nvm install 0.8.23` to use the older version of node and npm.
