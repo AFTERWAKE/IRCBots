@@ -56,6 +56,7 @@ class countBot(irc.IRCClient):
     lastWHOIS = ''
     muteMode = ''
     timeLastCommand = 0
+    timestampBuffer = 0
 
     def __init__(self):
         currentHour = int(self.getCurrentTime().split(':')[0])
@@ -92,6 +93,7 @@ class countBot(irc.IRCClient):
     def resetGame(self):
         self.gameRunning = False
         self.resetUsers()
+        self.timestampBuffer = 3
         print 'GAME RESET!'
         return
 
@@ -498,6 +500,9 @@ class countBot(irc.IRCClient):
             try:
                 if (self.gameRunning and int(message) != self.currentNumber):
                     print "{} -> {}: {}".format(str(time.time()), user, message)
+                elif (not self.gameRunning and self.timestampBuffer > 0):
+                    print "{} -> {}: {} LATE".format(str(time.time()), user, message)
+                    self.timestampBuffer -= 1
                 if (int(message) == self.currentNumber and self.gameRunning):
                     print "{} -> {}: {} COUNTED".format(str(time.time()), user, message)
                     hostname = user.split('!')[1].split('@')
