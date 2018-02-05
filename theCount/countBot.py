@@ -496,8 +496,10 @@ class countBot(irc.IRCClient):
     def privmsg(self, user, channel, message):
         if ((channel == self.chatroom) or (user.split('@')[1] in self.admin)):
             try:
+                if (self.gameRunning and int(message) != self.currentNumber):
+                    print "{} -> {}: {}".format(str(time.time()), user, message)
                 if (int(message) == self.currentNumber and self.gameRunning):
-                    print "{}: {}".format(user, message)
+                    print "{} -> {}: {} COUNTED".format(str(time.time()), user, message)
                     hostname = user.split('!')[1].split('@')
                     if (hostname[0] in self.botList):
                         print("Bot!")
