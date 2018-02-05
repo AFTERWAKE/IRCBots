@@ -20,9 +20,9 @@ if ( !env.HOST, !env.NICK, !env.CHANNELS ) {
 nick = env.NICK;
 
 hi5regexes = [
-  new RegExp( "^" + nick + ",|:?\\s*o\\/\\s*$", "i" ),
-  new RegExp( "^" + nick + ",|:?\\s*o\\/\\/\\s*$", "i" ),
-  new RegExp( "^" + nick + ",|:?\\s*\\\\o\\/\\s*$", "i" )
+  new RegExp( "^" + nick + ",|:?\s*o/\s*$", "i" ),
+  new RegExp( "^" + nick + ",|:?\s*o//\s*$", "i" ),
+  new RegExp( "^" + nick + ",|:?\s*\\o\s*$", "i" )
 //,
 //  new RegExp( "^" + nick + ",|:?\\s*wo+[!1]*\\s*$" )
 ];
