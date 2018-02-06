@@ -33,7 +33,7 @@ class pointBot(irc.IRCClient):
 	# Game state
 	gameRunning = False
 	autoMode = False
-	testKey = "Qbttxpse!"		# Used when want to test in a keyword-protected channel
+	testKey = "beepboop"		# Used when want to test in a keyword-protected channel
 	
 	# Restore file/user info
 	pointsFilePath = ".\\restore\\points.txt"
@@ -78,7 +78,7 @@ class pointBot(irc.IRCClient):
 		nick = user.split('!')[0]
 		ip = user.split('@')[1]
 		hour, minute, second = self.getCurrentTime()
-		print ("[{}:{}:{}] {}: {} @ {}".format(hour, minute, second, user, message, channel))
+		print ("[{:02d}:{:02d}:{:02d}] {}: {} @ {}".format(hour, minute, second, user, message, channel))
 		if nick in self.botList:
 			return
 		# In automatic mode, save every hour, run the game during work hours, and refresh gift points in the morning	
