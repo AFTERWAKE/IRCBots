@@ -28,6 +28,7 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 		 
 ## Usage Notes
 #### Setup
+- Requires Python 2.7 and the Twisted package.
 - Check the IRC info in the class definition and make sure it is correct.
 - Check main() and verify the IRC server is correct.
 - Make sure the file paths are correct.
