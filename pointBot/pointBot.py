@@ -5,10 +5,11 @@
  Description: This connects to an IRC channel and keeps track of arbitrary points given out by other users.
 --------------------------------------------------------------------------------------------------------------------
 '''
+from twisted.internet import reactor, protocol
 from twisted.words.protocols import irc
 from datetime import datetime
 from time import time
-from re import match
+from re import compile, match
 from shutil import copyfile
 from sys import exit
 
@@ -26,7 +27,7 @@ class player:
 class pointBot(irc.IRCClient):
 	# IRC info
 	nickname = "pointBot"
-	channel = "#/home/jlong"
+	channel = "#main"
 	adminIP = "172.22.116.14"
 	
 	# Game state
@@ -51,6 +52,11 @@ class pointBot(irc.IRCClient):
 	lastHelp = 0
 	lastRules = 0
 	lastPoints = 0
+	
+	# Compiled regex
+	cmdExpr = compile("^([a-zA-Z]+)(?:\s(\w+)(?:\s(\d+))?)?$")
+	ptExpr = compile("^(\+|-)(\d+)\s(?:to\s)?(\w+).*$")
+	timeExpr = compile("^(\d+):(\d+):(\d+)")
 
 	def __init__(self):
 		self.restore()
@@ -71,12 +77,12 @@ class pointBot(irc.IRCClient):
 	def privmsg(self, user, channel, message):
 		nick = user.split('!')[0]
 		ip = user.split('@')[1]
-		print ("{}: {} @ {}".format(user, message, channel))
+		hour, minute, second = self.getCurrentTime()
+		print ("[{}:{}:{}] {}: {} @ {}".format(hour, minute, second, user, message, channel))
 		if nick in self.botList:
 			return
 		# In automatic mode, save every hour, run the game during work hours, and refresh gift points in the morning	
 		if self.autoMode:
-			hour = int(self.getCurrentTime()[0])
 			if hour != self.lastSaveHour:
 				self.save()
 				self.lastSaveHour = hour
@@ -84,7 +90,7 @@ class pointBot(irc.IRCClient):
 				if not self.gameRunning:
 					self.resetGame()
 			elif self.gameRunning:
-				self.stopGame()
+				self.gameRunning = False
 				self.save()
 		# Treat every non-admin PM as status request, rate-limit
 		if (channel == self.nickname and ip != self.adminIP):
@@ -104,7 +110,7 @@ class pointBot(irc.IRCClient):
 			
 			# Check for point exchange pattern (+1 [to] <user> [reason])
 			if message.startswith("+") or message.startswith("-"):
-				pointMatch = match('^(\+|-)(\d+)\s(?:to\s)?(\w+).*$', message)
+				pointMatch = self.ptExpr.match(message)
 				if pointMatch:
 					self.pointMessage(nick, pointMatch.group(1), pointMatch.group(2), pointMatch.group(3))
 		return
@@ -139,7 +145,7 @@ class pointBot(irc.IRCClient):
 	"""
 	def adminCommands(self, nick, message):
 		# Split the command into the common arguments
-		cmdMatch = match("^(\w+)(?: (\w+))?(?: (\d+))?$", message)
+		cmdMatch = self.cmdExpr.match(message)
 		if not cmdMatch:
 			return
 		else:
@@ -186,20 +192,20 @@ class pointBot(irc.IRCClient):
 		
 	def userCommands(self, nick, message):
 		if message == "help":
-			if (time() - self.lastHelp) > 30:
-				print("Admin Commands: start, stop, auto, reset, save, restore, say <msg>, me <action>, status <user> setpts <user/all> <points>, setgp <user/all> <gp>, del <user>, ignore <user>, unignore <user>")
+			if (time() - self.lastHelp) > 20:
+				print("Admin Commands: start, stop, auto, reset, save, restore, say <msg>, me <action>, status <user>, setpts <user/all> <points>, setgp <user/all> <gp>, del <user>, ignore <user>, unignore <user>")
 				self.msg(self.channel, "User Commands: help, rules, points, unsub, [e.g. pointBot, help]. PM anything for your status.")
 				self.msg(self.channel, "Point Exchanges: +/-<pts> [to] <user> [reason] (e.g. +1 to user for being awesome)")
 				self.lastHelp = time()
 		elif message == "rules":
-			if (time() - self.lastRules) > 30:
+			if (time() - self.lastRules) > 20:
 				self.msg(self.channel, "Hello, it's me, pointBot. I keep track of +s and -s handed out in the IRC. " +
 					 "You get 10 points to give away every day, and these points are refreshed every morning at 8 AM. " +
 					 "Using bots is not allowed. If you run into any issues, talk to the admin (J. Long). " +
 					 "Have a day.")
 				self.lastRules = time()
 		elif message == "points":
-			if (time() - self.lastPoints) > 30:
+			if (time() - self.lastPoints) > 20:
 				self.displayPoints()
 				self.lastPoints = time()
 		elif message == "unsub":
@@ -215,7 +221,7 @@ class pointBot(irc.IRCClient):
 		for user in self.userList:
 			user.giftPoints = 10
 		self.msg(self.channel, "The game has been reset. Gift points have been restored.")
-		print("Reset occurred.")
+		print("Game reset.")
 		return
 		
 	# (Admin command) Saves user points and ignore list to files; called at the end of every day
@@ -249,7 +255,7 @@ class pointBot(irc.IRCClient):
 			pointsFile.close()
 			print("Points restored.")
 		except Exception, e:
-			print("Restore failed: {}".format(str(e)))
+			print("Restore failed: {}".format(e))
 			exit("Points restore fail")
 		
 		try:
@@ -261,7 +267,7 @@ class pointBot(irc.IRCClient):
 			ignoreFile.close()
 			print("Ignore file restored.")
 		except Exception, e:
-			print("Restore failed: ".format(str(e)))
+			print("Restore failed: {}".format(e))
 			exit("Ignore restore fail")
 
 		try:
@@ -273,7 +279,7 @@ class pointBot(irc.IRCClient):
 			botFile.close()
 			print("Bot file restored.")
 		except Exception, e:
-			print("Restore failed: ".format(str(e)))
+			print("Restore failed: {}".format(e))
 			exit("Bot restore fail")
 		return
 		
@@ -390,7 +396,7 @@ class pointBot(irc.IRCClient):
 			self.msg(sender, "You are out of gift points for the day! No points exchanged.")
 			return
 		if self.userList[senderIndex].giftPoints < int(number):
-			self.msg(sender, "You only have {} gift points remaining! No points exchanged.".format(str(self.userList[senderIndex].giftPoints)))
+			self.msg(sender, "You only have {} gift points remaining! No points exchanged.".format(self.userList[senderIndex].giftPoints))
 			return
 				
 		if sign == '+':
@@ -402,7 +408,7 @@ class pointBot(irc.IRCClient):
 		if self.userList[senderIndex].giftPoints <= 0:
 			self.msg(self.channel, "{} has just run out of gift points for the day.".format(sender))
 		
-		self.msg(sender, "You have gifted {}{} points to {}. You have {} gift points left for the day.".format(sign, number, target, str(self.userList[senderIndex].giftPoints)))
+		self.msg(sender, "You have gifted {}{} points to {}. You have {} gift points left for the day.".format(sign, number, target, self.userList[senderIndex].giftPoints))
 		return
 		
 	"""
@@ -422,5 +428,18 @@ class pointBot(irc.IRCClient):
 	# Gets time of day; used for auto-start/stop and anti-spam
 	@staticmethod
 	def getCurrentTime():
-		time = match('^(\d+):(\d+)', str(datetime.now().time()))
-		return time.group(1), time.group(2)
+		time = self.timeExpr.match(str(datetime.now().time()))
+		return int(time.group(1)), int(time.group(2)), int(time.group(3))
+
+def main():
+    serv_ip = 'coop.test.adtran.com'
+    serv_port = 6667
+
+    f = protocol.ReconnectingClientFactory()
+    f.protocol = pointBot
+
+    reactor.connectTCP(serv_ip, serv_port, f)
+    reactor.run()
+
+if __name__ == '__main__':
+	main()

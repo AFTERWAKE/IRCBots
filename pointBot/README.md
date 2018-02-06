@@ -28,11 +28,11 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 		 
 ## Usage Notes
 #### Setup
-- Check main.py and verify the IRC server is correct.
 - Check the IRC info in the class definition and make sure it is correct.
+- Check main() and verify the IRC server is correct.
 - Make sure the file paths are correct.
 - Choose the start/stop hours.
-- Then run main.py from command line to join your chosen channel.
+- Then run pointBot.py from command line to join your chosen channel.
 		   
 #### Starting the point game:
 - If you're starting the game for the first time that day, run the "reset" command. 
@@ -40,10 +40,8 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 - Only run the "auto" command while the point game is already running, or during off hours -- it triggers off of messages sent, so if pointBot isn't set up yet it'll disrupt things. After that, though, it's set and forget.
 	
 #### Restore files:
-- The points file stores users as last_nick:ip:gift_points:total_points. This should not be edited manually.
-- The ignore file stores only IPs. This should not be edited manually.
-- The bot file stores nicks (since bot names should not change often). This SHOULD be edited manually.
-NOTE: I've run into a couple issues with multiple nicks on the same IP (account stuck logged in) and even IPs changing due to modem testing, but this is uncommon enough that it can be dealt with by adding nicks to the bot list, ignoring users ("ignore"), or deleting point entries ("del").
+- The points file stores users as last_nick:ip:gift_points:total_points. Only edit manually if an issue occurs.
+- The ignore file stores only IPs. Only edit manually if an issue occurs.
+- The bot file stores nicks (since bot names should not change often). This should be edited manually.
 
-## TO-DO
-- Refactor ignore/botlist functionality. Just mutes/sub status? Creating issues with repeats in scorelist (same nick in 2 entries and can't del, etc.)
+NOTE: I've run into a couple issues with multiple nicks on the same IP (account stuck logged in) and even IPs changing due to modem testing, but this is uncommon enough that it can be dealt with by adding nicks to the bot list, ignoring users ("ignore"), or deleting point entries ("del").
