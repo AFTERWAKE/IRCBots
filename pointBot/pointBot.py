@@ -180,8 +180,6 @@ class pointBot(irc.IRCClient):
 			self.setUserPoints(target, value)
 		elif command == "setgp" and target and value:
 			self.setUserGP(target, value)
-		elif command == "del" and target:
-			self.delUser(target)
 		elif command == "ignore" and target:
 			self.ignoreUser(target)
 		elif command == "unignore" and target:
@@ -193,7 +191,7 @@ class pointBot(irc.IRCClient):
 	def userCommands(self, nick, message):
 		if message == "help":
 			if (time() - self.lastHelp) > 20:
-				print("Admin Commands: start, stop, auto, reset, save, restore, say <msg>, me <action>, status <user>, setpts <user/all> <points>, setgp <user/all> <gp>, del <user>, ignore <user>, unignore <user>")
+				print("Admin Commands: start, stop, auto, reset, save, restore, say <msg>, me <action>, status <user>, setpts <user/all> <points>, setgp <user/all> <gp>, ignore <user>, unignore <user>")
 				self.msg(self.channel, "User Commands: help, rules, points, unsub, [e.g. pointBot, help]. PM anything for your status.")
 				self.msg(self.channel, "Point Exchanges: +/-<pts> [to] <user> [reason] (e.g. +1 to user for being awesome)")
 				self.lastHelp = time()
@@ -320,16 +318,6 @@ class pointBot(irc.IRCClient):
 				return
 			self.userList[index].giftPoints = int(gp)
 			print("{} gift points set to {}".format(nick, gp))
-		return
-	
-	# (Admin command) Removes a user from the points list
-	def delUser(self, nick):
-		index = self.getUserIndex(nick)
-		if (index == -1):
-			print("Invalid username.")
-			return
-		del self.userList[index]
-		print("{} deleted from user list".format(nick))
 		return
 	
 	# (Admin/user command) Ignores a user (pointBot ignores all messages from this user, ignores point exchanges, hides from points display if they are past player)

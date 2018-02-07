@@ -14,7 +14,6 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 - `pointBot, status <user>` (returns status of player via PM; also triggered by user PMs)
 - `pointBot, setpts <nick/all> <points>` (set points for user)
 - `pointBot, setgp <nick/all> <points>` (set points for user)
-- `pointBot, del <nick>` (delete a user from the points table)
 - `pointBot, ignore <nick>` (adds user to the ignore list; removes from game)
 - `pointBot, unignore <nick>` (removes a user from the ignore list; adds back to game)
 		 
@@ -28,7 +27,6 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 		 
 ## Usage Notes
 #### Setup
-- Requires Python 2.7 and the Twisted package.
 - Check the IRC info in the class definition and make sure it is correct.
 - Check main() and verify the IRC server is correct.
 - Make sure the file paths are correct.
@@ -45,4 +43,4 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 - The ignore file stores only IPs. Only edit manually if an issue occurs.
 - The bot file stores nicks (since bot names should not change often). This should be edited manually.
 
-NOTE: I've run into a couple issues with multiple nicks on the same IP (account stuck logged in) and even IPs changing due to modem testing, but this is uncommon enough that it can be dealt with by adding nicks to the bot list, ignoring users ("ignore"), or deleting point entries ("del").
+NOTE: I've run into a couple issues with multiple nicks on the same IP (account stuck logged in) and even IPs changing due to modem testing, but this is uncommon enough that it can be dealt with by adding nicks to the bot list, ignoring users ("ignore"), or deleting point entries manually.
