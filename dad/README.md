@@ -1,6 +1,6 @@
 # Dad Bot
 
-[![Documentation](https://godoc.org/github.com/alecwest/godaddyirc/dadbot?status.svg)](https://godoc.org/github.com/alecwest/godaddyirc/dadbot)
+[![Documentation](https://godoc.org/github.com/AFTERWAKE/IRCBots/dad/dadbot?status.svg)](https://godoc.org/github.com/AFTERWAKE/IRCBots/dad/dadbot)
 
 ### This bot mimics the behavior of everyone's favorite person... dad.
 ### Bot uses [hellabot](https://github.com/whyrusleeping/hellabot) as its base.
