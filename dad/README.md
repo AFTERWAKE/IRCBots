@@ -4,7 +4,7 @@
 
 ### This bot mimics the behavior of everyone's favorite person... dad.
 ### Bot uses [hellabot](https://github.com/whyrusleeping/hellabot) as its base.
-### Credit for jokes goes to [niceonedad](http://niceonedad.com/) and [r/dadJokes](https://www.reddit.com/r/dadjokes/)
+### Credit for jokes goes to [niceonedad](http://niceonedad.com/), [r/dadJokes](https://www.reddit.com/r/dadjokes/), and [icanhazdadjoke](https://icanhazdadjoke.com)
 
 #### FEATURES
 - Will respond to most common english forms of the word "dad"
@@ -33,7 +33,7 @@
 - Track users by name and IP
 
 #### ISSUES
-- None?
+- Say commands without a targeted channel but containing a ":" don't work
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag

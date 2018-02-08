@@ -31,7 +31,7 @@ hello im
 dad, say saying hello i'mj long and expecting nothing back
 hello i'mj long
 
-dad, say saying I'm cooler than jlong and expecting mocking response
+dad, say saying I'm 100% cooler than jlong and expecting mocking response
 I'm cooler than jlong
 
 dad, say saying im .cooler than jlong and expecting response with . removed
@@ -111,3 +111,6 @@ make me an cooler jlong
 
 dad, say saying make me jlong and expecting nothing
 make me jlong
+
+dad, say #main: saying I love dad and expecting Awww... I love you too, awest :v)
+I love dad
