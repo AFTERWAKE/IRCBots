@@ -31,6 +31,7 @@
 - Listen briefly before speaking to see if any other bots were triggered by the message first, and ignore if one was
 - Add a list to track bots
 - Track users by name and IP
+- Separate mom, dad, and general config info into three files
 
 #### ISSUES
 - Say commands without a targeted channel but containing a ":" don't work
