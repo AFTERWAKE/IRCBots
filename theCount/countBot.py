@@ -51,7 +51,13 @@ class countBot(irc.IRCClient):
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     numberForAlphabet = -1
-    botList = ["~dad", "~mom", "~nodebot", "~Magic_Con", "~Seahorse", "~dootbot", "~pointbot"]
+    botList = [
+        "~dad", "~mom",
+        "~nodebot", "~Magic_Con",
+        "~Seahorse", "~dootbot",
+        "~pointbot", "botprotec",
+        "QuipBot"
+    ]
     mutedList = []
     lastWHOIS = ''
     muteMode = ''
