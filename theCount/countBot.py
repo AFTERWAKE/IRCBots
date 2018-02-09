@@ -112,6 +112,8 @@ class countBot(irc.IRCClient):
     def playLimit(self):
         if self.numberForGame < 6:
             self.numberPlayLimit = 3
+        elif self.numberForGame < 8:
+            self.numberPlayLimit = randrange(int(self.numberForGame/2), int(self.numberForGame/2)+3)
         else:
             self.numberPlayLimit = randrange(int(self.numberForGame/2)-1, int(self.numberForGame/2)+3)
         return
@@ -122,7 +124,7 @@ class countBot(irc.IRCClient):
         self.numberForGame = randrange(1, 32)
         self.playLimit()
         self.wordForGame = self.chooseWordForGame()
-        print 'Winning number: {}'.format(self.numberForGame)
+        print 'Winning number: {} (kick on: {})'.format(self.numberForGame, self.numberPlayLimit)
         self.msg(self.chatroom, "COUNTBOT INITIATED. The counting game is beginning. " +
                  "Start with 1 {}.".format(self.wordForGame))
         self.currentNumber = 1
