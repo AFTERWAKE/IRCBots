@@ -36,6 +36,8 @@ import time
 
 
 class countBot(irc.IRCClient):
+    version = "2.5.1"
+    latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
     scoresFilePath = "./scores.txt"
@@ -347,9 +349,14 @@ class countBot(irc.IRCClient):
         '3- No joining in on a second IRC client to play twice. Your score will be removed. ' +
         '4- If you\'re found abusing the bot commands in any way, your domain may accidentally end up whitelisted.')
 
+    def displayVersion(self):
+        self.msg(self.chatroom, "v{} - Latest: {}".format(self.version, self.latestCommits))
+
     def userCommands(self, name, message, isTopUser=False):
         if ((message == self.nickname + ', help') or (message == self.nickname + ': help')):
             self.helpText()
+        elif ((message == self.nickname + ', version') or (message == self.nickname + ': version')):
+            self.displayVersion()
         elif ((message == self.nickname + ', winners') or (message == self.nickname + ': winners')):
             self.sortUsersAscending()
             self.displayWinners()

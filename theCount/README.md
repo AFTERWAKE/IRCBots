@@ -24,3 +24,4 @@ ADMIN COMMANDS
          botNick, losers (list of losers)
          botNick, winners (shows list of winners)
          botNick, rules (shows list of rules)
+         botNick, version (shows version + link to github)
