@@ -140,11 +140,11 @@ class theMagicConch(irc.IRCClient):
             m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
             if m:
                 if m.group(1) == "ignore":
-                    self.ignore(m.group(2))
+                    self.ignore(m.group(2).strip())
                     return
 
                 elif m.group(1) == "unignore":
-                    self.unignore(m.group(2))
+                    self.unignore(m.group(2).strip())
                     return
 
                 elif m.group(1) == "say": 
@@ -210,6 +210,7 @@ class theMagicConch(irc.IRCClient):
             mon = {"name":pokemon_list[i].text_content(),
                    "link":"https://pokemondb.net" + pokemon_list[i].attrib["href"]}
             pokemon_list[i] = mon
+        page.close()
         return pokemon_list
 
 def main():
@@ -225,6 +226,4 @@ if __name__ == "__main__":
 
 '''
 TODO:
-    - throttle
-    - fix who
 '''

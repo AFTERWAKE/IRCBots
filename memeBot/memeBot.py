@@ -1,6 +1,9 @@
 import time
 import random
 import re
+import datetime
+from lxml import html
+import requests
 
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
@@ -32,6 +35,7 @@ class memeBot(irc.IRCClient):
         self.__channel = channel
         print("Channel: " + self.__channel)
         self.who(channel)
+        self.memelist = []
 
         with open("ignore_list.txt", 'r') as infile:
             for each in infile:
@@ -58,7 +62,7 @@ class memeBot(irc.IRCClient):
         self.who(channel)
 
     def who(self, channel):
-        "List the users in 'channel', usage: client.who('#testroom')"
+        "List the users in 'channel', usage: client.who('#some-room')"
         self.user_list = []
         self.sendLine('WHO %s' % channel)
 
@@ -111,7 +115,7 @@ class memeBot(irc.IRCClient):
 
         if host in self.__ignore:
             # remove host from ignore list
-            self.msg(self.__channel, 
+            self.msg(self.__channel,
                     "Oh hi %s. How long have you been here?" % nick)
             self.__ignore.remove(host)
             print "Ignore list", self.__ignore
@@ -119,6 +123,32 @@ class memeBot(irc.IRCClient):
                 for each in self.__ignore:
                     ofile.write(each + "\n")
         return
+
+    def ignore_list(self):
+        msg = ""
+        for i in range(len(self.user_list)):
+            if self.user_list[i]["host"] in self.__ignore:
+                msg += self.user_list[i]["nick"] + " "
+        self.msg(channel, "Ignore list: " + msg)
+
+    def get_memes(self):
+        page = requests.get("https://www.reddit.com/r/memes/")
+        if page.ok:
+            self.memelist = []
+            tree = html.fromstring(page.content)
+            links = tree.find_class("title")
+            for each in links:
+                href = each.get("href")
+                if href != None:
+                    if "/r/memes/" in href:
+                        self.memelist.append("https://www.reddit.com" + href)
+                    else:
+                        self.memelist.append(href)
+        page.close()
+        print page.ok
+
+    def pick_meme(self):
+        print random.choice(self.memelist)
 
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
@@ -134,6 +164,11 @@ class memeBot(irc.IRCClient):
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
             # admin commands
             if user_ip == admin_ip:
+                if message == "get_memes":
+                    self.get_memes()
+                elif message == "pick_meme":
+                    self.pick_meme()
+
                 m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
                 if m:
                     if m.group(1) == "ignore":
@@ -144,10 +179,16 @@ class memeBot(irc.IRCClient):
                         self.unignore(m.group(2).strip())
                         return
 
-                    elif m.group(1) == "say": 
+                    elif m.group(1) == "say":
                         self.msg(self.__channel, m.group(2))
                         return
-
+                    
+                    '''
+                    elif m.group(1) == "list":
+                        print "DEBUG"
+                        self.ignore_list()
+                        return
+                    '''
 
             # ignore list
             if host in self.__ignore:
@@ -162,8 +203,8 @@ class memeBot(irc.IRCClient):
             else:
 
                 # match rip
-                if re.search(r"(\brip\b)", message.lower()):
-                    responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip", "RIP"]
+                if re.search(r"(\brip\b|\bf\b)", message.lower()):
+                    responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip", "RIP", "f", "F"]
                     self.msg(channel, random.choice(responses))
                     self.__last_response = temp_time
                     return
@@ -208,24 +249,29 @@ class memeBot(irc.IRCClient):
                     self.__last_response = temp_time
                     return
 
-                # # ip test
-                # elif re.match(r"test", message.lower()):
-                #     print(user.split("@")[1], admin_ip)
-                #     if user.split("@")[1] == admin_ip:
-                #         self.msg(channel, user.split("!")[0] + random.choice(["is duh queen!", "knows de wey"]))
-                #     else:
-                #         self.msg(channel, user.split("!")[0] + random.choice(["is duh false queen!", "is not de wey", "spit on the false queen!"]))
-                #     return
+                # have a nice day
+                elif re.match(r"(.*have\sa\s(very\s)*(nice\s)*day.*)", message.lower()):
+                    m = re.match(r"(.*have\sa\s(very\s)*(nice\s)*day.*)", message.lower())
+                    if m.group(3) != None:
+                        numVery = message.count("very")
+                        if numVery > 60:
+                            responses = ["Have a day :^)"]
+                            self.msg(channel, random.choice(responses))
+                            return
+                        self.msg(channel, "Have a very " + ("very " * numVery) + "nice day")
+                        self.__last_response = temp_time
+                    else:
+                        responses = ["Thanks, you too :^)"]
+                        self.msg(channel, random.choice(responses))
+                    return
 
-                # # bless you
-                # elif not self.__d.check(word):
-                #     chance = random.randint(1,100)
-                #     print("CATCH:", word, "chance: " + str(chance))
-                #     responses = ["bless you %s", "hands %s a tissue"]
-                #     if (chance <= 20):
-                #         self.describe(channel, random.choice(responses) % user)
-                #         self.__last_response = temp_time
-                #     return
+                # hump day
+                elif re.match(r"what\sday\sis\sit(/stoday)*\?*", message.lower()) and datetime.date.today().weekday() == 2:
+                    responses = ["HUMP DAAAAYYYYYYYYYYYY", "MIKE MIKE MIKE MIKE MIKE MIKE MIKE MIKE"]
+                    self.msg(channel, random.choice(responses))
+                    return
+
+                # general business
 
                 else:
                     return
@@ -246,7 +292,10 @@ if __name__ == "__main__":
 
 '''
 TODO
-- add a admin mute command
-- do a unmute command too
-- make sure mute is done on host name
+FEATURES
+general business
+    - <jlong> like "we should classify this as general business" -> Memebot /me salutes or -> "Ah yes, General Business"
+
+r/memes
+    - look at conch's pokemon thing
 '''

@@ -11,10 +11,10 @@
             "responses":["pokemon",
                          "pokemon:I think it was %s...",
                          "pokemon:I believe it was %s",
-                         "pokemon:definitly %s!",
+                         "pokemon:definitely %s!",
                          "pokemon:absolutely %s!",
                          "pokemon:not %s",
-                         "pokemon:definitly not %s"]
+                         "pokemon:definitely not %s"]
         },
         {
             "pattern": "^.*:(?P<message>.*)$",
@@ -23,10 +23,10 @@
             "responses":["who",
                          "who:I think it was %s...",
                          "who:I believe it was %s",
-                         "who:definitly %s!",
+                         "who:definitely %s!",
                          "who:absolutely %s!",
                          "who:not %s",
-                         "who:definitly not %s"]
+                         "who:definitely not %s"]
         },
         {
             "pattern": "^.*:(?P<message>.*)$",
@@ -109,7 +109,7 @@
                 "Yes.",
                 "Try asking again.",
                 "It is certain.",
-                "It is is decidedly so.",
+                "It is decidedly so.",
                 "Without a doubt.",
                 "Yes definitely.",
                 "You may rely on it.",
