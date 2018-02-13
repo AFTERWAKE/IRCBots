@@ -1,25 +1,33 @@
 '''
 --------------------------------------------------------------------------------------------------------------------
       Author: DavidS
+   v2 Author: noahsiano
         Date: April 2015
+Last Updated: February 2018
         NOTE: Run in linux in order to get the dictionary to work.
- Description: This connects to an IRC chatroom and plays a counting game at the times 10,
-              12, 2, and 4. The game can also be initiated by one or two hosts listed.
+ Description: This connects to an IRC chatroom and plays a counting game at the times 8:30,
+              11:00, 1:30, and 4. The game can also be initiated by one or two hosts listed.
               A count of the winners is kept so that people can see how good they really are.
     Commands: ADMIN COMMANDS
                    botNick: set <userNick> <timesWon> (set timesWon for user on a reset)
                    botNick: del <userNick> (delete a user from the list/winnings table)
                    botNick: start (starts game)
                    botNick: save (saves list of winners || also gets saved at the end of every game)
-                   botNick: quit (quits current game)
+                   botNick, stop (quits current game)
                    botNick: users (prints list of users to console)
                    botNick: restore (restores winners from save file || also restores automatically on run)
                    botNick: say <msg> (sends message to channel as the bot)
+                   botNick, mute <user> (mutes a user by IP, they will be ignored for commands and will not be able to play the game)
+                   botNick, unmute <user> (undoes the actions of the `mute` command)
+                   botNick, whois <user> (Gives the IP address of a user on the server)
+                   botNick quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
               USER COMMANDS
                    botNick: help (help message)
                    botNick: loser (LOSER: <user who called>)
                    botNick: losers (list of losers)
                    botNick: winners (shows list of winners)
+                   botNick, rules (shows list of rules)
+                   botNick, version (shows version + link to github)
 --------------------------------------------------------------------------------------------------------------------
 '''
 from twisted.words.protocols import irc
@@ -36,6 +44,8 @@ import time
 
 
 class countBot(irc.IRCClient):
+    version = "2.5.2"
+    latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
     scoresFilePath = "./scores.txt"
@@ -51,10 +61,18 @@ class countBot(irc.IRCClient):
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     numberForAlphabet = -1
-    botList = ["~dad", "~mom", "~nodebot", "~Magic_Con", "~Seahorse", "~dootbot", "~pointbot"]
+    botList = [
+        "~dad", "~mom",
+        "~nodebot", "~Magic_Con",
+        "~Seahorse", "~dootbot",
+        "~pointbot", "botprotec",
+        "QuipBot"
+    ]
     mutedList = []
     lastWHOIS = ''
     muteMode = ''
+    timeLastCommand = 0
+    timestampBuffer = 0
 
     def __init__(self):
         currentHour = int(self.getCurrentTime().split(':')[0])
@@ -91,6 +109,7 @@ class countBot(irc.IRCClient):
     def resetGame(self):
         self.gameRunning = False
         self.resetUsers()
+        self.timestampBuffer = 3
         print 'GAME RESET!'
         return
 
@@ -103,6 +122,8 @@ class countBot(irc.IRCClient):
     def playLimit(self):
         if self.numberForGame < 6:
             self.numberPlayLimit = 3
+        elif self.numberForGame < 8:
+            self.numberPlayLimit = randrange(int(self.numberForGame/2), int(self.numberForGame/2)+3)
         else:
             self.numberPlayLimit = randrange(int(self.numberForGame/2)-1, int(self.numberForGame/2)+3)
         return
@@ -113,7 +134,7 @@ class countBot(irc.IRCClient):
         self.numberForGame = randrange(1, 32)
         self.playLimit()
         self.wordForGame = self.chooseWordForGame()
-        print 'Winning number: {}'.format(self.numberForGame)
+        print 'Winning number: {} (kick on: {})'.format(self.numberForGame, self.numberPlayLimit)
         self.msg(self.chatroom, "COUNTBOT INITIATED. The counting game is beginning. " +
                  "Start with 1 {}.".format(self.wordForGame))
         self.currentNumber = 1
@@ -336,9 +357,14 @@ class countBot(irc.IRCClient):
         '3- No joining in on a second IRC client to play twice. Your score will be removed. ' +
         '4- If you\'re found abusing the bot commands in any way, your domain may accidentally end up whitelisted.')
 
+    def displayVersion(self):
+        self.msg(self.chatroom, "v{} - Latest: {}".format(self.version, self.latestCommits))
+
     def userCommands(self, name, message, isTopUser=False):
         if ((message == self.nickname + ', help') or (message == self.nickname + ': help')):
             self.helpText()
+        elif ((message == self.nickname + ', version') or (message == self.nickname + ': version')):
+            self.displayVersion()
         elif ((message == self.nickname + ', winners') or (message == self.nickname + ': winners')):
             self.sortUsersAscending()
             self.displayWinners()
@@ -495,8 +521,13 @@ class countBot(irc.IRCClient):
     def privmsg(self, user, channel, message):
         if ((channel == self.chatroom) or (user.split('@')[1] in self.admin)):
             try:
+                if (self.gameRunning and int(message) != self.currentNumber):
+                    print "{} -> {}: {}".format(str(time.time()), user, message)
+                elif (not self.gameRunning and self.timestampBuffer > 0):
+                    print "{} -> {}: {} LATE".format(str(time.time()), user, message)
+                    self.timestampBuffer -= 1
                 if (int(message) == self.currentNumber and self.gameRunning):
-                    print "{}: {}".format(user, message)
+                    print "{} -> {}: {} COUNTED".format(str(time.time()), user, message)
                     hostname = user.split('!')[1].split('@')
                     if (hostname[0] in self.botList):
                         print("Bot!")
@@ -519,9 +550,15 @@ class countBot(irc.IRCClient):
                     elif (user.split('!')[1] in self.botList):
                         return
                     elif (user.split('!')[0] == self.getWinningUser().username):
-                        self.userCommands(user.split('!')[0], message, True)
+                        timeRightNow = time.time()
+                        if (timeRightNow - self.timeLastCommand) > 5:
+                            self.timeLastCommand = time.time()
+                            self.userCommands(user.split('!')[0], message, True)
                     else:
-                        self.userCommands(user.split('!')[0], message)
+                        timeRightNow = time.time()
+                        if (timeRightNow - self.timeLastCommand) > 5:
+                            self.timeLastCommand = time.time()
+                            self.userCommands(user.split('!')[0], message)
         else:
             print user
         return

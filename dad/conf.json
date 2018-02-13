@@ -10,7 +10,7 @@
             "Response": [
                 {
                     "Message": "That's it, you're grounded #c!",
-                    "Count": 30
+                    "Count": 31
                 }
             ]
         },
@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 330
+                    "Count": 370
                 }
             ]
         },
@@ -36,7 +36,7 @@
             "Response": [
                 {
                     "Message": "#c, you're now ungrounded. Don't let me catch you misbehaving again.",
-                    "Count": 19
+                    "Count": 20
                 }
             ]
         }
@@ -54,14 +54,14 @@
         "l",
         "dootBot"
     ],
-    "Ip": "coop.test.adtran.com",
+    "IP": "localhost",
     "MessageRate": 10,
     "MomName": "mom",
     "MomSpeak": [
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?\\s*$",
+                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
                 "Variable": ""
             },
             "Response": [
@@ -82,7 +82,7 @@
             "Response": [
                 {
                     "Message": "good morning #u!",
-                    "Count": 30
+                    "Count": 33
                 }
             ]
         },
@@ -95,7 +95,7 @@
             "Response": [
                 {
                     "Message": "Here is a list of grounded users:\n#c",
-                    "Count": 27
+                    "Count": 28
                 }
             ]
         },
@@ -121,7 +121,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 281
+                    "Count": 235
                 }
             ]
         },
@@ -134,7 +134,7 @@
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 21
+                    "Count": 22
                 }
             ]
         },
@@ -147,7 +147,7 @@
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 22
+                    "Count": 23
                 }
             ]
         },
@@ -160,20 +160,20 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 20
+                    "Count": 19
                 }
             ]
         },
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})(\\W+[^?]*)?\\?\\s*$",
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 45
+                    "Count": 47
                 }
             ]
         },
@@ -186,7 +186,7 @@
             "Response": [
                 {
                     "Message": "Poof, you're #a #v!",
-                    "Count": 22
+                    "Count": 24
                 }
             ]
         },
@@ -199,12 +199,12 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 51
+                    "Count": 55
                 }
             ]
         },
         {
-            "Action": "none",
+            "Action": "joke",
             "Regex": {
                 "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})($|\\W+)",
                 "Variable": ""
@@ -464,7 +464,7 @@
                 },
                 {
                     "Message": "I got a haircut last week...\nAt first I didn't like it, but it's growing on me",
-                    "Count": 2
+                    "Count": 1
                 },
                 {
                     "Message": "Wanna hear a little pickle joke?\n.....it's not that big of dill.",
@@ -476,7 +476,7 @@
                 },
                 {
                     "Message": "Why did the old lady fall in the well?\nShe couldn't see that well",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What's the difference between a coyote and a flea?\nOne howls on the prairie and the other prowls on the hairy.",
@@ -488,7 +488,7 @@
                 },
                 {
                     "Message": "How do you shoot a rocket?\nFire works",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What time did the man go to the dentist?\nTooth Hurty",
@@ -584,7 +584,7 @@
                 },
                 {
                     "Message": "RIP boiled water.\nYou will be mist.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "My gf told me she gets weirded out when I'm too literal.\nSo I gave her a piece of my mind.",
@@ -632,7 +632,7 @@
                 },
                 {
                     "Message": "Know why the native Americans were here first?\n...because they had reservations.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I saw an article about people snorting chocolate powder for a rush.\nThey wanted a Quik high.",
@@ -648,7 +648,7 @@
                 },
                 {
                     "Message": "Why is fatty acid the coolest carbon chain?\nBecause it's fat with a pH",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Today I threw my dog in the ocean.\nHe was a good buoy.",
@@ -780,7 +780,7 @@
                 },
                 {
                     "Message": "I was arrested for telling my dad the best joke ever...\nPolice said manslaughter was illegal",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Dentist: Open up please\nMe: sometime I get sad and I don't know why",
@@ -792,7 +792,7 @@
                 },
                 {
                     "Message": "I broke my finger today..\n..but on the other hand I'm completely fine.",
-                    "Count": 2
+                    "Count": 1
                 },
                 {
                     "Message": "Have you heard the rumor going around about butter?\nNevermind, I really shouldn't spread it.",
@@ -836,7 +836,7 @@
                 },
                 {
                     "Message": "I went to the seafood disco last night...\nI pulled a muscle!",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I was surprised to hear that Adele uses a MacBook\nI always thought she'd use a Dell.",
@@ -844,7 +844,7 @@
                 },
                 {
                     "Message": "6 was afraid of 7 because 7, 8, 9, but why did 7 eat 9?\nBecause you're supposed to eat 3 squared meals a day.",
-                    "Count": 2
+                    "Count": 1
                 },
                 {
                     "Message": "I don't know why Euthanasia is so controversial.\nI personally don't mind Asian kids.",
@@ -928,11 +928,11 @@
                 },
                 {
                     "Message": "Why was the energizer bunny put in jail?\nHe was charged with battery",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I was recently in a boating accident...\nIt was quite an oar-deal.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why isn't a koala bear a real bear\nBecause they aren't koala-fied",

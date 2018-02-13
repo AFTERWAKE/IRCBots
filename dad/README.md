@@ -1,10 +1,10 @@
 # Dad Bot
 
-[![Documentation](https://godoc.org/github.com/alecwest/godaddyirc/dadbot?status.svg)](https://godoc.org/github.com/alecwest/godaddyirc/dadbot)
+[![Documentation](https://godoc.org/github.com/AFTERWAKE/IRCBots/dad/dadbot?status.svg)](https://godoc.org/github.com/AFTERWAKE/IRCBots/dad/dadbot)
 
 ### This bot mimics the behavior of everyone's favorite person... dad.
 ### Bot uses [hellabot](https://github.com/whyrusleeping/hellabot) as its base.
-### Credit for jokes goes to [niceonedad](http://niceonedad.com/) and [r/dadJokes](https://www.reddit.com/r/dadjokes/)
+### Credit for jokes goes to [niceonedad](http://niceonedad.com/), [r/dadJokes](https://www.reddit.com/r/dadjokes/), and [icanhazdadjoke](https://icanhazdadjoke.com)
 
 #### FEATURES
 - Will respond to most common english forms of the word "dad"
@@ -25,17 +25,16 @@
 - Add dad, help for list of admin commands
 - Better way to save config?
 - Bring back joke getting scripts
-- Respond to "?!" questions
 - Attempt reconnect on drop
 - Make mom more cynical. ex: "I love mom" -> "Ok"
 - Use more \\b in regex
 - Listen briefly before speaking to see if any other bots were triggered by the message first, and ignore if one was
 - Add a list to track bots
 - Track users by name and IP
+- Separate mom, dad, and general config info into three files
 
 #### ISSUES
-- Ungrounding leaves an empty string behind
-- I'm panicking returns 'mmmmmmmmmm no'
+- Say commands without a targeted channel but containing a ":" don't work
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag

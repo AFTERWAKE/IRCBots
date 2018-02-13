@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/alecwest/godaddyirc/dadbot"
+	"github.com/AFTERWAKE/IRCBots/dad/dadbot"
 )
 
 func main() {

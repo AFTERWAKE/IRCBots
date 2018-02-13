@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"math"
 	"math/rand"
+	"net/http"
 	"os"
 	"regexp"
 	"strings"
@@ -78,6 +79,14 @@ type IRCBot struct {
 	LastReply Reply
 }
 
+// ICanHazDadJoke declares the expected json format of jokes from
+// ICanHazDadJoke.com
+type ICanHazDadJoke struct {
+	ID		string `json:"id"`
+	Joke 	string `json:"joke"`
+	Status	int	`json:"status"`
+}
+
 // Dbot is the global variable that primarily allows for the config information
 // to be smoothly passed around and updated properly.
 var Dbot IRCBot
@@ -108,9 +117,7 @@ func Run(dad bool) {
 	}
 	bot, err := hbot.NewBot(*serv, *nick, hijackSession, channels)
 	Dbot.Bot = bot
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 	Dbot.Bot.AddTrigger(UserTrigger)
 	Dbot.Bot.AddTrigger(AdminTrigger)
 	Dbot.Bot.Logger.SetHandler(log.StdoutHandler)
@@ -126,9 +133,7 @@ func ReadConfig() Configuration {
 	decoder := json.NewDecoder(file)
 	conf := Configuration{}
 	err := decoder.Decode(&conf)
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 	return conf
 }
 
@@ -136,9 +141,7 @@ func ReadConfig() Configuration {
 // the config file.
 func UpdateConfig() {
 	jsonData, err := json.MarshalIndent(Dbot.Conf, "", "    ")
-	if err != nil {
-		panic(err)
-	}
+	checkErr(err)
 	ioutil.WriteFile(configFile, jsonData, 0644)
 }
 
@@ -159,9 +162,7 @@ func Unground(name string) {
 	if i == -1 {
 		return
 	}
-	Dbot.Conf.Grounded[len(Dbot.Conf.Grounded)-1], Dbot.Conf.Grounded[i] =
-		Dbot.Conf.Grounded[i], Dbot.Conf.Grounded[len(Dbot.Conf.Grounded)-1]
-	Dbot.Conf.Grounded = Dbot.Conf.Grounded[:len(Dbot.Conf.Grounded)-1]
+	Dbot.Conf.Grounded = append(Dbot.Conf.Grounded[:i], Dbot.Conf.Grounded[i+1:]...)
 }
 
 // TestMessage tests the passed message against the passed regex and returns
@@ -257,16 +258,20 @@ func FormatMessage(message string, s SpeakData) (string, string) {
 func PerformAction(reply Reply, speak SpeakData,
 	variable string) (Reply, string) {
 	// Handle any included action
-	if strings.Contains(speak.Action, "ground") {
+	ground := regexp.MustCompile("(?i)^ground$")
+	unground := regexp.MustCompile("(?i)^unground$")
+	grounded := regexp.MustCompile("(?i)^grounded$")
+	message := regexp.MustCompile("(?i)^message$")
+	if ground.MatchString(speak.Action) {
 		Ground(variable)
 	}
-	if strings.Contains(speak.Action, "unground") {
+	if unground.MatchString(speak.Action) {
 		Unground(variable)
 	}
-	if strings.Contains(speak.Action, "grounded") {
+	if grounded.MatchString(speak.Action) {
 		variable = strings.Join(Dbot.Conf.Grounded, ", ")
 	}
-	if strings.Contains(speak.Action, "message") {
+	if message.MatchString(speak.Action) {
 		to, msg := FormatMessage(variable, speak)
 		if len(to) > 0 {
 			reply.To = to
@@ -327,9 +332,21 @@ func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 	variable = strings.TrimSpace(GetVariableRegex(variable, speakData.Regex))
 	reply.To = ChooseDestination(message)
 
+	// TODO refactor if all jokes are ever done through http get
+	joke := regexp.MustCompile("(?i)^joke$")
+	var configJokeOdds = 60
+	var configJokeOddsOutOf = 100
 	if !strings.Contains(speakData.Action, "none") {
 		reply, variable = PerformAction(reply, speakData, variable)
-		log.Debug(variable)
+		// log.Debug(variable)
+	}
+	if joke.MatchString(speakData.Action) {
+		if rand.Intn(configJokeOddsOutOf) > configJokeOdds {
+			response.Message = GetICanHazDadJoke()
+			// TODO this is a really dirty move to get around incrementing
+			// config jokes
+			speakData.Response[randIndex].Count--
+		}
 	}
 	response.Message = HandleTextReplacement(message, response, variable)
 	// If reply is non-empty, then bot will send it, so increment response count
@@ -366,14 +383,16 @@ func PerformReply(irc *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
 					irc.Msg(reply.To, line)
 					numSent++
 				}
+				if numSent == 1 {
+					// Record time of first line being sent
+					Dbot.LastReply = reply
+				}
 				// Make sure there is a timeout between multiple lines in a reply
 				if len(reply.Content) > 1 && numSent > 0 {
 					time.Sleep(time.Duration(Dbot.Conf.Timeout) * time.Second)
 				}
 			}
 			if numSent > 0 {
-				// Record last sent message
-				Dbot.LastReply = reply
 				UpdateConfig()
 				return true
 			}
@@ -403,6 +422,26 @@ func GetRandomLeastUsedResponseIndex(speak SpeakData) int {
 	return chosenIndex
 }
 
+func GetICanHazDadJoke() string {
+	url := "https://icanhazdadjoke.com/"
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", url, nil)
+	checkErr(err)
+	req.Header.Set("Accept", "application/json")
+	resp, err := client.Do(req)
+	checkErr(err)
+	decoder := json.NewDecoder(resp.Body)
+	joke := ICanHazDadJoke{}
+	err = decoder.Decode(&joke)
+	checkErr(err)
+	log.Debug(fmt.Sprintf("Got joke from icanhazdadjoke.com!"))
+	r := regexp.MustCompile("(?i)\\?\\s")
+	joke.Joke = r.ReplaceAllLiteralString(joke.Joke, "?\n")
+	r = regexp.MustCompile("(?i)\\.\\s")
+	joke.Joke = r.ReplaceAllLiteralString(joke.Joke, ".\n")
+	return joke.Joke
+}
+
 // AddArticle prepands the given string with an "a" or "an" based on the first word and
 // returns the result
 func AddArticle(s string) string {
@@ -424,6 +463,12 @@ func getSpeakData(adminSpeak bool) []SpeakData {
 		s = Dbot.Conf.Speak
 	}
 	return s
+}
+
+func checkErr(err error) {
+	if err != nil {
+		panic(err)
+	}
 }
 
 // UserTrigger is for all non-admin users.
