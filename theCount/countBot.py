@@ -1,10 +1,12 @@
 '''
 --------------------------------------------------------------------------------------------------------------------
       Author: DavidS
+   v2 Author: noahsiano
         Date: April 2015
+Last Updated: February 2018
         NOTE: Run in linux in order to get the dictionary to work.
- Description: This connects to an IRC chatroom and plays a counting game at the times 10,
-              12, 2, and 4. The game can also be initiated by one or two hosts listed.
+ Description: This connects to an IRC chatroom and plays a counting game at the times 8:30,
+              11:00, 1:30, and 4. The game can also be initiated by one or two hosts listed.
               A count of the winners is kept so that people can see how good they really are.
     Commands: ADMIN COMMANDS
                    botNick: set <userNick> <timesWon> (set timesWon for user on a reset)
@@ -42,7 +44,7 @@ import time
 
 
 class countBot(irc.IRCClient):
-    version = "2.5.1"
+    version = "2.5.2"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
