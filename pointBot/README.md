@@ -10,6 +10,7 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 - `pointBot, save` (saves list of winners || also gets saved at the end of every day)
 - `pointBot, restore` (restores winners from save file || also restores automatically on run)
 - `pointBot, say <msg>` (sends message to channel as the bot)
+- `pointBot, msg <nick> <msg>` (sends PM to user as the bot)
 - `pointBot, me <action>` (performs a /me command as the bot)
 - `pointBot, status <user>` (returns status of player via PM; also triggered by user PMs)
 - `pointBot, setpts <nick/all> <points>` (set points for user)
@@ -21,7 +22,6 @@ through traditional +1, -1, etc. Each user gets 10 "gift points" to pass out eve
 - `pointBot, help` (command list)
 - `pointBot, rules` (bot introduction)
 - `pointBot, points` (list of active players and points)
-- `pointBot, unsub` (adds user to the ignore list)
 - `+/-<pts> [to] <nick> [reason]` (point exchange)
 - A PM to pointBot will show you your current status (gift points and total points)
 		 
