@@ -76,6 +76,7 @@ class pointBot(irc.IRCClient):
         nick = user.split('!')[0]
         ip = user.split('@')[1]
         hour, minute, second = self.getCurrentTime()
+        weekday = datetime.now().weekday()
         print ("[{:02d}:{:02d}:{:02d}] {}: {} @ {}".format(hour, minute, second, user, message, channel))
         if nick in self.botList:
             return
@@ -84,7 +85,7 @@ class pointBot(irc.IRCClient):
             if hour != self.lastSaveHour:
                 self.save()
                 self.lastSaveHour = hour
-            if (hour >= self.startHour and hour < self.stopHour):
+            if (hour >= self.startHour and hour < self.stopHour and weekday < 5):
                 if not self.gameRunning:
                     self.resetGame()
             elif self.gameRunning:
