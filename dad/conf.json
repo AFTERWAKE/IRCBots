@@ -10,7 +10,7 @@
             "Response": [
                 {
                     "Message": "That's it, you're grounded #c!",
-                    "Count": 31
+                    "Count": 38
                 }
             ]
         },
@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 370
+                    "Count": 380
                 }
             ]
         },
@@ -52,9 +52,16 @@
         "Magic_Conch",
         "Seahorse",
         "l",
-        "dootBot"
+        "dootBot",
+        "botProtector",
+        "QuipBot",
+        "pointBot",
+        "Rogue",
+        "MemeBot",
+        "Mr_HighFive",
+        "OG_Grant"
     ],
-    "IP": "localhost",
+    "IP": "coop.test.adtran.com",
     "MessageRate": 10,
     "MomName": "mom",
     "MomSpeak": [
@@ -67,7 +74,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 23
+                    "Count": 30
                 }
             ]
         }
@@ -95,20 +102,20 @@
             "Response": [
                 {
                     "Message": "Here is a list of grounded users:\n#c",
-                    "Count": 28
+                    "Count": 29
                 }
             ]
         },
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i(')?m\\W+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})",
+                "Trigger": "(?i)(^|.*[^\\w])i(')?m\\W+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})\\b",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 21
+                    "Count": 34
                 }
             ]
         },
@@ -121,7 +128,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 235
+                    "Count": 476
                 }
             ]
         },
@@ -134,7 +141,7 @@
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 22
+                    "Count": 24
                 }
             ]
         },
@@ -147,7 +154,7 @@
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 23
+                    "Count": 25
                 }
             ]
         },
@@ -160,7 +167,7 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 19
+                    "Count": 20
                 }
             ]
         },
@@ -173,7 +180,7 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 47
+                    "Count": 52
                 }
             ]
         },
@@ -186,7 +193,7 @@
             "Response": [
                 {
                     "Message": "Poof, you're #a #v!",
-                    "Count": 24
+                    "Count": 32
                 }
             ]
         },
@@ -199,7 +206,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 55
+                    "Count": 60
                 }
             ]
         },
@@ -356,7 +363,7 @@
                 },
                 {
                     "Message": "What do you call a pony with a sore throat?\nA little horse",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call a sketchy Italian neighbour hood?\nThe Spaghetto",
@@ -420,7 +427,7 @@
                 },
                 {
                     "Message": "Why did the scarecrow win an award?\nBecause he was outstanding in his field",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why do bees hum?\nBecause they don't know the words",
@@ -428,7 +435,7 @@
                 },
                 {
                     "Message": "Why do crabs never give to charity?\nBecause they're shellfish.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why don't skeletons ever go trick or treating?\nBecause they have no body to go with",
@@ -492,7 +499,7 @@
                 },
                 {
                     "Message": "What time did the man go to the dentist?\nTooth Hurty",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Thought taking my shell of my racing snail would make it faster.\nTurns out that just made it more sluggish.",
@@ -512,7 +519,7 @@
                 },
                 {
                     "Message": "I love ruining the plot of Dorian Gray for people\nNever gets old.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Where do belly buttons go to college\nNaval Academy",
@@ -588,7 +595,7 @@
                 },
                 {
                     "Message": "My gf told me she gets weirded out when I'm too literal.\nSo I gave her a piece of my mind.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What is the difference between a fly and a bird?\nA bird can fly but a fly can't bird",
@@ -688,7 +695,7 @@
                 },
                 {
                     "Message": "I can understand 4 feet, 5 feet, 7 feet and 8 feet\nBut I can't fathom",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "How do you make holy water?\nYou boil the hell out of it",
@@ -716,7 +723,7 @@
                 },
                 {
                     "Message": "I bought a gallon of White Out.\nBig Mistake..",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "My Dad and I sighed at the same time today.\nHe said \"Wow, that was sighmultaneous.\"",
@@ -724,7 +731,7 @@
                 },
                 {
                     "Message": "What did the waning full moon say to his girlfriend?\nAt least gibbous a kiss goodbye.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "How can guinea pigs cope so well in the cold?\nIt's Chile near where they're from.",
@@ -756,7 +763,7 @@
                 },
                 {
                     "Message": "I'm not huge into puns.\nSometimes eye roll with it.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "How do subatomic pirates mutiny?\nThey make the captain walk the planck.",
@@ -784,7 +791,7 @@
                 },
                 {
                     "Message": "Dentist: Open up please\nMe: sometime I get sad and I don't know why",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I had to take down some scaffold that was in the way at work.\nIt held me up long enough.",
@@ -860,7 +867,7 @@
                 },
                 {
                     "Message": "Why do cows have hooves instead of feet?\nBecause they lactose.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Do you know what the first thing a couple says when they're married?\nI do",
@@ -868,7 +875,7 @@
                 },
                 {
                     "Message": "I'd love to get into gardening...\n...now that I have more thyme on my hands.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "In the annual scientistific track and field meet, the geologists always lose\nProving once again that gneiss guys finish last.",
@@ -896,7 +903,7 @@
                 },
                 {
                     "Message": "What type of bagel can fly?\nA plain bagel.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "An apple a day\nPuts the doctors out of a job",
@@ -960,7 +967,7 @@
                 },
                 {
                     "Message": "What's red and smells like green paint\nRed paint",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Did you know that Abraham Lincoln was wrongly accused?\nTurns out he was in a cent.",
