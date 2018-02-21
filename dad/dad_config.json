@@ -1,5 +1,4 @@
 {
-    "Admin": "awest",
     "AdminSpeak": [
         {
             "Action": "ground",
@@ -23,7 +22,7 @@
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 383
+                    "Count": 381
                 }
             ]
         },
@@ -42,9 +41,9 @@
         }
     ],
     "Channels": [
-        "#main"
+        "#rents"
     ],
-    "DadName": "dad",
+    "Name": "dad",
     "Debug": true,
     "Grounded": [
         "theCount",
@@ -60,24 +59,6 @@
         "MemeBot",
         "Mr_HighFive",
         "OG_Grant"
-    ],
-    "IP": "coop.test.adtran.com",
-    "MessageRate": 10,
-    "MomName": "mom",
-    "MomSpeak": [
-        {
-            "Action": "none",
-            "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
-                "Variable": ""
-            },
-            "Response": [
-                {
-                    "Message": "Ask your father.",
-                    "Count": 30
-                }
-            ]
-        }
     ],
     "Speak": [
         {
@@ -128,7 +109,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 495
+                    "Count": 494
                 }
             ]
         },
@@ -775,7 +756,7 @@
                 },
                 {
                     "Message": "Why did the ragdoll change her mind?\nIt was suede!",
-                    "Count": 2
+                    "Count": 1
                 },
                 {
                     "Message": "My girlfriend is so good at drawing straight lines that she would thrive in an anarchist society...\n...because she doesn't need a ruler.",
@@ -987,6 +968,5 @@
                 }
             ]
         }
-    ],
-    "Timeout": 4
+    ]
 }
