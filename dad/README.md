@@ -23,15 +23,12 @@
 - Command to change channels
 - Cleanup of dadbot.go overall
 - Add dad, help for list of admin commands
-- Better way to save config?
 - Bring back joke getting scripts
 - Attempt reconnect on drop
-- Make mom more cynical. ex: "I love mom" -> "Ok"
 - Use more \\b in regex
 - Listen briefly before speaking to see if any other bots were triggered by the message first, and ignore if one was
 - Add a list to track bots
 - Track users by name and IP
-- Separate mom, dad, and general config info into three files
 
 #### ISSUES
 - Say commands without a targeted channel but containing a ":" don't work

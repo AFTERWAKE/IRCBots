@@ -3,7 +3,7 @@
         {
             "Action": "ground",
             "Regex": {
-                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), ground ",
+                "Trigger": "(?i)(dad(dy|a)?|father|(pa){1,2}), ground ",
                 "Variable": "\\S+"
             },
             "Response": [
@@ -16,7 +16,7 @@
         {
             "Action": "message",
             "Regex": {
-                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), say ",
+                "Trigger": "(?i)(dad(dy|a)?|father|(pa){1,2}), say ",
                 "Variable": ".*"
             },
             "Response": [
@@ -29,7 +29,7 @@
         {
             "Action": "unground",
             "Regex": {
-                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), unground ",
+                "Trigger": "(?i)(dad(dy|a)?|father|(pa){1,2}), unground ",
                 "Variable": "\\S+"
             },
             "Response": [
@@ -41,7 +41,7 @@
         }
     ],
     "Channels": [
-        "#main"
+        "#rents"
     ],
     "Debug": true,
     "Grounded": [
@@ -64,7 +64,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(good\\s+)?mornin(g|')?(,)?\\s+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})($|\\W+)",
+                "Trigger": "(?i)^(good\\s+)?mornin(g|')?(,)?\\s+(dad(dy|a)?|father|(pa){1,2})($|\\W+)",
                 "Variable": ""
             },
             "Response": [
@@ -77,7 +77,7 @@
         {
             "Action": "grounded",
             "Regex": {
-                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), grounded",
+                "Trigger": "(?i)(dad(dy|a)?|father|(pa){1,2}), grounded",
                 "Variable": ""
             },
             "Response": [
@@ -90,7 +90,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i(')?m\\W+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})\\b",
+                "Trigger": "(?i)(^|.*[^\\w])i(')?m\\W+(dad(dy|a)?|father|(pa){1,2})\\b",
                 "Variable": ""
             },
             "Response": [
@@ -116,7 +116,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})$",
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(dad(dy|a)?|father|(pa){1,2})$",
                 "Variable": ""
             },
             "Response": [
@@ -129,13 +129,26 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i love\\s+\\w+\\W*$",
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(mom(my|ma)?|mother|(ma){1,2})$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "",
+                    "Count": 0
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+\\W*$",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 25
+                    "Count": 26
                 }
             ]
         },
@@ -155,13 +168,13 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pa){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 53
+                    "Count": 54
                 }
             ]
         },
@@ -181,7 +194,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(([s]+[h]+[u]+[t]+\\s*[u]+[p]+|[f]+[u]+[c]+[k]+\\s*[y]+[o]+[u]+)\\s*(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})|[d]+[a]{2,}[d]+)",
+                "Trigger": "(?i)(^|.*[^\\w])(([s]+[h]+[u]+[t]+\\s*[u]+[p]+|[f]+[u]+[c]+[k]+\\s*[y]+[o]+[u]+)\\s*(dad(dy|a)?|father|(pa){1,2})|[d]+[a]{2,}[d]+)",
                 "Variable": ""
             },
             "Response": [
@@ -194,7 +207,7 @@
         {
             "Action": "joke",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})($|\\W+)",
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pa){1,2})($|\\W+)",
                 "Variable": ""
             },
             "Response": [

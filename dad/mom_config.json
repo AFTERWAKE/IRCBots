@@ -9,13 +9,13 @@
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 0
+                    "Count": 2
                 }
             ]
         }
     ],
     "Channels": [
-        "#main"
+        "#rents"
     ],
     "Debug": true,
     "Name": "mom",
@@ -30,6 +30,19 @@
                 {
                     "Message": "Ask your father.",
                     "Count": 30
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(mom(my|ma)?|mother|(ma){1,2})$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Ok",
+                    "Count": 2
                 }
             ]
         }

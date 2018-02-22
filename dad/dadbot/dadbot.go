@@ -20,7 +20,6 @@ import (
 )
 
 type IRCConfig struct {
-    Config
     Admin       string
     IP          string
     MessageRate int
@@ -28,7 +27,6 @@ type IRCConfig struct {
 }
 
 type DadConfig struct {
-    Config
     AdminSpeak  []SpeakData
     Channels    []string
     Debug       bool
@@ -38,7 +36,6 @@ type DadConfig struct {
 }
 
 type MomConfig struct {
-    Config
     AdminSpeak  []SpeakData
     Channels    []string
     Debug       bool
@@ -130,9 +127,7 @@ func Run(dad bool) {
     var nickStr string
     rand.Seed(time.Now().Unix())
     flag.Parse()
-    Irc.Conf = ReadIrcConfig()
-    Dbot = ReadDadConfig()
-    Mbot = ReadMomConfig()
+    Irc.Conf, Dbot, Mbot = ReadConfig()
     if Dad {
         nickStr = Dbot.Name
     } else {
@@ -163,8 +158,12 @@ func Run(dad bool) {
     fmt.Println("Bot shutting down.")
 }
 
-// ReadIrcConfig reads the config and updates the bot's perception of current states.
-func ReadIrcConfig() IRCConfig {
+// ReadConfig reads each config file and returns a struct of each
+func ReadConfig() (IRCConfig, DadConfig, MomConfig) {
+	return readIrcConfig(), readDadConfig(), readMomConfig()
+}
+
+func readIrcConfig() IRCConfig {
     file, _ := os.Open(ircConfigFile)
     defer file.Close()
     decoder := json.NewDecoder(file)
@@ -174,8 +173,7 @@ func ReadIrcConfig() IRCConfig {
     return conf
 }
 
-// ReadDadConfig reads the config and updates the bot's perception of current states.
-func ReadDadConfig() DadConfig {
+func readDadConfig() DadConfig {
     file, _ := os.Open(dadConfigFile)
     defer file.Close()
     decoder := json.NewDecoder(file)
@@ -185,8 +183,7 @@ func ReadDadConfig() DadConfig {
     return conf
 }
 
-// ReadMomConfig reads the config and updates the bot's perception of current states.
-func ReadMomConfig() MomConfig {
+func readMomConfig() MomConfig {
     file, _ := os.Open(momConfigFile)
     defer file.Close()
     decoder := json.NewDecoder(file)
@@ -196,17 +193,24 @@ func ReadMomConfig() MomConfig {
     return conf
 }
 
-// UpdateDadConfig parses the current config information and rewrites it to
-// the config file.
-func UpdateDadConfig() {
+// UpdateConfig dispatches a call to the appropriate update function
+// based on which bot is being run (mom or dad), parsing the current
+// config information and rewriting it to the appropriate config file.
+func UpdateConfig() {
+	if Dad {
+		updateDadConfig()
+	} else {
+		updateMomConfig()
+	}
+}
+
+func updateDadConfig() {
     jsonData, err := json.MarshalIndent(Dbot, "", "    ")
     checkErr(err)
     ioutil.WriteFile(dadConfigFile, jsonData, 0644)
 }
 
-// UpdateMomConfig parses the current config information and rewrites it to
-// the config file.
-func UpdateMomConfig() {
+func updateMomConfig() {
     jsonData, err := json.MarshalIndent(Mbot, "", "    ")
     checkErr(err)
     ioutil.WriteFile(momConfigFile, jsonData, 0644)
@@ -460,7 +464,7 @@ func PerformReply(irc *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
                 }
             }
             if numSent > 0 {
-                UpdateDadConfig()
+								UpdateConfig()
                 return true
             }
             // If a regex statement passed but nothing was sent,
