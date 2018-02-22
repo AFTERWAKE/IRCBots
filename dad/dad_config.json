@@ -41,9 +41,8 @@
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
-    "Name": "dad",
     "Debug": true,
     "Grounded": [
         "theCount",
@@ -60,6 +59,7 @@
         "Mr_HighFive",
         "OG_Grant"
     ],
+    "Name": "dad",
     "Speak": [
         {
             "Action": "none",
@@ -122,7 +122,7 @@
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 24
+                    "Count": 25
                 }
             ]
         },
@@ -161,7 +161,7 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 52
+                    "Count": 53
                 }
             ]
         },
@@ -944,7 +944,7 @@
                 },
                 {
                     "Message": "I don't think I can trust my pillow.\nIt's always lying behind my back.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What's red and smells like green paint\nRed paint",

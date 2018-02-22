@@ -1,6 +1,6 @@
 {
     "Admin": "awest",
-    "IP": "coop.test.adtran.com",
+    "IP": "localhost",
     "MessageRate": 10,
     "Timeout": 4
 }
