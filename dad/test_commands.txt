@@ -76,15 +76,11 @@ dad, unground jlong
 dad, say checking for ungrounded user and expecting list of users without grounded user
 dad, grounded
 
-dad, say saying dad, dada, daddy, father, pop, pops, poppop, poppops, pa, and papa and expecting 10 jokes
+dad, say saying dad, dada, daddy, father, pa, and papa and expecting 6 jokes
 dad
 dada
 daddy
 father
-pop
-pops
-poppop
-poppops
 pa
 papa
 
@@ -114,3 +110,6 @@ make me jlong
 
 dad, say #main: saying I love dad and expecting Awww... I love you too, awest :v)
 I love dad
+
+dad, say #main: saying I love mom and expecting nothing back
+I love mom

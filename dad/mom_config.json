@@ -9,13 +9,13 @@
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 2
+                    "Count": 4
                 }
             ]
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
     "Debug": true,
     "Name": "mom",
@@ -29,7 +29,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 30
+                    "Count": 31
                 }
             ]
         },
@@ -42,7 +42,7 @@
             "Response": [
                 {
                     "Message": "Ok",
-                    "Count": 2
+                    "Count": 4
                 }
             ]
         }

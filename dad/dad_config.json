@@ -22,7 +22,7 @@
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 381
+                    "Count": 384
                 }
             ]
         },
@@ -41,7 +41,7 @@
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
     "Debug": true,
     "Grounded": [
@@ -109,7 +109,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 494
+                    "Count": 539
                 }
             ]
         },
@@ -122,7 +122,7 @@
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 25
+                    "Count": 27
                 }
             ]
         },
@@ -142,13 +142,13 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i love\\s+\\W*$",
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+\\w+$",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 26
+                    "Count": 27
                 }
             ]
         },
@@ -174,7 +174,7 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 54
+                    "Count": 55
                 }
             ]
         },
@@ -449,7 +449,7 @@
                 },
                 {
                     "Message": "What's brown and sticky?\nA stick.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call crystal clear urine?\n1080pee",
@@ -561,7 +561,7 @@
                 },
                 {
                     "Message": "How do you know an egg is bad?\nWhen it's past the eggsperation date.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call a genie made of asbestos?\nA carcinojinn.",
@@ -701,7 +701,7 @@
                 },
                 {
                     "Message": "I once started a hotdog business...\nIt was the wurst thing I ever did.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I tried to catch clouds yesterday.\nMist. Guess i'll have to fog-et about it.",
@@ -737,7 +737,7 @@
                 },
                 {
                     "Message": "Why do med students use books to study anatomy?\nBecause books have spines.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I just invented a machine that trims window coverings.\nPrepare to have your blinds mowed.",
@@ -845,7 +845,7 @@
                 },
                 {
                     "Message": "6 was afraid of 7 because 7, 8, 9, but why did 7 eat 9?\nBecause you're supposed to eat 3 squared meals a day.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I don't know why Euthanasia is so controversial.\nI personally don't mind Asian kids.",
@@ -853,7 +853,7 @@
                 },
                 {
                     "Message": "And the Lord said unto John; \"Come forth and receive eternal life!\nBut John came fifth and won a toaster.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Have you heard about the guy who had his whole left side chopped off?\nYeah he's all right now",
