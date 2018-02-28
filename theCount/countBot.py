@@ -9,23 +9,23 @@ Last Updated: February 2018
               11:00, 1:30, and 4. The game can also be initiated by one or two hosts listed.
               A count of the winners is kept so that people can see how good they really are.
     Commands: ADMIN COMMANDS
-                   botNick: set <userNick> <timesWon> (set timesWon for user on a reset)
-                   botNick: del <userNick> (delete a user from the list/winnings table)
-                   botNick: start (starts game)
-                   botNick: save (saves list of winners || also gets saved at the end of every game)
+                   botNick, set <userNick> <timesWon> (set timesWon for user on a reset)
+                   botNick, del <userNick> (delete a user from the list/winnings table)
+                   botNick, start (starts game)
+                   botNick, save (saves list of winners || also gets saved at the end of every game)
                    botNick, stop (quits current game)
-                   botNick: users (prints list of users to console)
-                   botNick: restore (restores winners from save file || also restores automatically on run)
-                   botNick: say <msg> (sends message to channel as the bot)
+                   botNick, users (prints list of users to console)
+                   botNick, restore (restores winners from save file || also restores automatically on run)
+                   botNick, say <msg> (sends message to channel as the bot)
                    botNick, mute <user> (mutes a user by IP, they will be ignored for commands and will not be able to play the game)
                    botNick, unmute <user> (undoes the actions of the `mute` command)
                    botNick, whois <user> (Gives the IP address of a user on the server)
-                   botNick quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
+                   botNick, quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
               USER COMMANDS
-                   botNick: help (help message)
-                   botNick: loser (LOSER: <user who called>)
-                   botNick: losers (list of losers)
-                   botNick: winners (shows list of winners)
+                   botNick, help (help message)
+                   botNick, loser (LOSER: <user who called>)
+                   botNick, losers (list of losers)
+                   botNick, winners (shows list of winners)
                    botNick, rules (shows list of rules)
                    botNick, version (shows version + link to github)
 --------------------------------------------------------------------------------------------------------------------
@@ -44,7 +44,7 @@ import time
 
 
 class countBot(irc.IRCClient):
-    version = "2.5.2"
+    version = "2.5.3"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -120,7 +120,7 @@ class countBot(irc.IRCClient):
         return
 
     def playLimit(self):
-        if self.numberForGame < 6:
+        if self.            numberForGame < 6:
             self.numberPlayLimit = 3
         elif self.numberForGame < 8:
             self.numberPlayLimit = randrange(int(self.numberForGame/2), int(self.numberForGame/2)+3)

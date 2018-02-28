@@ -15,7 +15,7 @@ ADMIN COMMANDS
          botNick, mute <user> (mutes a user by IP, they will be ignored for commands and will not be able to play the game)
          botNick, unmute <user> (undoes the actions of the `mute` command)
          botNick, whois <user> (Gives the IP address of a user on the server)
-         botNick quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
+         botNick, quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
 
   USER COMMANDS
 
