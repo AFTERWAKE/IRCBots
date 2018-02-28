@@ -12,7 +12,7 @@ import string
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#main"
+channel = "#test"
 
 try:
     with open("../admin_ip.txt", "r") as infile:
@@ -152,7 +152,7 @@ class memeBot(irc.IRCClient):
     def pick_meme(self):
         print random.choice(self.memelist)
 
-    def murica(self, channel):
+    def murica(self, channel, host, temp_time):
         try:
             with open("muricans.txt", "r") as infile:
                 muricans = []
@@ -228,7 +228,7 @@ class memeBot(irc.IRCClient):
 
             if message == "murica"\
             and (temp_time - self.__last_murica > 30):
-                self.murica(channel)
+                self.murica(channel, host, temp_time)
 
             # triggers/responses
             else:
