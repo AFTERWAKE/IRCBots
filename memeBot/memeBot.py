@@ -265,6 +265,23 @@ class memeBot(irc.IRCClient):
         self.msg(channel, random.choice(responses))
         self.__last_response = temp_time
 
+    def clark(self, channel, temp_time, host):
+        try:
+            with open("disciples.txt", "r") as infile:
+                disciples = []
+                for each in infile:
+                    disciples.append(each.strip())
+                if host in disciples:
+                    responses = ["amen", "f", "praise"]
+                    self.msg(channel, random.choice(responses))
+                    self.__last_response = temp_time
+                else:
+                    self.msg(channel, "You are not a follower of Clark")
+                    self.__last_response = temp_time
+
+        except (IOError):
+            print "ERROR: disciples.txt not found"
+
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
@@ -311,13 +328,17 @@ class memeBot(irc.IRCClient):
                 self.de_way(channel, temp_time)
 
             # have a nice day
-            elif re.match(r"(.*have\sa\s(very\s)*(nice\s)*day.*)", message.lower()):
+            elif re.search(r"(have\sa\s(very\s)*(nice\s)*day)", message.lower()):
                 self.have_a_nice_day(channel, temp_time, message)
 
             # hump day
-            elif re.match(r"what\sday\sis\sit(/stoday)*\?*", message.lower())\
+            elif re.search(r"what\sday\sis\sit(/stoday)*\?*", message.lower())\
               and datetime.date.today().weekday() == 2:
                 self.hump_day(channel, temp_time)
+
+            # praise clark in the ark
+            elif re.search(r"praise\sclark\s(in\sthe\s|and\shis\s)ark", message.lower()):
+                self.clark(channel, temp_time, host)
 
             # general business
             #TODO
