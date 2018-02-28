@@ -6,7 +6,6 @@ from lxml import html
 import requests
 
 from twisted.words.protocols import irc
-from twisted.words.protocols.irc import attributes as A
 from twisted.internet import reactor, protocol
 import string
 
@@ -177,6 +176,95 @@ class memeBot(irc.IRCClient):
         except (IOError):
             print "ERROR: muricans.txt not found"
 
+    def admin_cmds(self, channel, message):
+        # if message == "get_memes":
+        #     self.get_memes()
+        # elif message == "pick_meme":
+        #     self.pick_meme()
+
+        m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
+        if m:
+            if m.group(1) == "ignore":
+                self.ignore(m.group(2).strip())
+                return
+
+            elif m.group(1) == "unignore":
+                self.unignore(m.group(2).strip())
+                return
+
+            elif m.group(1) == "say":
+                self.msg(self.__channel, m.group(2))
+                return
+
+            '''
+            elif m.group(1) == "list":
+                print "DEBUG"
+                self.ignore_list()
+                return
+            '''
+
+    def rip(self, channel, temp_time):
+        responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip", "RIP", "f", "F"]
+        self.msg(channel, random.choice(responses))
+        self.__last_response = temp_time
+
+
+    def doot(self, channel, message, temp_time):
+        numDoots = message.count("doot")
+        if numDoots > 70:
+            responses = ["...no", "ano", "BOI", "stahp", "Bruh chill"]
+            self.msg(channel, random.choice(responses))
+            return
+        self.describe(channel, "doot " + "doot " * numDoots)
+        self.__last_response = temp_time
+
+    def achoo(self, channel, temp_time, user_name):
+        responses = ["bless you %s", "hands %s a tissue"]
+        self.describe(channel, random.choice(responses) % user_name)
+        self.__last_response = temp_time
+
+    def hr(self, channel, temp_time):
+        responses = ["HR", "BECKY", "MEGAN", "HR HR HR HR"]
+        self.msg(channel, random.choice(responses))
+        self.__last_response = temp_time
+
+
+    def de_way(self, channel, temp_time):
+        responses = ["Sho me de wey", "Dat is not de wey",\
+                     "DIS IS DE WEY", "Where is our queen?",\
+                     "R u duh queen?"]
+        chance = random.randint(1,100)
+        if chance <= 75:
+            self.msg(channel, random.choice(responses))
+        else:
+            chance = random.randint(1,100)
+            if chance <= 50:
+                self.describe(channel, "cluck " * random.randint(1,20))
+            else:
+                self.describe(channel, "bwah " * random.randint(1,20))
+        self.__last_response = temp_time
+
+    def have_a_nice_day(self, channel, temp_time, message):
+        m = re.match(r"(.*have\sa\s(very\s)*(nice\s)*day.*)", message.lower())
+        if m.group(3) != None:
+            numVery = message.count("very")
+            if numVery > 60:
+                responses = ["Have a day :^)"]
+                self.msg(channel, random.choice(responses))
+                return
+            self.msg(channel, "Have a very " + ("very " * numVery) + "nice day")
+            self.__last_response = temp_time
+        else:
+            responses = ["Thanks, you too :^)"]
+            self.msg(channel, random.choice(responses))
+            self.__last_response = temp_time
+
+
+    def hump_day(self, channel, temp_time):
+        responses = ["HUMP DAAAAYYYYYYYYYYYY", "MIKE MIKE MIKE MIKE MIKE MIKE MIKE MIKE"]
+        self.msg(channel, random.choice(responses))
+        self.__last_response = temp_time
+
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
@@ -191,121 +279,51 @@ class memeBot(irc.IRCClient):
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
             # admin commands
             if user_ip == admin_ip:
-                # if message == "get_memes":
-                #     self.get_memes()
-                # elif message == "pick_meme":
-                #     self.pick_meme()
-
-                m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
-                if m:
-                    if m.group(1) == "ignore":
-                        self.ignore(m.group(2).strip())
-                        return
-
-                    elif m.group(1) == "unignore":
-                        self.unignore(m.group(2).strip())
-                        return
-
-                    elif m.group(1) == "say":
-                        self.msg(self.__channel, m.group(2))
-                        return
-                    
-                    '''
-                    elif m.group(1) == "list":
-                        print "DEBUG"
-                        self.ignore_list()
-                        return
-                    '''
+                self.admin_cmds(channel, message)
 
             # ignore list
             if host in self.__ignore:
-                '''
-                chance = random.randint(1,100)
-                if chance <= 10:
-                    self.msg(channel, random.choice(["I don't know what that means"]))
-                '''
                 return
 
-            if message == "murica"\
-            and (temp_time - self.__last_murica > 30):
+            # murica
+            elif message == "murica"\
+              and (temp_time - self.__last_murica > 30):
                 self.murica(channel, host, temp_time)
 
-            # triggers/responses
+            # match rip
+            elif re.search(r"(\brip\b|\bf\b)", message.lower()):
+                self.rip(channel, temp_time)
+
+            # doot doot
+            elif re.search(r"(\bdoot\b)", message.lower()):
+                self.doot(channel, message, temp_time)
+
+            # achoo
+            elif re.search(r"(\bachoo\b|\bsneeze\b|\basneeze\b)", message.lower()):
+                self.achoo(channel, temp_time, user_name)
+
+            # :hr:
+            elif re.search(r"(\b\:hr\:\b|\bhr\b)", message.lower()):
+                self.hr(channel, temp_time)
+
+            # show me de way
+            elif re.search(r"(\bwey\?*\.*\:*\b)", message.lower()):
+                self.de_way(channel, temp_time)
+
+            # have a nice day
+            elif re.match(r"(.*have\sa\s(very\s)*(nice\s)*day.*)", message.lower()):
+                self.have_a_nice_day(channel, temp_time, message)
+
+            # hump day
+            elif re.match(r"what\sday\sis\sit(/stoday)*\?*", message.lower())\
+              and datetime.date.today().weekday() == 2:
+                self.hump_day(channel, temp_time)
+
+            # general business
+            #TODO
+
             else:
-
-                # match rip
-                if re.search(r"(\brip\b|\bf\b)", message.lower()):
-                    responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip", "RIP", "f", "F"]
-                    self.msg(channel, random.choice(responses))
-                    self.__last_response = temp_time
-                    return
-
-                # doot doot
-                elif re.search(r"(\bdoot\b)", message.lower()):
-                    numDoots = message.count("doot")
-                    if numDoots > 70:
-                        responses = ["...no", "ano", "BOI", "stahp", "Bruh chill"]
-                        self.msg(channel, random.choice(responses))
-                        return
-                    self.describe(channel, "doot " + "doot " * numDoots)
-                    self.__last_response = temp_time
-                    return
-
-                # achoo
-                elif re.search(r"(\bachoo\b|\bsneeze\b|\basneeze\b)", message.lower()):
-                    responses = ["bless you %s", "hands %s a tissue"]
-                    self.describe(channel, random.choice(responses) % user_name)
-                    self.__last_response = temp_time
-                    return
-
-                # :hr:
-                elif re.search(r"(\b\:hr\:\b|\bhr\b)", message.lower()):
-                    responses = ["HR", "BECKY", "MEGAN", "HR HR HR HR"]
-                    self.msg(channel, random.choice(responses))
-                    self.__last_response = temp_time
-                    return
-
-                # show me de way
-                elif re.search(r"(\bwey\?*\.*\:*\b)", message.lower()):
-                    responses = ["Sho me de wey", "Dat is not de wey", "DIS IS DE WEY", "Where is our queen?", "R u duh queen?"]
-                    chance = random.randint(1,100)
-                    if chance <= 75:
-                        self.msg(channel, random.choice(responses))
-                    else:
-                        chance = random.randint(1,100)
-                        if chance <= 50:
-                            self.describe(channel, "cluck " * random.randint(1,20))
-                        else:
-                            self.describe(channel, "bwah " * random.randint(1,20))
-                    self.__last_response = temp_time
-                    return
-
-                # have a nice day
-                elif re.match(r"(.*have\sa\s(very\s)*(nice\s)*day.*)", message.lower()):
-                    m = re.match(r"(.*have\sa\s(very\s)*(nice\s)*day.*)", message.lower())
-                    if m.group(3) != None:
-                        numVery = message.count("very")
-                        if numVery > 60:
-                            responses = ["Have a day :^)"]
-                            self.msg(channel, random.choice(responses))
-                            return
-                        self.msg(channel, "Have a very " + ("very " * numVery) + "nice day")
-                        self.__last_response = temp_time
-                    else:
-                        responses = ["Thanks, you too :^)"]
-                        self.msg(channel, random.choice(responses))
-                    return
-
-                # hump day
-                elif re.match(r"what\sday\sis\sit(/stoday)*\?*", message.lower()) and datetime.date.today().weekday() == 2:
-                    responses = ["HUMP DAAAAYYYYYYYYYYYY", "MIKE MIKE MIKE MIKE MIKE MIKE MIKE MIKE"]
-                    self.msg(channel, random.choice(responses))
-                    return
-
-                # general business
-
-                else:
-                    return
+                return
 
 
 
