@@ -3,52 +3,76 @@
 package dad
 
 import (
-	"encoding/json"
-	"flag"
-	"fmt"
-	"io/ioutil"
-	"math"
-	"math/rand"
-	"net/http"
-	"os"
-	"regexp"
-	"strings"
-	"time"
+    "encoding/json"
+    "flag"
+    "fmt"
+    "io/ioutil"
+    "math"
+    "math/rand"
+    "net/http"
+    "os"
+    "regexp"
+    "strings"
+    "time"
 
-	"github.com/whyrusleeping/hellabot"
-	log "gopkg.in/inconshreveable/log15.v2"
+    "github.com/whyrusleeping/hellabot"
+    log "gopkg.in/inconshreveable/log15.v2"
 )
+
+type IRCConfig struct {
+    Admin       string
+    IP          string
+    MessageRate int
+    Timeout     int
+}
+
+type DadConfig struct {
+    AdminSpeak  []SpeakData
+    Channels    []string
+    Debug       bool
+    Grounded    []string
+    Name        string
+    Speak       []SpeakData
+}
+
+type MomConfig struct {
+    AdminSpeak  []SpeakData
+    Channels    []string
+    Debug       bool
+    Name        string
+    Speak       []SpeakData
+}
 
 // Configuration lists all the high-level content of the config file
 type Configuration struct {
-	Admin       string
-	AdminSpeak  []SpeakData
-	Channels    []string
-	DadName     string
-	Debug       bool
-	Grounded    []string
-	IP          string
-	MessageRate int // Using 1 reply per x seconds
-	MomName     string
-	MomSpeak    []SpeakData
-	Speak       []SpeakData
-	Timeout     int // Timeout between multi-lined reply
+    Admin       string
+    AdminSpeak  []SpeakData
+    Channels    []string
+    DadName     string
+    Debug       bool
+    Grounded    []string
+    IP          string
+    MessageRate int // Using 1 reply per x seconds
+    MomName     string
+    MomSpeak    []SpeakData
+    Speak       []SpeakData
+    Timeout     int // Timeout between multi-lined reply
 }
 
 // SpeakData is the regex-to-response pairing for each possible response.
 // There can be more than one response, and it will be chosen semi-randomly.
 type SpeakData struct {
-	Action   string
-	Regex    RegexData
-	Response []ResponseData
+    Action   string
+    Regex    RegexData
+    Response []ResponseData
 }
 
 // ResponseData contains the bot's reply and the number of times the reply
 // has been sent. Message may contain [...] blocks for different types of
 // text replacement/manipulation.
 type ResponseData struct {
-	Message string
-	Count   int
+    Message string
+    Count   int
 }
 
 // RegexData makes it a little easier to capture text by having
@@ -57,151 +81,198 @@ type ResponseData struct {
 // The Variable is what the bot will take and use in its response (if needed).
 // If no reuse of message content is needed in a response, leave Variable blank.
 type RegexData struct {
-	Trigger  string
-	Variable string
+    Trigger  string
+    Variable string
 }
 
 // Reply includes the final formatted response (all text replacement blocks
 // dealt with), the destination, and the time the message was sent at.
 type Reply struct {
-	Content []string
-	To      string
-	Sent    time.Time
+    Content []string
+    To      string
+    Sent    time.Time
 }
 
 // IRCBot is an extension of hellabot's Bot that includes an indicator for
 // whether the bot is acting as mom or dad, the config information, and the
 // last reply sent by the bot
 type IRCBot struct {
-	Bot       *hbot.Bot
-	Dad       bool
-	Conf      Configuration
-	LastReply Reply
+    Bot         *hbot.Bot
+    Conf        IRCConfig
+    LastReply   Reply
 }
 
 // ICanHazDadJoke declares the expected json format of jokes from
 // ICanHazDadJoke.com
 type ICanHazDadJoke struct {
-	ID		string `json:"id"`
-	Joke 	string `json:"joke"`
-	Status	int	`json:"status"`
+    ID      string `json:"id"`
+    Joke    string `json:"joke"`
+    Status  int    `json:"status"`
 }
 
+var Dad bool
 // Dbot is the global variable that primarily allows for the config information
 // to be smoothly passed around and updated properly.
-var Dbot IRCBot
-var configFile = "conf.json"
+var Dbot DadConfig
+var Irc IRCBot
+var Mbot MomConfig
+var ircConfigFile = "irc_config.json"
+var dadConfigFile = "dad_config.json"
+var momConfigFile = "mom_config.json"
 
 // Run starts an instance of the bot, with variable dad indicating whether
 // the bot should behave like a dad or a mom
 func Run(dad bool) {
-	var nickStr string
-	rand.Seed(time.Now().Unix())
-	flag.Parse()
-	Dbot.Conf = ReadConfig()
-	Dbot.Dad = dad
-	if Dbot.Dad {
-		nickStr = Dbot.Conf.DadName
-	} else {
-		nickStr = Dbot.Conf.MomName
-	}
-	serv := flag.String("server", Dbot.Conf.IP+
-		":6667", "hostname and port for irc server to connect to")
-	nick := flag.String("nick", nickStr, "nickname for the bot")
+    Dad = dad
+    var nickStr string
+    rand.Seed(time.Now().Unix())
+    flag.Parse()
+    Irc.Conf, Dbot, Mbot = ReadConfig()
+    if Dad {
+        nickStr = Dbot.Name
+    } else {
+        nickStr = Mbot.Name
+    }
+    serv := flag.String("server", Irc.Conf.IP+
+        ":6667", "hostname and port for irc server to connect to")
+    nick := flag.String("nick", nickStr, "nickname for the bot")
 
-	hijackSession := func(bot *hbot.Bot) {
-		bot.HijackSession = false
-	}
-	channels := func(bot *hbot.Bot) {
-		bot.Channels = Dbot.Conf.Channels
-	}
-	bot, err := hbot.NewBot(*serv, *nick, hijackSession, channels)
-	Dbot.Bot = bot
-	checkErr(err)
-	Dbot.Bot.AddTrigger(UserTrigger)
-	Dbot.Bot.AddTrigger(AdminTrigger)
-	Dbot.Bot.Logger.SetHandler(log.StdoutHandler)
-	// Start up bot (this blocks until we disconnect)
-	Dbot.Bot.Run()
-	fmt.Println("Bot shutting down.")
+    hijackSession := func(bot *hbot.Bot) {
+        bot.HijackSession = false
+    }
+    channels := func(bot *hbot.Bot) {
+        if Dad {
+            bot.Channels = Dbot.Channels
+        } else {
+            bot.Channels = Mbot.Channels
+        }
+    }
+    bot, err := hbot.NewBot(*serv, *nick, hijackSession, channels)
+    Irc.Bot = bot
+    checkErr(err)
+    Irc.Bot.AddTrigger(UserTrigger)
+    Irc.Bot.AddTrigger(AdminTrigger)
+    Irc.Bot.Logger.SetHandler(log.StdoutHandler)
+    // Start up bot (this blocks until we disconnect)
+    Irc.Bot.Run()
+    fmt.Println("Bot shutting down.")
 }
 
-// ReadConfig reads the config and updates the bot's perception of current states.
-func ReadConfig() Configuration {
-	file, _ := os.Open(configFile)
-	defer file.Close()
-	decoder := json.NewDecoder(file)
-	conf := Configuration{}
-	err := decoder.Decode(&conf)
-	checkErr(err)
-	return conf
+// ReadConfig reads each config file and returns a struct of each
+func ReadConfig() (IRCConfig, DadConfig, MomConfig) {
+	return readIrcConfig(), readDadConfig(), readMomConfig()
 }
 
-// UpdateConfig parses the current config information and rewrites it to
-// the config file.
+func readIrcConfig() IRCConfig {
+    file, _ := os.Open(ircConfigFile)
+    defer file.Close()
+    decoder := json.NewDecoder(file)
+    conf := IRCConfig{}
+    err := decoder.Decode(&conf)
+    checkErr(err)
+    return conf
+}
+
+func readDadConfig() DadConfig {
+    file, _ := os.Open(dadConfigFile)
+    defer file.Close()
+    decoder := json.NewDecoder(file)
+    conf := DadConfig{}
+    err := decoder.Decode(&conf)
+    checkErr(err)
+    return conf
+}
+
+func readMomConfig() MomConfig {
+    file, _ := os.Open(momConfigFile)
+    defer file.Close()
+    decoder := json.NewDecoder(file)
+    conf := MomConfig{}
+    err := decoder.Decode(&conf)
+    checkErr(err)
+    return conf
+}
+
+// UpdateConfig dispatches a call to the appropriate update function
+// based on which bot is being run (mom or dad), parsing the current
+// config information and rewriting it to the appropriate config file.
 func UpdateConfig() {
-	jsonData, err := json.MarshalIndent(Dbot.Conf, "", "    ")
-	checkErr(err)
-	ioutil.WriteFile(configFile, jsonData, 0644)
+	if Dad {
+		updateDadConfig()
+	} else {
+		updateMomConfig()
+	}
+}
+
+func updateDadConfig() {
+    jsonData, err := json.MarshalIndent(Dbot, "", "    ")
+    checkErr(err)
+    ioutil.WriteFile(dadConfigFile, jsonData, 0644)
+}
+
+func updateMomConfig() {
+    jsonData, err := json.MarshalIndent(Mbot, "", "    ")
+    checkErr(err)
+    ioutil.WriteFile(momConfigFile, jsonData, 0644)
 }
 
 // Ground checks the list of currently grounded users and adds the name if
 // it has not yet been added.
 func Ground(name string) {
-	i := StringInSlice(name, Dbot.Conf.Grounded)
-	if i != -1 {
-		return
-	}
-	Dbot.Conf.Grounded = append(Dbot.Conf.Grounded, name)
+    i := StringInSlice(name, Dbot.Grounded)
+    if i != -1 {
+        return
+    }
+    Dbot.Grounded = append(Dbot.Grounded, name)
 }
 
 // Unground checks the list of grounded users for the requested name and
 // removes it if it is found.
 func Unground(name string) {
-	i := StringInSlice(name, Dbot.Conf.Grounded)
-	if i == -1 {
-		return
-	}
-	Dbot.Conf.Grounded = append(Dbot.Conf.Grounded[:i], Dbot.Conf.Grounded[i+1:]...)
+    i := StringInSlice(name, Dbot.Grounded)
+    if i == -1 {
+        return
+    }
+    Dbot.Grounded = append(Dbot.Grounded[:i], Dbot.Grounded[i+1:]...)
 }
 
 // TestMessage tests the passed message against the passed regex and returns
 // whether or not a match was found
 func TestMessage(regex RegexData, message *hbot.Message) bool {
-	var substring string
-	match := false
-	t, v := MustCompileRegexData(regex)
-	// log.Debug(fmt.Sprintf("Trigger regex matched '%s' from '%s'", t.FindString(message.Content), message.Content))
+    var substring string
+    match := false
+    t, v := MustCompileRegexData(regex)
+    // log.Debug(fmt.Sprintf("Trigger regex matched '%s' from '%s'", t.FindString(message.Content), message.Content))
 
-	if t.FindString(message.Content) != "" {
-		match = true
-	}
-	if match && regex.Variable != "" {
-		substring = t.ReplaceAllLiteralString(message.Content, "")
-		// log.Debug(fmt.Sprintf("Variable regex matched '%s' from '%s'", v.FindString(substring), substring))
-		if v.FindString(substring) == "" {
-			match = false
-		}
-	}
-	return match
+    if t.FindString(message.Content) != "" {
+        match = true
+    }
+    if match && regex.Variable != "" {
+        substring = t.ReplaceAllLiteralString(message.Content, "")
+        // log.Debug(fmt.Sprintf("Variable regex matched '%s' from '%s'", v.FindString(substring), substring))
+        if v.FindString(substring) == "" {
+            match = false
+        }
+    }
+    return match
 }
 
 // MessageRateMet checks whether or not enough time has passed since the Last
 // reply was sent. If the message just sent was from an admin, ignore
 // time passed.
 func MessageRateMet(message *hbot.Message) bool {
-	return (time.Since(Dbot.LastReply.Sent) > (time.Duration(Dbot.Conf.MessageRate)*time.Second) || message.From == Dbot.Conf.Admin)
+    return (time.Since(Irc.LastReply.Sent) > (time.Duration(Irc.Conf.MessageRate)*time.Second) || message.From == Irc.Conf.Admin)
 }
 
 // StringInSlice checks slice s for string a and returns the first matching
 // index, and -1 otherwise
 func StringInSlice(a string, s []string) int {
-	for i, b := range s {
-		if a == b {
-			return i
-		}
-	}
-	return -1
+    for i, b := range s {
+        if a == b {
+            return i
+        }
+    }
+    return -1
 }
 
 // RemoveTriggerRegex removes Trigger matching substrings from
@@ -209,32 +280,32 @@ func StringInSlice(a string, s []string) int {
 // This doesn't necessarily leave behind the Variable portion, as there could
 // be additional message content that matches neither the Trigger nor Variable.
 func RemoveTriggerRegex(s string, regex RegexData) string {
-	var substring string
-	t, _ := MustCompileRegexData(regex)
-	substring = t.ReplaceAllLiteralString(s, "")
-	return substring
+    var substring string
+    t, _ := MustCompileRegexData(regex)
+    substring = t.ReplaceAllLiteralString(s, "")
+    return substring
 }
 
 // GetVariableRegex returns only the part of the string that matches the
 // Variable portion of RegexData
 func GetVariableRegex(s string, regex RegexData) string {
-	v := regexp.MustCompile(regex.Variable)
-	// log.Debug(fmt.Sprintf("Variable regex matched '%s' from '%s'", v.FindString(s), s))
-	return v.FindString(s)
+    v := regexp.MustCompile(regex.Variable)
+    // log.Debug(fmt.Sprintf("Variable regex matched '%s' from '%s'", v.FindString(s), s))
+    return v.FindString(s)
 }
 
 // RemoveLiteralRegex removes a matching literal that is passed as regex from
 // the given string, s, and returns the result.
 func RemoveLiteralRegex(s string, regex string) string {
-	r := regexp.MustCompile(regex)
-	return r.ReplaceAllLiteralString(s, "")
+    r := regexp.MustCompile(regex)
+    return r.ReplaceAllLiteralString(s, "")
 }
 
 // MustCompileRegexData compiles and returns all parts of the passed RegexData variable
 func MustCompileRegexData(regex RegexData) (*regexp.Regexp,
-	*regexp.Regexp) {
-	return regexp.MustCompile(regex.Trigger),
-		regexp.MustCompile(regex.Variable)
+    *regexp.Regexp) {
+    return regexp.MustCompile(regex.Trigger),
+        regexp.MustCompile(regex.Variable)
 }
 
 // FormatMessage splits message into its destination and message components
@@ -242,43 +313,43 @@ func MustCompileRegexData(regex RegexData) (*regexp.Regexp,
 // or the bot's primary channel if a recipient was not specified,
 // and the actual message
 func FormatMessage(message string, s SpeakData) (string, string) {
-	to := ""
-	message = RemoveTriggerRegex(message, s.Regex)
-	to = RemoveLiteralRegex(message, ":.*")
-	if to == message {
-		to = Dbot.Conf.Channels[0]
-	}
-	message = RemoveLiteralRegex(message, ".*:\\s")
-	return to, message
+    to := ""
+    message = RemoveTriggerRegex(message, s.Regex)
+    to = RemoveLiteralRegex(message, ":.*")
+    if to == message {
+        to = Dbot.Channels[0]
+    }
+    message = RemoveLiteralRegex(message, ".*:\\s")
+    return to, message
 }
 
 // PerformAction evaluates the action associated with the response (speak)
 // and performs any necessary actions. Any content that needs to be used in
 // the response will be returned.
 func PerformAction(reply Reply, speak SpeakData,
-	variable string) (Reply, string) {
-	// Handle any included action
-	ground := regexp.MustCompile("(?i)^ground$")
-	unground := regexp.MustCompile("(?i)^unground$")
-	grounded := regexp.MustCompile("(?i)^grounded$")
-	message := regexp.MustCompile("(?i)^message$")
-	if ground.MatchString(speak.Action) {
-		Ground(variable)
-	}
-	if unground.MatchString(speak.Action) {
-		Unground(variable)
-	}
-	if grounded.MatchString(speak.Action) {
-		variable = strings.Join(Dbot.Conf.Grounded, ", ")
-	}
-	if message.MatchString(speak.Action) {
-		to, msg := FormatMessage(variable, speak)
-		if len(to) > 0 {
-			reply.To = to
-		}
-		variable = msg
-	}
-	return reply, variable
+    variable string) (Reply, string) {
+    // Handle any included action
+    ground := regexp.MustCompile("(?i)^ground$")
+    unground := regexp.MustCompile("(?i)^unground$")
+    grounded := regexp.MustCompile("(?i)^grounded$")
+    message := regexp.MustCompile("(?i)^message$")
+    if ground.MatchString(speak.Action) {
+        Ground(variable)
+    }
+    if unground.MatchString(speak.Action) {
+        Unground(variable)
+    }
+    if grounded.MatchString(speak.Action) {
+        variable = strings.Join(Dbot.Grounded, ", ")
+    }
+    if message.MatchString(speak.Action) {
+        to, msg := FormatMessage(variable, speak)
+        if len(to) > 0 {
+            reply.To = to
+        }
+        variable = msg
+    }
+    return reply, variable
 }
 
 // HandleTextReplacement determines what to do with each flag in a response
@@ -288,35 +359,35 @@ func PerformAction(reply Reply, speak SpeakData,
 // Other conditionals can be added here. A string with all flags replaced is
 // returned.
 func HandleTextReplacement(message *hbot.Message, response ResponseData,
-	variable string) string {
-	if strings.Contains(response.Message, "#a") {
-		// TODO this will probably need to return just the correct article at some point
-		variable = AddArticle(variable)
-		response.Message = strings.Replace(response.Message, "#a ", "", -1)
-	}
-	if strings.Contains(response.Message, "#c") {
-		response.Message = strings.Replace(response.Message, "#c", variable, -1)
-	}
-	if strings.Contains(response.Message, "#u") {
-		response.Message = strings.Replace(response.Message, "#u", message.From, -1)
-	}
-	if strings.Contains(response.Message, "#v") {
-		response.Message = strings.Replace(response.Message, "#v", variable, -1)
-	}
-	return response.Message
+    variable string) string {
+    if strings.Contains(response.Message, "#a") {
+        // TODO this will probably need to return just the correct article at some point
+        variable = AddArticle(variable)
+        response.Message = strings.Replace(response.Message, "#a ", "", -1)
+    }
+    if strings.Contains(response.Message, "#c") {
+        response.Message = strings.Replace(response.Message, "#c", variable, -1)
+    }
+    if strings.Contains(response.Message, "#u") {
+        response.Message = strings.Replace(response.Message, "#u", message.From, -1)
+    }
+    if strings.Contains(response.Message, "#v") {
+        response.Message = strings.Replace(response.Message, "#v", variable, -1)
+    }
+    return response.Message
 }
 
 // ChooseDestination determines the target for the bot's reply
 // purely based on who sent the trigger message and where they sent it
 // Returns the destination
 func ChooseDestination(message *hbot.Message) string {
-	var to string
-	if strings.Contains(message.To, "#") {
-		to = message.To
-	} else {
-		to = message.From
-	}
-	return to
+    var to string
+    if strings.Contains(message.To, "#") {
+        to = message.To
+    } else {
+        to = message.From
+    }
+    return to
 }
 
 // FormatReply formulates the bot's response given the message, whether or
@@ -324,37 +395,37 @@ func ChooseDestination(message *hbot.Message) string {
 // to format the reply to (sIndex). It returns the reply with set content and
 // destination (but not the time).
 func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
-	var reply Reply
-	var speakData = getSpeakData(adminSpeak)[sIndex]
-	var randIndex = GetRandomLeastUsedResponseIndex(speakData)
-	var response = speakData.Response[randIndex]
-	var variable = RemoveTriggerRegex(message.Content, speakData.Regex)
-	variable = strings.TrimSpace(GetVariableRegex(variable, speakData.Regex))
-	reply.To = ChooseDestination(message)
+    var reply Reply
+    var speakData = getSpeakData(adminSpeak)[sIndex]
+    var randIndex = GetRandomLeastUsedResponseIndex(speakData)
+    var response = speakData.Response[randIndex]
+    var variable = RemoveTriggerRegex(message.Content, speakData.Regex)
+    variable = strings.TrimSpace(GetVariableRegex(variable, speakData.Regex))
+    reply.To = ChooseDestination(message)
 
-	// TODO refactor if all jokes are ever done through http get
-	joke := regexp.MustCompile("(?i)^joke$")
-	var configJokeOdds = 60
-	var configJokeOddsOutOf = 100
-	if !strings.Contains(speakData.Action, "none") {
-		reply, variable = PerformAction(reply, speakData, variable)
-		// log.Debug(variable)
-	}
-	if joke.MatchString(speakData.Action) {
-		if rand.Intn(configJokeOddsOutOf) > configJokeOdds {
-			response.Message = GetICanHazDadJoke()
-			// TODO this is a really dirty move to get around incrementing
-			// config jokes
-			speakData.Response[randIndex].Count--
-		}
-	}
-	response.Message = HandleTextReplacement(message, response, variable)
-	// If reply is non-empty, then bot will send it, so increment response count
-	if response.Message != "" {
-		speakData.Response[randIndex].Count++
-	}
-	reply.Content = strings.Split(response.Message, "\n")
-	return reply
+    // TODO refactor if all jokes are ever done through http get
+    joke := regexp.MustCompile("(?i)^joke$")
+    var configJokeOdds = 40
+    var configJokeOddsOutOf = 100
+    if !strings.Contains(speakData.Action, "none") {
+        reply, variable = PerformAction(reply, speakData, variable)
+        // log.Debug(variable)
+    }
+    if joke.MatchString(speakData.Action) {
+        if rand.Intn(configJokeOddsOutOf) > configJokeOdds {
+            response.Message = GetICanHazDadJoke()
+            // TODO this is a really dirty move to get around incrementing
+            // config jokes
+            speakData.Response[randIndex].Count--
+        }
+    }
+    response.Message = HandleTextReplacement(message, response, variable)
+    // If reply is non-empty, then bot will send it, so increment response count
+    if response.Message != "" {
+        speakData.Response[randIndex].Count++
+    }
+    reply.Content = strings.Split(response.Message, "\n")
+    return reply
 }
 
 // PerformReply determines whether or not a reply should be formulated and then
@@ -362,137 +433,162 @@ func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 // and whether or not the sender was the admin (adminSpeak). If an action
 // was performed, return true.
 func PerformReply(irc *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
-	Dbot.Conf = ReadConfig()
-	speak := getSpeakData(adminSpeak)
-	// Do not perform an action if either the sender is grounded, is mom/dad,
-	// sufficient time has not passed, or the message is from the irc's IP
-	if StringInSlice(m.From, Dbot.Conf.Grounded) != -1 ||
-		StringInSlice(m.From, []string{Dbot.Conf.MomName, Dbot.Conf.DadName}) != -1 ||
-		MessageRateMet(m) == false ||
-		StringInSlice(m.From, []string{Dbot.Conf.IP, "irc.awest.com"}) != -1 {
-		return false
-	}
-	for i, s := range speak {
-		if TestMessage(s.Regex, m) {
-			reply := FormatReply(m, adminSpeak, i)
-			reply.Sent = time.Now()
-			numSent := 0
-			for _, line := range reply.Content {
-				// Make sure line is non-empty before sending
-				if len(line) > 0 {
-					irc.Msg(reply.To, line)
-					numSent++
-				}
-				if numSent == 1 {
-					// Record time of first line being sent
-					Dbot.LastReply = reply
-				}
-				// Make sure there is a timeout between multiple lines in a reply
-				if len(reply.Content) > 1 && numSent > 0 {
-					time.Sleep(time.Duration(Dbot.Conf.Timeout) * time.Second)
-				}
-			}
-			if numSent > 0 {
-				UpdateConfig()
-				return true
-			}
-			// If a regex statement passed but nothing was sent,
-			// the loop should not continue trying to match the reply to others.
-			break
-		}
-	}
-	return false
+    // Dbot = ReadDadConfig() TODO remove?
+    speak := getSpeakData(adminSpeak)
+    // Do not perform an action if either the sender is grounded, is mom/dad,
+    // sufficient time has not passed, or the message is from the irc's IP
+    if StringInSlice(m.From, Dbot.Grounded) != -1 ||
+        StringInSlice(m.From, []string{Dbot.Name, Mbot.Name}) != -1 ||
+        MessageRateMet(m) == false ||
+        StringInSlice(m.From, []string{Irc.Conf.IP, "irc.awest.com"}) != -1 {
+        return false
+    }
+    for i, s := range speak {
+        if TestMessage(s.Regex, m) {
+            reply := FormatReply(m, adminSpeak, i)
+            reply.Sent = time.Now()
+            numSent := 0
+            for _, line := range reply.Content {
+                // Make sure line is non-empty before sending
+                if len(line) > 0 {
+                    irc.Msg(reply.To, line)
+                    numSent++
+                }
+                if numSent == 1 {
+                    // Record time of first line being sent
+                    Irc.LastReply = reply
+                }
+                // Make sure there is a timeout between multiple lines in a reply
+                if len(reply.Content) > 1 && numSent > 0 {
+                    time.Sleep(time.Duration(Irc.Conf.Timeout) * time.Second)
+                }
+            }
+            if numSent > 0 {
+								UpdateConfig()
+                return true
+            }
+            // If a regex statement passed but nothing was sent,
+            // the loop should not continue trying to match the reply to others.
+            break
+        }
+    }
+    return false
 }
 
 // GetRandomLeastUsedResponseIndex chooses a random response among all
 // within the given speak data, giving priority to responses that have not
 // yet been used as much. It returns the index of the response it chose
 func GetRandomLeastUsedResponseIndex(speak SpeakData) int {
-	var minCount = math.MaxUint32
-	chosenIndex := rand.Intn(len(speak.Response))
-	for _, response := range speak.Response {
-		if response.Count < minCount {
-			minCount = response.Count
-		}
-	}
-	for speak.Response[chosenIndex].Count > minCount {
-		chosenIndex = rand.Intn(len(speak.Response))
-	}
-	// log.Debug(fmt.Sprintf("Chosen response %d : %s", chosenIndex, speak.Response[chosenIndex].Message))
-	return chosenIndex
+    var minCount = math.MaxUint32
+    chosenIndex := rand.Intn(len(speak.Response))
+    for _, response := range speak.Response {
+        if response.Count < minCount {
+            minCount = response.Count
+        }
+    }
+    for speak.Response[chosenIndex].Count > minCount {
+        chosenIndex = rand.Intn(len(speak.Response))
+    }
+    // log.Debug(fmt.Sprintf("Chosen response %d : %s", chosenIndex, speak.Response[chosenIndex].Message))
+    return chosenIndex
 }
 
 func GetICanHazDadJoke() string {
-	url := "https://icanhazdadjoke.com/"
-	client := &http.Client{}
-	req, err := http.NewRequest("GET", url, nil)
-	checkErr(err)
-	req.Header.Set("Accept", "application/json")
-	resp, err := client.Do(req)
-	checkErr(err)
-	decoder := json.NewDecoder(resp.Body)
-	joke := ICanHazDadJoke{}
-	err = decoder.Decode(&joke)
-	checkErr(err)
-	log.Debug(fmt.Sprintf("Got joke from icanhazdadjoke.com!"))
-	r := regexp.MustCompile("(?i)\\?\\s")
-	joke.Joke = r.ReplaceAllLiteralString(joke.Joke, "?\n")
-	r = regexp.MustCompile("(?i)\\.\\s")
-	joke.Joke = r.ReplaceAllLiteralString(joke.Joke, ".\n")
-	return joke.Joke
+    url := "https://icanhazdadjoke.com/"
+    client := &http.Client{}
+    req, err := http.NewRequest("GET", url, nil)
+    checkErr(err)
+    req.Header.Set("Accept", "application/json")
+    resp, err := client.Do(req)
+    checkErr(err)
+    decoder := json.NewDecoder(resp.Body)
+    joke := ICanHazDadJoke{}
+    err = decoder.Decode(&joke)
+    checkErr(err)
+    log.Debug(fmt.Sprintf("Got joke from icanhazdadjoke.com!"))
+    r := regexp.MustCompile("(?i)\\?\\s")
+    joke.Joke = r.ReplaceAllLiteralString(joke.Joke, "?\n")
+    r = regexp.MustCompile("(?i)\\.\\s")
+    joke.Joke = r.ReplaceAllLiteralString(joke.Joke, ".\n")
+    return joke.Joke
 }
 
 // AddArticle prepands the given string with an "a" or "an" based on the first word and
 // returns the result
 func AddArticle(s string) string {
-	for _, vowel := range []string{"a", "e", "i", "o", "u"} {
-		if strings.Contains(vowel, string(s[0])) {
-			return "an " + s
-		}
-	}
-	return "a " + s
+    for _, vowel := range []string{"a", "e", "i", "o", "u"} {
+        if strings.Contains(vowel, string(s[0])) {
+            return "an " + s
+        }
+    }
+    return "a " + s
 }
 
+// TODO saving for possible future use
+// func getSpeakData(adminSpeak bool, bot *IRCBot) []SpeakData {
+//     var s []SpeakData
+//     if reflect.Indirect(reflect.ValueOf(bot)).Elem().Type() == dad.DadBot {
+//         if adminSpeak {
+//             s = Dbot.Conf.AdminSpeak
+//         } else {
+//             s = Dbot.Conf.Speak
+//         }
+//     } else {
+//         if adminSpeak {
+//             s = Mbot.Conf.AdminSpeak
+//         } else {
+//             s = Mbot.Conf.Speak
+//         }
+//     }
+//     return s
+// }
+
 func getSpeakData(adminSpeak bool) []SpeakData {
-	var s []SpeakData
-	if Dbot.Dad == false {
-		s = Dbot.Conf.MomSpeak
-	} else if adminSpeak {
-		s = Dbot.Conf.AdminSpeak
-	} else {
-		s = Dbot.Conf.Speak
-	}
-	return s
+    var s []SpeakData
+    if Dad == false {
+        if adminSpeak {
+            s = Mbot.AdminSpeak
+        } else {
+            s = Mbot.Speak
+        }
+    } else {
+        if adminSpeak {
+            s = Dbot.AdminSpeak
+        } else {
+            s = Dbot.Speak
+        }
+    }
+    return s
 }
 
 func checkErr(err error) {
-	if err != nil {
-		panic(err)
-	}
+    if err != nil {
+        panic(err)
+    }
 }
 
 // UserTrigger is for all non-admin users.
 var UserTrigger = hbot.Trigger{
-	func(bot *hbot.Bot, m *hbot.Message) bool {
-		return (m.From != Dbot.Conf.Admin)
-	},
-	func(irc *hbot.Bot, m *hbot.Message) bool {
-		PerformReply(irc, m, false)
-		return false
-	},
+    func(bot *hbot.Bot, m *hbot.Message) bool {
+        return (m.From != Irc.Conf.Admin)
+    },
+    func(irc *hbot.Bot, m *hbot.Message) bool {
+        PerformReply(irc, m, false)
+        return false
+    },
 }
 
 // AdminTrigger is for the admin user. If no admin response is performed,
 // a user reponse is attempted.
 var AdminTrigger = hbot.Trigger{
-	func(bot *hbot.Bot, m *hbot.Message) bool {
-		return (m.From == Dbot.Conf.Admin)
-	},
-	func(irc *hbot.Bot, m *hbot.Message) bool {
-		responded := PerformReply(irc, m, true)
-		if !responded {
-			PerformReply(irc, m, false)
-		}
-		return false
-	},
+    func(bot *hbot.Bot, m *hbot.Message) bool {
+        return (m.From == Irc.Conf.Admin)
+    },
+    func(irc *hbot.Bot, m *hbot.Message) bool {
+        responded := PerformReply(irc, m, true)
+        if !responded {
+            PerformReply(irc, m, false)
+        }
+        return false
+    },
 }

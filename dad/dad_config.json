@@ -1,10 +1,9 @@
 {
-    "Admin": "awest",
     "AdminSpeak": [
         {
             "Action": "ground",
             "Regex": {
-                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), ground ",
+                "Trigger": "(?i)(dad(dy|a)?|father|(pa){1,2}), ground ",
                 "Variable": "\\S+"
             },
             "Response": [
@@ -17,20 +16,20 @@
         {
             "Action": "message",
             "Regex": {
-                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), say ",
+                "Trigger": "(?i)(dad(dy|a)?|father|(pa){1,2}), say ",
                 "Variable": ".*"
             },
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 383
+                    "Count": 384
                 }
             ]
         },
         {
             "Action": "unground",
             "Regex": {
-                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), unground ",
+                "Trigger": "(?i)(dad(dy|a)?|father|(pa){1,2}), unground ",
                 "Variable": "\\S+"
             },
             "Response": [
@@ -44,7 +43,6 @@
     "Channels": [
         "#main"
     ],
-    "DadName": "dad",
     "Debug": true,
     "Grounded": [
         "theCount",
@@ -61,29 +59,12 @@
         "Mr_HighFive",
         "OG_Grant"
     ],
-    "IP": "coop.test.adtran.com",
-    "MessageRate": 10,
-    "MomName": "mom",
-    "MomSpeak": [
-        {
-            "Action": "none",
-            "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
-                "Variable": ""
-            },
-            "Response": [
-                {
-                    "Message": "Ask your father.",
-                    "Count": 30
-                }
-            ]
-        }
-    ],
+    "Name": "dad",
     "Speak": [
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(good\\s+)?mornin(g|')?(,)?\\s+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})($|\\W+)",
+                "Trigger": "(?i)^(good\\s+)?mornin(g|')?(,)?\\s+(dad(dy|a)?|father|(pa){1,2})($|\\W+)",
                 "Variable": ""
             },
             "Response": [
@@ -96,7 +77,7 @@
         {
             "Action": "grounded",
             "Regex": {
-                "Trigger": "(?i)(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2}), grounded",
+                "Trigger": "(?i)(dad(dy|a)?|father|(pa){1,2}), grounded",
                 "Variable": ""
             },
             "Response": [
@@ -109,7 +90,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i(')?m\\W+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})\\b",
+                "Trigger": "(?i)(^|.*[^\\w])i(')?m\\W+(dad(dy|a)?|father|(pa){1,2})\\b",
                 "Variable": ""
             },
             "Response": [
@@ -128,33 +109,46 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 495
+                    "Count": 539
                 }
             ]
         },
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})$",
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(dad(dy|a)?|father|(pa){1,2})$",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 24
+                    "Count": 27
                 }
             ]
         },
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i love\\s+\\w+\\W*$",
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(mom(my|ma)?|mother|(ma){1,2})$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "",
+                    "Count": 0
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+\\w+$",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 25
+                    "Count": 27
                 }
             ]
         },
@@ -174,13 +168,13 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pa){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 52
+                    "Count": 55
                 }
             ]
         },
@@ -200,7 +194,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(([s]+[h]+[u]+[t]+\\s*[u]+[p]+|[f]+[u]+[c]+[k]+\\s*[y]+[o]+[u]+)\\s*(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})|[d]+[a]{2,}[d]+)",
+                "Trigger": "(?i)(^|.*[^\\w])(([s]+[h]+[u]+[t]+\\s*[u]+[p]+|[f]+[u]+[c]+[k]+\\s*[y]+[o]+[u]+)\\s*(dad(dy|a)?|father|(pa){1,2})|[d]+[a]{2,}[d]+)",
                 "Variable": ""
             },
             "Response": [
@@ -213,7 +207,7 @@
         {
             "Action": "joke",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pop){1,2}(s)?|(pa){1,2})($|\\W+)",
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pa){1,2})($|\\W+)",
                 "Variable": ""
             },
             "Response": [
@@ -455,7 +449,7 @@
                 },
                 {
                     "Message": "What's brown and sticky?\nA stick.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call crystal clear urine?\n1080pee",
@@ -567,7 +561,7 @@
                 },
                 {
                     "Message": "How do you know an egg is bad?\nWhen it's past the eggsperation date.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call a genie made of asbestos?\nA carcinojinn.",
@@ -707,7 +701,7 @@
                 },
                 {
                     "Message": "I once started a hotdog business...\nIt was the wurst thing I ever did.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I tried to catch clouds yesterday.\nMist. Guess i'll have to fog-et about it.",
@@ -743,7 +737,7 @@
                 },
                 {
                     "Message": "Why do med students use books to study anatomy?\nBecause books have spines.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I just invented a machine that trims window coverings.\nPrepare to have your blinds mowed.",
@@ -775,7 +769,7 @@
                 },
                 {
                     "Message": "Why did the ragdoll change her mind?\nIt was suede!",
-                    "Count": 2
+                    "Count": 1
                 },
                 {
                     "Message": "My girlfriend is so good at drawing straight lines that she would thrive in an anarchist society...\n...because she doesn't need a ruler.",
@@ -851,7 +845,7 @@
                 },
                 {
                     "Message": "6 was afraid of 7 because 7, 8, 9, but why did 7 eat 9?\nBecause you're supposed to eat 3 squared meals a day.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I don't know why Euthanasia is so controversial.\nI personally don't mind Asian kids.",
@@ -859,7 +853,7 @@
                 },
                 {
                     "Message": "And the Lord said unto John; \"Come forth and receive eternal life!\nBut John came fifth and won a toaster.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Have you heard about the guy who had his whole left side chopped off?\nYeah he's all right now",
@@ -963,7 +957,7 @@
                 },
                 {
                     "Message": "I don't think I can trust my pillow.\nIt's always lying behind my back.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What's red and smells like green paint\nRed paint",
@@ -987,6 +981,5 @@
                 }
             ]
         }
-    ],
-    "Timeout": 4
+    ]
 }

@@ -1,0 +1,50 @@
+{
+    "AdminSpeak": [
+        {
+            "Action": "message",
+            "Regex": {
+                "Trigger": "(?i)(mom(my|ma)?|mother|(ma){1,2}), say ",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#c",
+                    "Count": 4
+                }
+            ]
+        }
+    ],
+    "Channels": [
+        "#main"
+    ],
+    "Debug": true,
+    "Name": "mom",
+    "Speak": [
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Ask your father.",
+                    "Count": 31
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(mom(my|ma)?|mother|(ma){1,2})$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Ok",
+                    "Count": 4
+                }
+            ]
+        }
+    ]
+}
