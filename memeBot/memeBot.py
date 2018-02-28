@@ -153,19 +153,29 @@ class memeBot(irc.IRCClient):
         print random.choice(self.memelist)
 
     def murica(self, channel):
-        stars1 = "\x0316,2* * * * * *"
-        stars2 = "\x0316,2 * * * * * "
-        stripe1 = "\x034,4                   ,"
-        stripe2 = "\x0316,16                   ,"
-        stripe3 = "\x034,4                              ,"
-        stripe4 = "\x0316,16                              ,"
-        for i in range(4):
-            self.msg(channel, stars1 + stripe1)
-            self.msg(channel, stars2 + stripe2)
-        self.msg(channel, stars1 + stripe1)
-        for i in range(2):
-            self.msg(channel, stripe4)
-            self.msg(channel, stripe3)
+        try:
+            with open("muricans.txt", "r") as infile:
+                muricans = []
+                for each in infile:
+                    muricans.append(each.strip())
+                if host in muricans:
+                    stars1 = "\x0316,2* * * * * *"
+                    stars2 = "\x0316,2 * * * * * "
+                    stripe1 = "\x034,4                   ,"
+                    stripe2 = "\x0316,16                   ,"
+                    stripe3 = "\x034,4                              ,"
+                    stripe4 = "\x0316,16                              ,"
+                    for i in range(4):
+                        self.msg(channel, stars1 + stripe1)
+                        self.msg(channel, stars2 + stripe2)
+                    self.msg(channel, stars1 + stripe1)
+                    for i in range(2):
+                        self.msg(channel, stripe4)
+                        self.msg(channel, stripe3)
+                    self.__last_murica = temp_time
+                    return
+        except (IOError):
+            print "ERROR: muricans.txt not found"
 
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
@@ -218,14 +228,7 @@ class memeBot(irc.IRCClient):
 
             if message == "murica"\
             and (temp_time - self.__last_murica > 30):
-                with open("muricans.txt", "r") as infile:
-                    muricans = []
-                    for each in infile:
-                        muricans.append(each.strip())
-                    if host in muricans:
-                        self.murica(channel)
-                        self.__last_murica = temp_time
-                        return
+                self.murica(channel)
 
             # triggers/responses
             else:
