@@ -6,6 +6,7 @@ from lxml import html
 import requests
 
 from twisted.words.protocols import irc
+from twisted.words.protocols.irc import attributes as A
 from twisted.internet import reactor, protocol
 import string
 
@@ -31,6 +32,7 @@ class memeBot(irc.IRCClient):
         self.join(channel)
         self.user_list = []
         self.__last_response = 0
+        self.__last_murica = 0
         self.__ignore = []
         self.__channel = channel
         print("Channel: " + self.__channel)
@@ -150,6 +152,21 @@ class memeBot(irc.IRCClient):
     def pick_meme(self):
         print random.choice(self.memelist)
 
+    def murica(self, channel):
+        stars1 = "\x0316,2* * * * * *"
+        stars2 = "\x0316,2 * * * * * "
+        stripe1 = "\x034,4                   ,"
+        stripe2 = "\x0316,16                   ,"
+        stripe3 = "\x034,4                              ,"
+        stripe4 = "\x0316,16                              ,"
+        for i in range(4):
+            self.msg(channel, stars1 + stripe1)
+            self.msg(channel, stars2 + stripe2)
+        self.msg(channel, stars1 + stripe1)
+        for i in range(2):
+            self.msg(channel, stripe4)
+            self.msg(channel, stripe3)
+
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
@@ -164,10 +181,10 @@ class memeBot(irc.IRCClient):
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
             # admin commands
             if user_ip == admin_ip:
-                if message == "get_memes":
-                    self.get_memes()
-                elif message == "pick_meme":
-                    self.pick_meme()
+                # if message == "get_memes":
+                #     self.get_memes()
+                # elif message == "pick_meme":
+                #     self.pick_meme()
 
                 m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
                 if m:
@@ -198,6 +215,17 @@ class memeBot(irc.IRCClient):
                     self.msg(channel, random.choice(["I don't know what that means"]))
                 '''
                 return
+
+            if message == "murica"\
+            and (temp_time - self.__last_murica > 30):
+                with open("muricans.txt", "r") as infile:
+                    muricans = []
+                    for each in infile:
+                        muricans.append(each.strip())
+                    if host in muricans:
+                        self.murica(channel)
+                        self.__last_murica = temp_time
+                        return
 
             # triggers/responses
             else:
