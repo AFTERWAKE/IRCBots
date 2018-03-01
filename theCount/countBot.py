@@ -241,7 +241,7 @@ class countBot(irc.IRCClient):
             self.describe(self.chatroom, message[len(self.nickname)+5:])
         elif (message.startswith(self.nickname + ' me')):
             self.describe(self.chatroom, message[len(self.nickname)+4:])
-        elif (message.startswith(self.nickname + ', quit')):
+        elif (message.startswith(self.nickname + ', quit') or message.startswith(self.nickname + ': quit')):
             if (message[len(self.nickname)+7:]):
                 self.quit(message[len(self.nickname)+7:])
             else:
