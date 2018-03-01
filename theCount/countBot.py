@@ -262,7 +262,7 @@ class countBot(irc.IRCClient):
         elif (message.startswith(self.nickname + ', whois')):
             self._whois(message[len(self.nickname)+8:].split(" ")[0])
         else:
-            self.userCommands('Noah Siano', message)
+            self.userCommands('noahsiano', message)
 
     def delUserFromList(self, message):
         nameIndex = self.getUserIndex(message.split()[2])
