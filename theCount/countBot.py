@@ -251,16 +251,12 @@ class countBot(irc.IRCClient):
                 self.quit(message[len(self.nickname)+6:])
             else:
                 self.quit('*ah..ah..ah :\'( goodbye.')
-        elif (message.startswith(self.nickname + ', mute')):
-            self.mute(message[len(self.nickname)+7:].split(" ")[0])
-        elif (message.startswith(self.nickname + ' mute')):
-            self.mute(message[len(self.nickname)+6:].split(" ")[0])
-        elif (message.startswith(self.nickname + ', unmute')):
-            self.unmute(message[len(self.nickname)+9:].split(" ")[0])
-        elif (message.startswith(self.nickname + ' unmute')):
-            self.unmute(message[len(self.nickname)+8:].split(" ")[0])
-        elif (message.startswith(self.nickname + ', whois')):
-            self._whois(message[len(self.nickname)+8:].split(" ")[0])
+        elif (message.startswith(self.nickname + ', mute') or message.startswith(self.nickname + ': mute') or message.startswith(self.nickname + ' mute')):
+            self.mute(message.split()[2])
+        elif (message.startswith(self.nickname + ', unmute') or message.startswith(self.nickname + ': unmute') or message.startswith(self.nickname + ' unmute')):
+            self.unmute(message.split()[2])
+        elif (message.startswith(self.nickname + ', whois') or message.startswith(self.nickname + ': whois') or message.startswith(self.nickname + ' whois')):
+            self._whois(message.split()[2])
         else:
             self.userCommands('noahsiano', message)
 
