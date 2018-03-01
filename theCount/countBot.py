@@ -17,6 +17,7 @@ Last Updated: February 2018
                    botNick, users (prints list of users to console)
                    botNick, restore (restores winners from save file || also restores automatically on run)
                    botNick, say <msg> (sends message to channel as the bot)
+                   botNick, me <me> (sends a /me message to the channel as the bot)
                    botNick, mute <user> (mutes a user by IP, they will be ignored for commands and will not be able to play the game)
                    botNick, unmute <user> (undoes the actions of the `mute` command)
                    botNick, whois <user> (Gives the IP address of a user on the server)
@@ -44,7 +45,7 @@ import time
 
 
 class countBot(irc.IRCClient):
-    version = "2.5.3"
+    version = "2.6.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"

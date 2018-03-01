@@ -12,6 +12,7 @@ ADMIN COMMANDS
          botNick, users (prints list of users to console)
          botNick, restore (restores winners from save file || also restores automatically on run)
          botNick, say <msg> (sends message to channel as the bot)
+         botNick, me <me> (sends a /me message to the channel as the bot)
          botNick, mute <user> (mutes a user by IP, they will be ignored for commands and will not be able to play the game)
          botNick, unmute <user> (undoes the actions of the `mute` command)
          botNick, whois <user> (Gives the IP address of a user on the server)
