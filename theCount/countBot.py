@@ -384,7 +384,7 @@ class countBot(irc.IRCClient):
             self.msg(self.chatroom, 'The current number 1 player is: ' + self.getWinningUser().username)
         elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
-        elif ((message.startswith(self.nickname + ', rules')) or (message.startswith(self.nickname + ': rules'))):
+        elif (message == self.nickname + ', rules') or message == self.nickname + ': rules')):
             self.rulesText()
 
     def showLoserMsg(self, name):
