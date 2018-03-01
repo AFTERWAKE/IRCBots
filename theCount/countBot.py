@@ -47,7 +47,7 @@ class countBot(irc.IRCClient):
     version = "2.5.3"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
-    chatroom = "#theCount"
+    chatroom = "#main"
     scoresFilePath = "./scores.txt"
     mutedFilePath = "./muted.txt"
     numberForGame = 17
