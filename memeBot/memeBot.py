@@ -11,7 +11,7 @@ import string
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#test"
+channel = "#main"
 
 try:
     with open("../admin_ip.txt", "r") as infile:
@@ -224,7 +224,7 @@ class memeBot(irc.IRCClient):
         self.__last_response = temp_time
 
     def hr(self, channel, temp_time):
-        responses = ["HR", "BECKY", "MEGAN", "HR HR HR HR"]
+        responses = ["HR", "BECKY", "MEGAN", "HR HR HR HR", "HUMAN RESOURCES"]
         self.msg(channel, random.choice(responses))
         self.__last_response = temp_time
 
@@ -276,8 +276,7 @@ class memeBot(irc.IRCClient):
                     self.msg(channel, random.choice(responses))
                     self.__last_response = temp_time
                 else:
-                    self.msg(channel, "You are not a follower of Clark")
-                    self.__last_response = temp_time
+                    self.rip(channel, temp_time)
 
         except (IOError):
             print "ERROR: disciples.txt not found"
@@ -308,7 +307,7 @@ class memeBot(irc.IRCClient):
                 self.murica(channel, host, temp_time)
 
             # match rip
-            elif re.search(r"(\brip\b|\bf\b)", message.lower()):
+            elif re.search(r"(\brip\b)", message.lower()):
                 self.rip(channel, temp_time)
 
             # doot doot
@@ -337,7 +336,7 @@ class memeBot(irc.IRCClient):
                 self.hump_day(channel, temp_time)
 
             # praise clark in the ark
-            elif re.search(r"praise\sclark\s(in\sthe\s|and\shis\s)ark", message.lower()):
+            elif re.search(r"praise\sclark\s(in\sthe\s|and\shis\s)ark|\bf\b", message.lower()):
                 self.clark(channel, temp_time, host)
 
             # general business
