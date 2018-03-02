@@ -41,7 +41,7 @@
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
     "Debug": true,
     "Grounded": [
@@ -109,7 +109,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 673
+                    "Count": 674
                 }
             ]
         },
@@ -793,7 +793,7 @@
                 },
                 {
                     "Message": "I broke my finger today..\n..but on the other hand I'm completely fine.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Have you heard the rumor going around about butter?\nNevermind, I really shouldn't spread it.",
