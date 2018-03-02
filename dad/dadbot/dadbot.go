@@ -354,6 +354,7 @@ func PerformAction(reply Reply, speak SpeakData,
 
 // HandleTextReplacement determines what to do with each flag in a response
 // #a indicates an article "a" or "an"
+// #c indicates a response generated from an action handler
 // #u indicates the name of the user who sent the trigger message
 // #v indicates the string captured by the Variable regex
 // Other conditionals can be added here. A string with all flags replaced is
@@ -433,7 +434,6 @@ func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 // and whether or not the sender was the admin (adminSpeak). If an action
 // was performed, return true.
 func PerformReply(irc *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
-    // Dbot = ReadDadConfig() TODO remove?
     speak := getSpeakData(adminSpeak)
     // Do not perform an action if either the sender is grounded, is mom/dad,
     // sufficient time has not passed, or the message is from the irc's IP
@@ -523,25 +523,6 @@ func AddArticle(s string) string {
     }
     return "a " + s
 }
-
-// TODO saving for possible future use
-// func getSpeakData(adminSpeak bool, bot *IRCBot) []SpeakData {
-//     var s []SpeakData
-//     if reflect.Indirect(reflect.ValueOf(bot)).Elem().Type() == dad.DadBot {
-//         if adminSpeak {
-//             s = Dbot.Conf.AdminSpeak
-//         } else {
-//             s = Dbot.Conf.Speak
-//         }
-//     } else {
-//         if adminSpeak {
-//             s = Mbot.Conf.AdminSpeak
-//         } else {
-//             s = Mbot.Conf.Speak
-//         }
-//     }
-//     return s
-// }
 
 func getSpeakData(adminSpeak bool) []SpeakData {
     var s []SpeakData
