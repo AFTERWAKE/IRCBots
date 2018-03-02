@@ -47,7 +47,7 @@ serv_port = 6667
 
 
 class countBot(irc.IRCClient):
-    version = "2.8.0"
+    version = "2.8.1"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -164,8 +164,13 @@ class countBot(irc.IRCClient):
         return (self.numberForAlphabet)
 
     def declareWinner(self, userIndex, name):
-        self.msg(self.chatroom, '{} is the winner with {} {}!'.format(name, self.numberForGame, self.wordForGame))
-        self.msg(self.chatroom, "*ahahah*")
+        topUser = self.getWinningUser
+        if name == topUser:
+            self.msg(self.chatroom, '{} is the winner...AGAIN... with {} {}. Can\'t believe you all keep letting {} win!'.format(name, self.numberForGame, self.wordForGame, name))
+            self.describe(self.chatroom, "*ahahah*'s mockingly'")
+        else:
+            self.msg(self.chatroom, '{} is the winner with {} {}!'.format(name, self.numberForGame, self.wordForGame))
+            self.msg(self.chatroom, "*ahahah*")
         self.nameList[userIndex].timesWon += 1
         return
 
