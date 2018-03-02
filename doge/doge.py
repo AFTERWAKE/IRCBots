@@ -23,6 +23,11 @@ class Doge(irc.IRCClient):
             if (timeRightNow - self.timeLastCommand) > 5:
                 self.timeLastCommand = time.time()
                 self.msg(self.chatroom, "Wow!")
+        if search(r"(^|\s)+treat(!|\?)*(\s|$)+", message, IGNORECASE):
+            self.describe(self.chatroom, "perks his head up")
+        if search(r"(^|\s)+good boy!*(\s|$)+", message, IGNORECASE):
+            self.describe(self.chatroom, "barks")
+
 
 
 
