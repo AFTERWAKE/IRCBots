@@ -19,9 +19,9 @@ class Doge(irc.IRCClient):
     def privmsg(self, user, channel, message):
         if (message.startswith(self.nickname)):
             isOwner = user.split('@')[1] in self.owner
-            if (isOwner or (randint(0, 3) == 1):
+            if isOwner or (randint(0, 3) == 1):
                 timeRightNow = time.time()
-                if (timeRightNow - self.timeLastCommand) > 4) or isOwner:
+                if ((timeRightNow - self.timeLastCommand) > 4) or isOwner:
                     self.timeLastCommand = time.time()
                     if message == (self.nickname + ', sit'):
                         self.describe(self.chatroom, "sits")
@@ -32,7 +32,7 @@ class Doge(irc.IRCClient):
                     elif message == (self.nickname + ', play dead'):
                         self.describe(self.chatroom, "lays down dramatically")
                     elif message == (self.nickname + ', speak'):
-                        if (randint(0, 5) == 1:
+                        if randint(0, 5) == 1:
                             self.describe(self.chatroom, "borks")
                         else:
                             self.describe(self.chatroom, "borks")
