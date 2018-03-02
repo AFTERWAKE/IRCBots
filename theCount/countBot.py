@@ -34,8 +34,6 @@ Last Updated: February 2018
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
 from random import (
-                    seed,
-                    randrange,
                     choice,
                     randint
                     )
@@ -128,15 +126,14 @@ class countBot(irc.IRCClient):
         if self.            numberForGame < 6:
             self.numberPlayLimit = 3
         elif self.numberForGame < 8:
-            self.numberPlayLimit = randrange(int(self.numberForGame/2), int(self.numberForGame/2)+3)
+            self.numberPlayLimit = randint(int(self.numberForGame/2), int(self.numberForGame/2)+2)
         else:
-            self.numberPlayLimit = randrange(int(self.numberForGame/2)-1, int(self.numberForGame/2)+3)
+            self.numberPlayLimit = randint(int(self.numberForGame/2)-1, int(self.numberForGame/2)+2)
         return
 
     def startGame(self):
         self.gameRunning = True
-        seed(pow(self.numberForGame, randrange(0, 100)))
-        self.numberForGame = randrange(1, 32)
+        self.numberForGame = randint(1, 31)
         self.playLimit()
         self.wordForGame = self.chooseWordForGame()
         print 'Winning number: {} (kick on: {})'.format(self.numberForGame, self.numberPlayLimit)
