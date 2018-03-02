@@ -1,5 +1,3 @@
-// Package dad is an extension of hellabot that plays the role of an IRC
-// chat bot, either as a mom or a dad
 package dad
 
 import (
