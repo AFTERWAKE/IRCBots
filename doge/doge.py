@@ -1,6 +1,7 @@
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
 from re import search, IGNORECASE
+from random import randint
 import time
 
 serv_ip = "coop.test.adtran.com"
@@ -17,14 +18,16 @@ class Doge(irc.IRCClient):
 
     def privmsg(self, user, channel, message):
         if (message.startswith(self.nickname)):
-            if (user.split('@')[1] in self.owner):
+            timeRightNow = time.time()
+            if ((user.split('@')[1] in self.owner) or ((randint(0, 10) == 1) and ((timeRightNow - self.timeLastCommand) > 5))):
+                self.timeLastCommand = time.time()
                 if message == (self.nickname + ', sit'):
                     self.describe(self.chatroom, "sits")
-                if message == (self.nickname + ', roll over'):
+                elif message == (self.nickname + ', roll over'):
                     self.describe(self.chatroom, "rolls over")
-                if message == (self.nickname + ', shake'):
+                elif message == (self.nickname + ', shake'):
                     self.describe(self.chatroom, "lifts up paw")
-                if message == (self.nickname + ', play dead'):
+                elif message == (self.nickname + ', play dead'):
                     self.describe(self.chatroom, "lays down dramatically")
         if search(r"(^|\s)+treats*(!|\?)*(\s|$)+", message, IGNORECASE):
             timeRightNow = time.time()
