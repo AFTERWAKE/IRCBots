@@ -26,17 +26,23 @@ class Doge(irc.IRCClient):
                     self.describe(self.chatroom, "lifts up paw")
                 if message == (self.nickname + ', play dead'):
                     self.describe(self.chatroom, "lays down dramatically")
-        if (search(r"(^|\s)+wow!*(\s|$)+", message, IGNORECASE) or
+        if search(r"(^|\s)+treats*(!|\?)*(\s|$)+", message, IGNORECASE):
+            timeRightNow = time.time()
+            if (timeRightNow - self.timeLastCommand) > 5:
+                self.timeLastCommand = time.time()
+                self.describe(self.chatroom, "perks his head up")
+        elif search(r"(^|\s)+good boy!*(\s|$)+", message, IGNORECASE):
+            timeRightNow = time.time()
+            if (timeRightNow - self.timeLastCommand) > 5:
+                self.timeLastCommand = time.time()
+                self.describe(self.chatroom, "barks")
+        elif (search(r"(^|\s)+wow!*(\s|$)+", message, IGNORECASE) or
         search(r"(^|\s)+very(\s|$)+", message, IGNORECASE) or
         search(r"(^|\s)+such(\s|$)+", message, IGNORECASE)):
             timeRightNow = time.time()
             if (timeRightNow - self.timeLastCommand) > 5:
                 self.timeLastCommand = time.time()
                 self.msg(self.chatroom, "Wow!")
-        if search(r"(^|\s)+treat(!|\?)*(\s|$)+", message, IGNORECASE):
-            self.describe(self.chatroom, "perks his head up")
-        if search(r"(^|\s)+good boy!*(\s|$)+", message, IGNORECASE):
-            self.describe(self.chatroom, "barks")
 
 
 
