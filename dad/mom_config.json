@@ -29,7 +29,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 31
+                    "Count": 32
                 }
             ]
         },
@@ -42,7 +42,7 @@
             "Response": [
                 {
                     "Message": "Ok",
-                    "Count": 4
+                    "Count": 6
                 }
             ]
         }

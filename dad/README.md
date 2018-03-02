@@ -13,6 +13,7 @@
 - Has least favorite kids
 - Loves telling jokes\*
 
+
 #### ADMIN FEATURES
 - Dad will say what you want it to, who you want it to
   - Just say "dad, say <target user/channel>: <message>"
@@ -43,6 +44,30 @@
     - #c -> adds a response generated from an action handler
     - #u -> adds the name of the sender
     - #v -> adds the content caught by the Variable regex
+
+#### ADDING COMMANDS
+- For the most part, I've made adding responses as easy as possible
+- Add the following block of JSON to the config file under the appropriate "Speak" or "AdminSpeak" branch
+```json
+{
+    "Action": "<action_name_or_none>",
+    "Regex": {
+        "Trigger": "(?i)<regex_for_what_triggers_the_response>",
+        "Variable": "<regex_for_text_you_plan_on_manipulating_or_reusing>"
+    },
+    "Response": [
+        {
+            "Message": "<your_message_with_any_necessary_fill_ins>",
+            "Count": 0
+        }
+    ]
+}
+```
+- That (?i) is a golang thing for case-insensitive matching (see their [regex syntax](https://golang.org/pkg/regexp/syntax/) for more)
+- If no action is required, enter "none"
+- If no manipulation or reuse regex is required, leave an empty string for the "Variable" value
+- If an action is required, and it's not already defined, then you can pretty easily make an add your own
+- In PerformAction, add a check for your action, and from there you can modify both the captured variable and the target of the Reply with any function you may add.
 
 #### SETUP
 - Disclaimer: Dad Bot is built and maintained using go version 1.8.1.

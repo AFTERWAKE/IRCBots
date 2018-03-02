@@ -9,28 +9,30 @@ Last Updated: February 2018
               11:00, 1:30, and 4. The game can also be initiated by one or two hosts listed.
               A count of the winners is kept so that people can see how good they really are.
     Commands: ADMIN COMMANDS
-                   botNick: set <userNick> <timesWon> (set timesWon for user on a reset)
-                   botNick: del <userNick> (delete a user from the list/winnings table)
-                   botNick: start (starts game)
-                   botNick: save (saves list of winners || also gets saved at the end of every game)
+                   botNick, set <userNick> <timesWon> (set timesWon for user on a reset)
+                   botNick, del <userNick> (delete a user from the list/winnings table)
+                   botNick, start (starts game)
+                   botNick, save (saves list of winners || also gets saved at the end of every game)
                    botNick, stop (quits current game)
-                   botNick: users (prints list of users to console)
-                   botNick: restore (restores winners from save file || also restores automatically on run)
-                   botNick: say <msg> (sends message to channel as the bot)
+                   botNick, users (prints list of users to console)
+                   botNick, restore (restores winners from save file || also restores automatically on run)
+                   botNick, say <msg> (sends message to channel as the bot)
+                   botNick, me <me> (sends a /me message to the channel as the bot)
                    botNick, mute <user> (mutes a user by IP, they will be ignored for commands and will not be able to play the game)
                    botNick, unmute <user> (undoes the actions of the `mute` command)
                    botNick, whois <user> (Gives the IP address of a user on the server)
-                   botNick quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
+                   botNick, quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
               USER COMMANDS
-                   botNick: help (help message)
-                   botNick: loser (LOSER: <user who called>)
-                   botNick: losers (list of losers)
-                   botNick: winners (shows list of winners)
+                   botNick, help (help message)
+                   botNick, loser (LOSER: <user who called>)
+                   botNick, losers (list of losers)
+                   botNick, winners (shows list of winners)
                    botNick, rules (shows list of rules)
                    botNick, version (shows version + link to github)
 --------------------------------------------------------------------------------------------------------------------
 '''
 from twisted.words.protocols import irc
+from twisted.internet import reactor, protocol
 from random import (
                     seed,
                     randrange,
@@ -42,9 +44,12 @@ from re import match
 from sys import exit
 import time
 
+serv_ip = "coop.test.adtran.com"
+serv_port = 6667
+
 
 class countBot(irc.IRCClient):
-    version = "2.5.2"
+    version = "2.7.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -120,7 +125,7 @@ class countBot(irc.IRCClient):
         return
 
     def playLimit(self):
-        if self.numberForGame < 6:
+        if self.            numberForGame < 6:
             self.numberPlayLimit = 3
         elif self.numberForGame < 8:
             self.numberPlayLimit = randrange(int(self.numberForGame/2), int(self.numberForGame/2)+3)
@@ -209,10 +214,10 @@ class countBot(irc.IRCClient):
         return topUser
 
     def adminCommands(self, message):
-        if ((message == self.nickname + ', stop') or (message == self.nickname + ': stop')):
+        if ((message == self.nickname + ', stop') or (message == self.nickname + ': stop')  or (message == self.nickname + ' stop')):
             self.resetGame()
             self.msg(self.chatroom, "The counting game has been quit.")
-        elif ((message == self.nickname + ", start") or (message == self.nickname + ": start")):
+        elif ((message == self.nickname + ", start") or (message == self.nickname + ": start") or (message == self.nickname + ' start')):
             self.resetGame()
             self.startGame()
         elif ((message.startswith(self.nickname + ', set')) or (message.startswith(self.nickname + ': set'))):
@@ -225,12 +230,12 @@ class countBot(irc.IRCClient):
                 self.delUserFromList(message)
             except:
                 return
-        elif ((message == self.nickname + ', users') or (message == self.nickname + ': users')):
+        elif ((message == self.nickname + ', users') or (message == self.nickname + ': users') or (message == self.nickname + ' users')):
             self.printAllUsers()
-        elif ((message == self.nickname + ', restore') or (message == self.nickname + ': restore')):
+        elif ((message == self.nickname + ', restore') or (message == self.nickname + ': restore') or (message == self.nickname + ' restore')):
             self.restoreUsersFromFile()
             print 'Scores restored'
-        elif ((message == self.nickname + ', save') or (message == self.nickname + ': save')):
+        elif ((message == self.nickname + ', save') or (message == self.nickname + ': save') or (message == self.nickname + ' save')):
             self.saveScores()
             print 'Scores saved'
         elif ((message.startswith(self.nickname + ', say')) or (message.startswith(self.nickname + ': say'))):
@@ -241,23 +246,24 @@ class countBot(irc.IRCClient):
             self.describe(self.chatroom, message[len(self.nickname)+5:])
         elif (message.startswith(self.nickname + ' me')):
             self.describe(self.chatroom, message[len(self.nickname)+4:])
+        elif (message.startswith(self.nickname + ', quit') or message.startswith(self.nickname + ': quit')):
+            if (message[len(self.nickname)+7:]):
+                self.quit(message[len(self.nickname)+7:])
+            else:
+                self.quit('*ah..ah..ah :\'( goodbye.')
         elif (message.startswith(self.nickname + ' quit')):
             if (message[len(self.nickname)+6:]):
                 self.quit(message[len(self.nickname)+6:])
             else:
                 self.quit('*ah..ah..ah :\'( goodbye.')
-        elif (message.startswith(self.nickname + ', mute')):
-            self.mute(message[len(self.nickname)+7:].split(" ")[0])
-        elif (message.startswith(self.nickname + ' mute')):
-            self.mute(message[len(self.nickname)+6:].split(" ")[0])
-        elif (message.startswith(self.nickname + ', unmute')):
-            self.unmute(message[len(self.nickname)+9:].split(" ")[0])
-        elif (message.startswith(self.nickname + ' unmute')):
-            self.unmute(message[len(self.nickname)+8:].split(" ")[0])
-        elif (message.startswith(self.nickname + ', whois')):
-            self._whois(message[len(self.nickname)+8:].split(" ")[0])
+        elif (message.startswith(self.nickname + ', mute') or message.startswith(self.nickname + ': mute') or message.startswith(self.nickname + ' mute')):
+            self.mute(message.split()[2])
+        elif (message.startswith(self.nickname + ', unmute') or message.startswith(self.nickname + ': unmute') or message.startswith(self.nickname + ' unmute')):
+            self.unmute(message.split()[2])
+        elif (message.startswith(self.nickname + ', whois') or message.startswith(self.nickname + ': whois') or message.startswith(self.nickname + ' whois')):
+            self._whois(message.split()[2])
         else:
-            self.userCommands('Noah Siano', message)
+            self.userCommands('noahsiano', message)
 
     def delUserFromList(self, message):
         nameIndex = self.getUserIndex(message.split()[2])
@@ -361,25 +367,25 @@ class countBot(irc.IRCClient):
         self.msg(self.chatroom, "v{} - Latest: {}".format(self.version, self.latestCommits))
 
     def userCommands(self, name, message, isTopUser=False):
-        if ((message == self.nickname + ', help') or (message == self.nickname + ': help')):
+        if ((message == self.nickname + ', help') or (message == self.nickname + ': help') or (message == self.nickname + ' help')):
             self.helpText()
-        elif ((message == self.nickname + ', version') or (message == self.nickname + ': version')):
+        elif ((message == self.nickname + ', version') or (message == self.nickname + ': version') or (message == self.nickname + ' version')):
             self.displayVersion()
-        elif ((message == self.nickname + ', winners') or (message == self.nickname + ': winners')):
+        elif ((message == self.nickname + ', winners') or (message == self.nickname + ': winners') or (message == self.nickname + ' winners')):
             self.sortUsersAscending()
             self.displayWinners()
-        elif ((message == self.nickname + ', wieners') or (message == self.nickname + ': wieners')):
+        elif ((message == self.nickname + ', wieners') or (message == self.nickname + ': wieners') or (message == self.nickname + ' wieners')):
             self.sortUsersAscending()
             self.displayWieners(name)
-        elif ((message == self.nickname + ', loser') or (message == self.nickname + ': loser')):
+        elif ((message == self.nickname + ', loser') or (message == self.nickname + ': loser') or (message == self.nickname + ' loser')):
             self.showLoserMsg(name)
-        elif ((message == self.nickname + ', losers') or (message == self.nickname + ': losers')):
+        elif ((message == self.nickname + ', losers') or (message == self.nickname + ': losers') or (message == self.nickname + ' losers')):
             self.displayLosers()
-        elif ((message == self.nickname + ', top') or (message == self.nickname + ': top')):
+        elif ((message == self.nickname + ', top') or (message == self.nickname + ': top') or (message == self.nickname + ' top')):
             self.msg(self.chatroom, 'The current number 1 player is: ' + self.getWinningUser().username)
         elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
-        elif ((message.startswith(self.nickname + ', rules')) or (message.startswith(self.nickname + ': rules'))):
+        elif ((message == self.nickname + ', rules') or (message == self.nickname + ': rules') or (message == self.nickname + ' rules')):
             self.rulesText()
 
     def showLoserMsg(self, name):
@@ -572,3 +578,15 @@ class player:
 
     def __init__(self, name):
         self.username = name
+
+
+def main():
+    f = protocol.ReconnectingClientFactory()
+    f.protocol = countBot
+
+    reactor.connectTCP(serv_ip, serv_port, f)
+    reactor.run()
+
+
+if __name__ == "__main__":
+    main()

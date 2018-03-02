@@ -9,7 +9,7 @@
             "Response": [
                 {
                     "Message": "That's it, you're grounded #c!",
-                    "Count": 38
+                    "Count": 39
                 }
             ]
         },
@@ -22,7 +22,7 @@
             "Response": [
                 {
                     "Message": "#c",
-                    "Count": 384
+                    "Count": 436
                 }
             ]
         },
@@ -35,7 +35,7 @@
             "Response": [
                 {
                     "Message": "#c, you're now ungrounded. Don't let me catch you misbehaving again.",
-                    "Count": 20
+                    "Count": 21
                 }
             ]
         }
@@ -70,7 +70,7 @@
             "Response": [
                 {
                     "Message": "good morning #u!",
-                    "Count": 33
+                    "Count": 36
                 }
             ]
         },
@@ -83,7 +83,7 @@
             "Response": [
                 {
                     "Message": "Here is a list of grounded users:\n#c",
-                    "Count": 29
+                    "Count": 31
                 }
             ]
         },
@@ -96,7 +96,7 @@
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 34
+                    "Count": 38
                 }
             ]
         },
@@ -109,7 +109,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 539
+                    "Count": 676
                 }
             ]
         },
@@ -122,7 +122,7 @@
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 27
+                    "Count": 28
                 }
             ]
         },
@@ -148,7 +148,7 @@
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 27
+                    "Count": 31
                 }
             ]
         },
@@ -161,7 +161,7 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 20
+                    "Count": 23
                 }
             ]
         },
@@ -174,7 +174,7 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 55
+                    "Count": 59
                 }
             ]
         },
@@ -187,7 +187,7 @@
             "Response": [
                 {
                     "Message": "Poof, you're #a #v!",
-                    "Count": 32
+                    "Count": 34
                 }
             ]
         },
@@ -200,7 +200,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 60
+                    "Count": 66
                 }
             ]
         },
@@ -229,7 +229,7 @@
                 },
                 {
                     "Message": "Dad, did you get a haircut?\nNo I got them all cut",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Did you hear about the cheese factory that exploded in France?\nThere was nothing left but de Brie",
@@ -261,7 +261,7 @@
                 },
                 {
                     "Message": "I bought shoes from a drug dealer once\nI don't know what he laced them with, but I was tripping all day",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I hate jokes about german sausages\nThey're the wurst",
@@ -273,7 +273,7 @@
                 },
                 {
                     "Message": "I knew I shouldn't have had the seafood\nI'm feeling a little eel",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "I used to hate facial hair,\nbut then it grew on me",
@@ -349,7 +349,7 @@
                 },
                 {
                     "Message": "What do you call a deer with no eyes?\nNo idear",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call a fake noodle?\nAn Impasta",
@@ -401,7 +401,7 @@
                 },
                 {
                     "Message": "Why can't you have a nose 12 inches long?\nBecause then it would be a foot",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why can't you hear a pterodactyl go to the bathroom?\nBecause the pee is silent",
@@ -437,7 +437,7 @@
                 },
                 {
                     "Message": "The Norwegian navy has started putting bar codes on their ships...\nSo they can scan da navy in...",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Singing in the shower is all fun and games until you get shampoo in your mouth...\nThen it becomes a soap opera...",
@@ -469,7 +469,7 @@
                 },
                 {
                     "Message": "Wanna hear a little pickle joke?\n.....it's not that big of dill.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Say, Ernie? Would you like some ice cream?\nYes, sherbert.",
@@ -565,7 +565,7 @@
                 },
                 {
                     "Message": "What do you call a genie made of asbestos?\nA carcinojinn.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "My friend threatened to turn me into the police for bludgeoning his wife to death with a Super Nintendo\nSo I had to console him as well.",
@@ -608,8 +608,8 @@
                     "Count": 1
                 },
                 {
-                    "Message": "I don't usually tell tell dad jokes\n.............",
-                    "Count": 1
+                    "Message": "I don't usually tell dad jokes\n.............",
+                    "Count": 2
                 },
                 {
                     "Message": "What type of dog can do magic tricks?\nA labracadabrador",
@@ -629,7 +629,7 @@
                 },
                 {
                     "Message": "How come everyone in history has always settled for Shampoo?\nStop the madness! Demand Realpoo!",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Know why the native Americans were here first?\n...because they had reservations.",
@@ -657,7 +657,7 @@
                 },
                 {
                     "Message": "A ham sandwich walks into a bar and orders a beer.\nBartender says \"Sorry, we don't serve food here\"",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "My boy asked me to hand him his sunglasses.\nI told him I'd do it as soon as he handed me my dadglasses",
@@ -693,7 +693,7 @@
                 },
                 {
                     "Message": "How do you make holy water?\nYou boil the hell out of it",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why did my TV start looking so good this year?\nIt was his new years resolution",
@@ -793,7 +793,7 @@
                 },
                 {
                     "Message": "I broke my finger today..\n..but on the other hand I'm completely fine.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Have you heard the rumor going around about butter?\nNevermind, I really shouldn't spread it.",
@@ -889,11 +889,11 @@
                 },
                 {
                     "Message": "What country is next to USA\nUSB",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "It's hard to lose a radish.\nBecause a lot of the time they'll turn up",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What type of bagel can fly?\nA plain bagel.",
@@ -913,7 +913,7 @@
                 },
                 {
                     "Message": "Did you hear the good news about O.J.?\nIt is part of a complete breakfast",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Why does everybody hate averages?\nBecause they're mean",
@@ -921,7 +921,7 @@
                 },
                 {
                     "Message": "I like the theory of the death penalty\nBut I have a problem with the execution.",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "Did you hear about the kidnapping in Denver?\nHe woke up.",
@@ -945,7 +945,7 @@
                 },
                 {
                     "Message": "My wife asked \"What's your favorite vegetable.\"\nBeets me!",
-                    "Count": 1
+                    "Count": 2
                 },
                 {
                     "Message": "What do you call a tree who's limbs fell off in a storm?\nAn amputree",

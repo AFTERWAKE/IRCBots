@@ -32,7 +32,7 @@ dad, say saying hello i'mj long and expecting nothing back
 hello i'mj long
 
 dad, say saying I'm 100% cooler than jlong and expecting mocking response
-I'm cooler than jlong
+I'm 100% cooler than jlong
 
 dad, say saying im .cooler than jlong and expecting response with . removed
 im .cooler than jlong
