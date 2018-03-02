@@ -167,7 +167,7 @@ class countBot(irc.IRCClient):
         topUser = self.getWinningUser
         if name == topUser:
             self.msg(self.chatroom, '{} is the winner...AGAIN... with {} {}. Can\'t believe you all keep letting {} win!'.format(name, self.numberForGame, self.wordForGame, name))
-            self.describe(self.chatroom, "*ahahah*'s mockingly'")
+            self.describe(self.chatroom, "*ahahah*'s mockingly")
         else:
             self.msg(self.chatroom, '{} is the winner with {} {}!'.format(name, self.numberForGame, self.wordForGame))
             self.msg(self.chatroom, "*ahahah*")
