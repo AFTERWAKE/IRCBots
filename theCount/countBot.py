@@ -47,7 +47,7 @@ serv_port = 6667
 
 
 class countBot(irc.IRCClient):
-    version = "2.7.0"
+    version = "2.8.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -134,6 +134,12 @@ class countBot(irc.IRCClient):
     def startGame(self):
         self.gameRunning = True
         self.numberForGame = randint(1, 31)
+        # Let's reduce the number of times the winning number is < 6
+        if self.numberForGame < 6:
+            self.numberForGame = randint(1, 31)
+            if self.numberForGame < 3:
+                self.numberForGame = randint(1, 31)
+        # There we go... Should see a lot less games where 1 and 2 win
         self.playLimit()
         self.wordForGame = self.chooseWordForGame()
         print 'Winning number: {} (kick on: {})'.format(self.numberForGame, self.numberPlayLimit)
