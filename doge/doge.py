@@ -10,6 +10,7 @@ class Doge(irc.IRCClient):
     nickname = "Doge"
     chatroom = "#main"
     timeLastCommand = 0
+    owner = ["172.22.117.48", "172.22.116.80"]
 
     def signedOn(self):
         self.join(self.chatroom)
