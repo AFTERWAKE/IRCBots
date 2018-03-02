@@ -16,6 +16,16 @@ class Doge(irc.IRCClient):
         self.join(self.chatroom)
 
     def privmsg(self, user, channel, message):
+        if (message.startswith(self.nickname)):
+            if (user.split('@')[1] in self.owner):
+                if message == (self.nickname + ', sit'):
+                    self.describe(self.chatroom, "sits")
+                if message == (self.nickname + ', roll over'):
+                    self.describe(self.chatroom, "rolls over")
+                if message == (self.nickname + ', shake'):
+                    self.describe(self.chatroom, "lifts up paw")
+                if message == (self.nickname + ', play dead'):
+                    self.describe(self.chatroom, "lays down dramatically")
         if (search(r"(^|\s)+wow!*(\s|$)+", message, IGNORECASE) or
         search(r"(^|\s)+very(\s|$)+", message, IGNORECASE) or
         search(r"(^|\s)+such(\s|$)+", message, IGNORECASE)):
