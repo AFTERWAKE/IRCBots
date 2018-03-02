@@ -32,6 +32,7 @@ Last Updated: February 2018
 --------------------------------------------------------------------------------------------------------------------
 '''
 from twisted.words.protocols import irc
+from twisted.internet import reactor, protocol
 from random import (
                     seed,
                     randrange,
@@ -43,9 +44,12 @@ from re import match
 from sys import exit
 import time
 
+serv_ip = "coop.test.adtran.com"
+serv_port = 6667
+
 
 class countBot(irc.IRCClient):
-    version = "2.6.0"
+    version = "2.7.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -574,3 +578,15 @@ class player:
 
     def __init__(self, name):
         self.username = name
+
+
+def main():
+    f = protocol.ReconnectingClientFactory()
+    f.protocol = countBot
+
+    reactor.connectTCP(serv_ip, serv_port, f)
+    reactor.run()
+
+
+if __name__ == "__main__":
+    main()
