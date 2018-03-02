@@ -18,41 +18,41 @@ class Doge(irc.IRCClient):
 
     def privmsg(self, user, channel, message):
         if (message.startswith(self.nickname)):
-            timeRightNow = time.time()
-            if ((user.split('@')[1] in self.owner) or ((randint(0, 10) == 1) and ((timeRightNow - self.timeLastCommand) > 5))):
-                self.timeLastCommand = time.time()
-                if message == (self.nickname + ', sit'):
-                    self.describe(self.chatroom, "sits")
-                elif message == (self.nickname + ', roll over'):
-                    self.describe(self.chatroom, "rolls over")
-                elif message == (self.nickname + ', shake'):
-                    self.describe(self.chatroom, "lifts up paw")
-                elif message == (self.nickname + ', play dead'):
-                    self.describe(self.chatroom, "lays down dramatically")
+            isOwner = user.split('@')[1] in self.owner
+            if (isOwner or (randint(0, 3) == 1):
+                timeRightNow = time.time()
+                if (timeRightNow - self.timeLastCommand) > 4) or isOwner:
+                    self.timeLastCommand = time.time()
+                    if message == (self.nickname + ', sit'):
+                        self.describe(self.chatroom, "sits")
+                    elif message == (self.nickname + ', roll over'):
+                        self.describe(self.chatroom, "rolls over")
+                    elif message == (self.nickname + ', shake'):
+                        self.describe(self.chatroom, "lifts up paw")
+                    elif message == (self.nickname + ', play dead'):
+                        self.describe(self.chatroom, "lays down dramatically")
+                    elif message == (self.nickname + ', speak'):
+                        if (randint(0, 5) == 1:
+                            self.describe(self.chatroom, "borks")
+                        else:
+                            self.describe(self.chatroom, "borks")
         if search(r"(^|\s)+treats*(!|\?)*(\s|$)+", message, IGNORECASE):
             timeRightNow = time.time()
-            if (timeRightNow - self.timeLastCommand) > 5:
+            if (timeRightNow - self.timeLastCommand) > 4:
                 self.timeLastCommand = time.time()
                 self.describe(self.chatroom, "perks his head up")
         elif search(r"(^|\s)+good boy!*(\s|$)+", message, IGNORECASE):
             timeRightNow = time.time()
-            if (timeRightNow - self.timeLastCommand) > 5:
+            if (timeRightNow - self.timeLastCommand) > 4:
                 self.timeLastCommand = time.time()
                 self.describe(self.chatroom, "barks")
         elif (search(r"(^|\s)+wow!*(\s|$)+", message, IGNORECASE) or
         search(r"(^|\s)+very(\s|$)+", message, IGNORECASE) or
         search(r"(^|\s)+such(\s|$)+", message, IGNORECASE)):
             timeRightNow = time.time()
-            if (timeRightNow - self.timeLastCommand) > 5:
+            if (timeRightNow - self.timeLastCommand) > 4:
                 self.timeLastCommand = time.time()
                 self.msg(self.chatroom, "Wow!")
-
-
-
-
-
-
-
 
 
 def main():
