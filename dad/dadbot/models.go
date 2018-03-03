@@ -5,32 +5,26 @@ import (
 	"time"
 )
 
-// IRCConfig contains all content that should be common between the bots
-type IRCConfig struct {
-	Admin       string
-	IP          string
-	MessageRate int
-	Timeout     int
-}
-
-// DadConfig gives structure to dad's config file
-type DadConfig struct {
-	AdminSpeak []SpeakData
-	Channels   []string
-	Debug      bool
-	Grounded   []string
-	Name       string
-	Speak      []SpeakData
-}
-
-// MomConfig gives structure to mom's config file
-type MomConfig struct {
-	AdminSpeak []SpeakData
-	Channels   []string
-	Debug      bool
-	Name       string
-	Speak      []SpeakData
-}
+const (
+	// Send a message to where the message came from
+	ReplyType   = iota // 0
+	// Send a message to a specified user or channel
+	MessageType        // 1
+	// Send a notice to a specified user or channel
+	NoticeType         // 2
+	// Send an action to a specified user or channel
+	ActionType         // 3
+	// Set the topic for the current channel
+	TopicType          // 4
+	// Send any command to the server
+	SendType           // 5
+	// Changes a user's mode in the channel
+	ChModeType         // 6
+	// Joins a channel
+	JoinType           // 7
+	// Close the bot
+	CloseType          // 8
+)
 
 // Configuration lists all the high-level content of the config file
 type Configuration struct {
@@ -48,20 +42,48 @@ type Configuration struct {
 	Timeout     int // Timeout between multi-lined reply
 }
 
-// SpeakData is the regex-to-response pairing for each possible response.
-// There can be more than one response, and it will be chosen semi-randomly.
-type SpeakData struct {
-	Action   string
-	Regex    RegexData
-	Response []ResponseData
+// DadConfig gives structure to dad's config file
+type DadConfig struct {
+	AdminSpeak []SpeakData
+	Channels   []string
+	Debug      bool
+	Grounded   []string
+	Name       string
+	Speak      []SpeakData
 }
 
-// ResponseData contains the bot's reply and the number of times the reply
-// has been sent. Message may contain [...] blocks for different types of
-// text replacement/manipulation.
-type ResponseData struct {
-	Message string
-	Count   int
+// ICanHazDadJoke declares the expected json format of jokes from
+// ICanHazDadJoke.com
+type ICanHazDadJoke struct {
+	ID     string `json:"id"`
+	Joke   string `json:"joke"`
+	Status int    `json:"status"`
+}
+
+// IRCBot is an extension of hellabot's Bot that includes an indicator for
+// whether the bot is acting as mom or dad, the config information, and the
+// last reply sent by the bot
+type IRCBot struct {
+	Bot       *hbot.Bot
+	Conf      IRCConfig
+	LastReply Reply
+}
+
+// IRCConfig contains all content that should be common between the bots
+type IRCConfig struct {
+	Admin       string
+	IP          string
+	MessageRate int
+	Timeout     int
+}
+
+// MomConfig gives structure to mom's config file
+type MomConfig struct {
+	AdminSpeak []SpeakData
+	Channels   []string
+	Debug      bool
+	Name       string
+	Speak      []SpeakData
 }
 
 // RegexData makes it a little easier to capture text by having
@@ -75,26 +97,28 @@ type RegexData struct {
 }
 
 // Reply includes the final formatted response (all text replacement blocks
-// dealt with), the destination, and the time the message was sent at.
+// dealt with), the destination, the time the message was sent at, and the type.
 type Reply struct {
 	Content []string
 	To      string
 	Sent    time.Time
+	Type    int
 }
 
-// IRCBot is an extension of hellabot's Bot that includes an indicator for
-// whether the bot is acting as mom or dad, the config information, and the
-// last reply sent by the bot
-type IRCBot struct {
-	Bot       *hbot.Bot
-	Conf      IRCConfig
-	LastReply Reply
+// ResponseData contains the bot's reply, the number of times the reply
+// has been sent, and the type of response the bot should give. Message may
+// contain action tags (#<char>) for different types of text
+// replacement/manipulation.
+type ResponseData struct {
+	Message string
+	Count   int
+	Type    int
 }
 
-// ICanHazDadJoke declares the expected json format of jokes from
-// ICanHazDadJoke.com
-type ICanHazDadJoke struct {
-	ID     string `json:"id"`
-	Joke   string `json:"joke"`
-	Status int    `json:"status"`
+// SpeakData is the regex-to-response pairing for each possible response.
+// There can be more than one response, and it will be chosen semi-randomly.
+type SpeakData struct {
+	Action   string
+	Regex    RegexData
+	Response []ResponseData
 }

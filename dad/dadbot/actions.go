@@ -17,14 +17,11 @@ func PerformAction(reply Reply, speak SpeakData,
 	message := regexp.MustCompile("(?i)^message$")
 	if ground.MatchString(speak.Action) {
 		Ground(variable)
-	}
-	if unground.MatchString(speak.Action) {
+	} else if unground.MatchString(speak.Action) {
 		Unground(variable)
-	}
-	if grounded.MatchString(speak.Action) {
+	} else if grounded.MatchString(speak.Action) {
 		variable = strings.Join(Dbot.Grounded, ", ")
-	}
-	if message.MatchString(speak.Action) {
+	} else if message.MatchString(speak.Action) {
 		to, msg := FormatMessage(variable, speak)
 		if len(to) > 0 {
 			reply.To = to

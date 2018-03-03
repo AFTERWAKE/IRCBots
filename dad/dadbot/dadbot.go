@@ -101,6 +101,7 @@ func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 	var variable = RemoveTriggerRegex(message.Content, speakData.Regex)
 	variable = strings.TrimSpace(GetVariableRegex(variable, speakData.Regex))
 	reply.To = ChooseDestination(message)
+	reply.Type = response.Type
 
 	// TODO refactor if all jokes are ever done through http get
 	joke := regexp.MustCompile("(?i)^joke$")
@@ -149,7 +150,7 @@ func PerformReply(irc *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
 			for _, line := range reply.Content {
 				// Make sure line is non-empty before sending
 				if len(line) > 0 {
-					irc.Msg(reply.To, line)
+					SendMessageType(irc, m, reply, line)
 					numSent++
 				}
 				if numSent == 1 {
@@ -171,6 +172,30 @@ func PerformReply(irc *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
 		}
 	}
 	return false
+}
+
+func SendMessageType(irc *hbot.Bot, m *hbot.Message, reply Reply, msg string) {
+	switch reply.Type {
+	case ReplyType:
+		irc.Reply(m, msg)
+	case MessageType:
+		irc.Msg(reply.To, msg)
+	case NoticeType:
+		irc.Notice(reply.To, msg)
+	case ActionType:
+		irc.Action(reply.To, msg)
+	case TopicType:
+		irc.Topic(reply.To, msg)
+	case SendType:
+		irc.Send(msg)
+	case ChModeType:
+		sliceUserMode := strings.SplitN(msg, " ", 2)
+		irc.ChMode(sliceUserMode[0], reply.To, sliceUserMode[1])
+	case JoinType:
+		irc.Join(msg)
+	case CloseType:
+		irc.Close()
+	}
 }
 
 // TestMessage tests the passed message against the passed regex and returns
