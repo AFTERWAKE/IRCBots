@@ -99,6 +99,7 @@ func SendMessageType(bot *hbot.Bot, m *hbot.Message, to string, replyType int, m
 	case SendType:
 		bot.Send(msg)
 	case ChModeType:
+        to, msg = GetChannelTargetOrDefault(to, msg)
 		sliceUserMode := strings.SplitN(msg, " ", 2)
 		bot.ChMode(sliceUserMode[1], to, sliceUserMode[0])
 	case JoinType:

@@ -15,18 +15,23 @@
 
 
 #### ADMIN FEATURES
-- Dad will say what you want it to, who you want it to
-  - Just say "dad, say <target user/channel>: <message>"
-  - Without location specified, it speaks to the channel it's connected to
 - "Ground/Unground" users so dad won't respond to them
+- The following commands accept channel/user targets, but are not required, and in some cases will only work if permissions are granted to the bot. If a channel/user is not given, an attempt will be made to send to the current channel/user.
+    - `dad/mom, say <target channel>: <message>` sends a message to the specified channel.
+    - `dad/mom, notice <target channel>: <message>` sends a notice to the specified channel.
+    - `dad/mom, action <target channel>: <message>` sends an action to the specified channel.
+    - `dad/mom, topic <target channel>: <message>` sends a topic change to the specified channel.
+    - `dad/mom, chmode <target channel>: <user> +/-<mode(s)>` sends a mode change to a user in a specified channel.
+- Remaining admin commands do not allow for the above format, as it is not relevant to them
+    - `dad/mom, send <message>` send any command to the IRC in the form "COMMAND <params>".
+    - 'dad/mom, join <channel>` joins a specified channel.
+    - `dad/mom, part <channel> <optional reason>` parts with a specified channel and an optional reason.
+    - `dad/mom, quit <optional reason>` quits the IRC with an optional reason.
 
 #### PLANNED
-- Command to change channels
-- Cleanup of dadbot.go overall
 - Add dad, help for list of admin commands
 - Bring back joke getting scripts
 - Attempt reconnect on drop
-- Use more \\b in regex
 - Listen briefly before speaking to see if any other bots were triggered by the message first, and ignore if one was
 - Add a list to track bots
 - Track users by name and IP
@@ -58,7 +63,8 @@
     "Response": [
         {
             "Message": "<your_message_with_any_necessary_fill_ins>",
-            "Count": 0
+            "Count": 0,
+            "Type": <0-9>
         }
     ]
 }
@@ -66,8 +72,9 @@
 - That (?i) is a golang thing for case-insensitive matching (see their [regex syntax](https://golang.org/pkg/regexp/syntax/) for more)
 - If no action is required, enter "none"
 - If no manipulation or reuse regex is required, leave an empty string for the "Variable" value
-- If an action is required, and it's not already defined, then you can pretty easily make an add your own
+- If an action is required, and it's not already defined, then you can pretty easily make and add your own by visiting "actions.go"
 - In PerformAction, add a check for your action, and from there you can modify both the captured variable and the target of the Reply with any function you may add.
+- Response Type comes from a list of predefined options (that can be expanded as needed). See "models.go" and the list of declared constant "...Type"s for each different kind of response available. 
 
 #### SETUP
 - Disclaimer: Dad Bot is built and maintained using go version 1.8.1.

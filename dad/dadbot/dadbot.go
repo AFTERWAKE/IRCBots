@@ -12,12 +12,14 @@ import (
 	log "gopkg.in/inconshreveable/log15.v2"
 )
 
+// Dad indicates whether the bot is behaving like "mom" or "dad"
 var Dad bool
-
-// Dbot is the global variable that primarily allows for the config information
-// to be smoothly passed around and updated properly.
+// Dbot is the global variable that tracks all content of the dad config file.
 var Dbot DadConfig
+// IRCBot is the global variable that tracks any common, constant values between
+// the two bots. This is only accessed once at startup by each bot
 var Irc IRCBot
+// Mbot is the global variable that tracks all content of the mom config file.
 var Mbot MomConfig
 var ircConfigFile = "irc_config.json"
 var dadConfigFile = "dad_config.json"
