@@ -21,7 +21,7 @@
     - `dad/mom, notice <target channel>: <message>` sends a notice to the specified channel.
     - `dad/mom, action <target channel>: <message>` sends an action to the specified channel.
     - `dad/mom, topic <target channel>: <message>` sends a topic change to the specified channel.
-    - `dad/mom, chmode <target channel>: <user> +/-<mode(s)>` sends a mode change to a user in a specified channel.
+    - `dad/mom, chmode <target channel>: <user> +/-<mode(s)>` sends a mode change to a user in a specified channel (see [this](https://wiki.swiftirc.net/wiki/Channel_modes) list of channel modes).
 - Remaining admin commands do not allow for the above format, as it is not relevant to them
     - `dad/mom, send <message>` send any command to the IRC in the form "COMMAND <params>".
     - `dad/mom, join <channel>` joins a specified channel.
