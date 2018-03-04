@@ -38,6 +38,24 @@ func ChooseDestination(message *hbot.Message) string {
 	return to
 }
 
+// GetChannelTargetOrDefault looks for a "#channel:" in the passed msg.
+// If found, it's split from the message and returned as the new destination,
+// alongside the rest of the message. If not found, the original destination
+// (to) and msg is returned
+func GetChannelTargetOrDefault(to, msg string) (string, string) {
+	channel := regexp.MustCompile("(?i)^#?\\S*:")
+	if channel.MatchString(msg) {
+		split := strings.SplitN(msg, ": ", 2)
+		if len(split) == 2 {
+			return split[0], split[1]
+		} else {
+			return to, msg
+		}
+	} else {
+		return to, msg
+	}
+}
+
 // GetRandomLeastUsedResponseIndex chooses a random response among all
 // within the given speak data, giving priority to responses that have not
 // yet been used as much. It returns the index of the response it chose

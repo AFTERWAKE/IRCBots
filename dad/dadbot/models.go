@@ -22,8 +22,10 @@ const (
 	ChModeType         // 6
 	// Joins a channel
 	JoinType           // 7
-	// Close the bot
-	CloseType          // 8
+	// Leave a specified channel
+	PartType          // 8
+	// Quit the existing IRC connection
+	QuitType // 9
 )
 
 // Configuration lists all the high-level content of the config file

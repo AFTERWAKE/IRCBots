@@ -14,19 +14,12 @@ func PerformAction(reply Reply, speak SpeakData,
 	ground := regexp.MustCompile("(?i)^ground$")
 	unground := regexp.MustCompile("(?i)^unground$")
 	grounded := regexp.MustCompile("(?i)^grounded$")
-	message := regexp.MustCompile("(?i)^message$")
 	if ground.MatchString(speak.Action) {
 		Ground(variable)
 	} else if unground.MatchString(speak.Action) {
 		Unground(variable)
 	} else if grounded.MatchString(speak.Action) {
 		variable = strings.Join(Dbot.Grounded, ", ")
-	} else if message.MatchString(speak.Action) {
-		to, msg := FormatMessage(variable, speak)
-		if len(to) > 0 {
-			reply.To = to
-		}
-		variable = msg
 	}
 	return reply, variable
 }
@@ -49,19 +42,4 @@ func Unground(name string) {
 		return
 	}
 	Dbot.Grounded = append(Dbot.Grounded[:i], Dbot.Grounded[i+1:]...)
-}
-
-// FormatMessage splits message into its destination and message components
-// (formatted as <recipient>: <rest>). It returns the recipient,
-// or the bot's primary channel if a recipient was not specified,
-// and the actual message
-func FormatMessage(message string, s SpeakData) (string, string) {
-	to := ""
-	message = RemoveTriggerRegex(message, s.Regex)
-	to = RemoveLiteralRegex(message, ":.*")
-	if to == message {
-		to = Dbot.Channels[0]
-	}
-	message = RemoveLiteralRegex(message, ".*:\\s")
-	return to, message
 }

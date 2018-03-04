@@ -30,8 +30,8 @@ var UserTrigger = hbot.Trigger{
 	func(bot *hbot.Bot, m *hbot.Message) bool {
 		return (m.From != Irc.Conf.Admin)
 	},
-	func(irc *hbot.Bot, m *hbot.Message) bool {
-		PerformReply(irc, m, false)
+	func(bot *hbot.Bot, m *hbot.Message) bool {
+		PerformReply(bot, m, false)
 		return false
 	},
 }
@@ -42,10 +42,10 @@ var AdminTrigger = hbot.Trigger{
 	func(bot *hbot.Bot, m *hbot.Message) bool {
 		return (m.From == Irc.Conf.Admin)
 	},
-	func(irc *hbot.Bot, m *hbot.Message) bool {
-		responded := PerformReply(irc, m, true)
+	func(bot *hbot.Bot, m *hbot.Message) bool {
+		responded := PerformReply(bot, m, true)
 		if !responded {
-			PerformReply(irc, m, false)
+			PerformReply(bot, m, false)
 		}
 		return false
 	},
@@ -92,7 +92,8 @@ func Run(dad bool) {
 // FormatReply formulates the bot's response given the message, whether or
 // not the sender was an admin (adminSpeak), and the index of the SpeakData
 // to format the reply to (sIndex). It returns the reply with set content and
-// destination (but not the time).
+// destination (but not the time). Message content is split into multiple
+// messages anywhere a "\n" is found
 func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 	var reply Reply
 	var speakData = getSpeakData(adminSpeak)[sIndex]
@@ -100,7 +101,12 @@ func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 	var response = speakData.Response[randIndex]
 	var variable = RemoveTriggerRegex(message.Content, speakData.Regex)
 	variable = strings.TrimSpace(GetVariableRegex(variable, speakData.Regex))
-	reply.To = ChooseDestination(message)
+	if (message.Params[0] == Dbot.Name && Dad) ||
+		(message.Params[0] == Mbot.Name && !Dad) {
+		reply.To = message.From
+	} else {
+		reply.To = message.To
+	}
 	reply.Type = response.Type
 
 	// TODO refactor if all jokes are ever done through http get
@@ -129,10 +135,10 @@ func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 }
 
 // PerformReply determines whether or not a reply should be formulated and then
-// performs it by passing it the bot in use (irc), the message just sent (m),
+// performs it by passing it the bot in use (bot), the message just sent (m),
 // and whether or not the sender was the admin (adminSpeak). If an action
 // was performed, return true.
-func PerformReply(irc *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
+func PerformReply(bot *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
 	speak := getSpeakData(adminSpeak)
 	// Do not perform an action if either the sender is grounded, is mom/dad,
 	// sufficient time has not passed, or the message is from the irc's IP
@@ -145,57 +151,70 @@ func PerformReply(irc *hbot.Bot, m *hbot.Message, adminSpeak bool) bool {
 	for i, s := range speak {
 		if TestMessage(s.Regex, m) {
 			reply := FormatReply(m, adminSpeak, i)
-			reply.Sent = time.Now()
-			numSent := 0
-			for _, line := range reply.Content {
-				// Make sure line is non-empty before sending
-				if len(line) > 0 {
-					SendMessageType(irc, m, reply, line)
-					numSent++
-				}
-				if numSent == 1 {
-					// Record time of first line being sent
-					Irc.LastReply = reply
-				}
-				// Make sure there is a timeout between multiple lines in a reply
-				if len(reply.Content) > 1 && numSent > 0 {
-					time.Sleep(time.Duration(Irc.Conf.Timeout) * time.Second)
-				}
-			}
-			if numSent > 0 {
-				UpdateConfig()
-				return true
-			}
-			// If a regex statement passed but nothing was sent,
-			// the loop should not continue trying to match the reply to others.
-			break
+			return SendReply(bot, m, reply)
 		}
 	}
 	return false
 }
 
-func SendMessageType(irc *hbot.Bot, m *hbot.Message, reply Reply, msg string) {
-	switch reply.Type {
+// SendMessageType accepts the bot and message and sends a message (msg) to the
+// specified user/channel (to) of type replyType.
+func SendMessageType(bot *hbot.Bot, m *hbot.Message, to string, replyType int, msg string) {
+	switch replyType {
 	case ReplyType:
-		irc.Reply(m, msg)
+		bot.Reply(m, msg)
 	case MessageType:
-		irc.Msg(reply.To, msg)
+		to, msg = GetChannelTargetOrDefault(to, msg)
+		bot.Msg(to, msg)
 	case NoticeType:
-		irc.Notice(reply.To, msg)
+		to, msg = GetChannelTargetOrDefault(to, msg)
+		bot.Notice(to, msg)
 	case ActionType:
-		irc.Action(reply.To, msg)
+		to, msg = GetChannelTargetOrDefault(to, msg)
+		bot.Action(to, msg)
 	case TopicType:
-		irc.Topic(reply.To, msg)
+		to, msg = GetChannelTargetOrDefault(to, msg)
+		bot.Topic(to, msg)
 	case SendType:
-		irc.Send(msg)
+		bot.Send(msg)
 	case ChModeType:
 		sliceUserMode := strings.SplitN(msg, " ", 2)
-		irc.ChMode(sliceUserMode[0], reply.To, sliceUserMode[1])
+		bot.ChMode(sliceUserMode[1], to, sliceUserMode[0])
 	case JoinType:
-		irc.Join(msg)
-	case CloseType:
-		irc.Close()
+		bot.Join(msg)
+	case PartType:
+		bot.Send(fmt.Sprintf("PART %s", msg))
+	case QuitType:
+		bot.Send(fmt.Sprintf("QUIT %s", msg))
 	}
+}
+
+// SendReply accepts the bot, message, and the bot's reply.
+// It returns true if at least one line was sent, and false if
+// nothing was sent.
+func SendReply(bot *hbot.Bot, m *hbot.Message, reply Reply) bool {
+	numSent := 0
+	for _, line := range reply.Content {
+		// Make sure line is non-empty before sending
+		if len(line) > 0 {
+			SendMessageType(bot, m, reply.To, reply.Type, line)
+			numSent++
+			if numSent == 1 {
+				// Record time of first line being sent
+				reply.Sent = time.Now()
+				Irc.LastReply = reply
+			}
+		}
+		// Make sure there is a timeout between multiple lines in a reply
+		if len(reply.Content) > 1 && numSent > 0 {
+			time.Sleep(time.Duration(Irc.Conf.Timeout) * time.Second)
+		}
+	}
+	if numSent > 0 {
+		UpdateConfig()
+		return true
+	}
+	return false
 }
 
 // TestMessage tests the passed message against the passed regex and returns
