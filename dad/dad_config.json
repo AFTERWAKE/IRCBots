@@ -9,7 +9,7 @@
             "Response": [
                 {
                     "Message": "That's it, you're grounded #c!",
-                    "Count": 39,
+                    "Count": 40,
                     "Type": 0
                 }
             ]
@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 462,
+                    "Count": 514,
                     "Type": 1
                 }
             ]
@@ -37,7 +37,7 @@
             "Response": [
                 {
                     "Message": "#c, you're now ungrounded. Don't let me catch you misbehaving again.",
-                    "Count": 21,
+                    "Count": 22,
                     "Type": 0
                 }
             ]
@@ -46,12 +46,12 @@
             "Action": "none",
             "Regex": {
                 "Trigger": "(?i)^(dad(dy|a)?|father|(pa){1,2}),?\\s+notice\\s+",
-                "Variable": ".*"
+                "Variable": "(#?\\S+:\\s+)?.*"
             },
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 2,
+                    "Count": 4,
                     "Type": 2
                 }
             ]
@@ -60,12 +60,12 @@
             "Action": "none",
             "Regex": {
                 "Trigger": "(?i)^(dad(dy|a)?|father|(pa){1,2}),?\\s+action\\s+",
-                "Variable": ".*"
+                "Variable": "(#?\\S+:\\s+)?.*"
             },
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 3
                 }
             ]
@@ -74,12 +74,12 @@
             "Action": "none",
             "Regex": {
                 "Trigger": "(?i)^(dad(dy|a)?|father|(pa){1,2}),?\\s+topic\\s+",
-                "Variable": ".*"
+                "Variable": "(#\\S+:\\s+)?.*"
             },
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 5,
+                    "Count": 6,
                     "Type": 4
                 }
             ]
@@ -93,7 +93,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 0,
+                    "Count": 7,
                     "Type": 5
                 }
             ]
@@ -102,12 +102,12 @@
             "Action": "none",
             "Regex": {
                 "Trigger": "(?i)^(dad(dy|a)?|father|(pa){1,2}),?\\s+chmode\\s+",
-                "Variable": "\\S+\\s+[+-]\\w+"
+                "Variable": "(#\\S+:\\s+)[+-]\\w+(\\s+\\S+)"
             },
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 0,
+                    "Count": 13,
                     "Type": 6
                 }
             ]
@@ -121,7 +121,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 0,
+                    "Count": 2,
                     "Type": 7
                 }
             ]
@@ -135,7 +135,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 2,
+                    "Count": 4,
                     "Type": 8
                 }
             ]
@@ -149,7 +149,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 9
                 }
             ]
@@ -185,7 +185,7 @@
             "Response": [
                 {
                     "Message": "good morning #u!",
-                    "Count": 36,
+                    "Count": 39,
                     "Type": 0
                 }
             ]
@@ -199,7 +199,7 @@
             "Response": [
                 {
                     "Message": "Here is a list of grounded users:\n#c",
-                    "Count": 31,
+                    "Count": 33,
                     "Type": 0
                 }
             ]
@@ -213,7 +213,7 @@
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 38,
+                    "Count": 40,
                     "Type": 0
                 }
             ]
@@ -227,7 +227,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 683,
+                    "Count": 687,
                     "Type": 0
                 }
             ]
@@ -241,7 +241,7 @@
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 28,
+                    "Count": 29,
                     "Type": 0
                 }
             ]
@@ -269,7 +269,7 @@
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 31,
+                    "Count": 33,
                     "Type": 0
                 }
             ]
@@ -283,7 +283,7 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 23,
+                    "Count": 24,
                     "Type": 0
                 }
             ]
@@ -297,7 +297,7 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 59,
+                    "Count": 61,
                     "Type": 0
                 }
             ]
@@ -311,7 +311,7 @@
             "Response": [
                 {
                     "Message": "Poof, you're #a #v!",
-                    "Count": 34,
+                    "Count": 36,
                     "Type": 0
                 }
             ]
@@ -325,7 +325,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 66,
+                    "Count": 71,
                     "Type": 0
                 }
             ]
@@ -389,7 +389,7 @@
                 },
                 {
                     "Message": "How many apples grow on a tree?\nAll of them",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -444,7 +444,7 @@
                 },
                 {
                     "Message": "I've just been diagnosed as colorblind\nI know, it certainly has come out of the purple",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -644,7 +644,7 @@
                 },
                 {
                     "Message": "Today I found out that someone has been adding fertilizer to my front lawn.\nThe plot thickens...",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1009,7 +1009,7 @@
                 },
                 {
                     "Message": "What did the sheep say to the shepherd?\nStop it!  You're herding me!!",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1034,7 +1034,7 @@
                 },
                 {
                     "Message": "Why did the ragdoll change her mind?\nIt was suede!",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1179,7 +1179,7 @@
                 },
                 {
                     "Message": "How do porn actors say goodbye to each other?\nSo long.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
