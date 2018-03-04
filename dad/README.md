@@ -7,7 +7,7 @@
 ### Credit for jokes goes to [niceonedad](http://niceonedad.com/), [r/dadJokes](https://www.reddit.com/r/dadjokes/), and [icanhazdadjoke](https://icanhazdadjoke.com)
 
 #### FEATURES
-- Will respond to most common english forms of the word "dad"
+- Will respond to most common English forms of the word "dad"
 - Succinctly answers any question addressed to him
 - Gives witty responses
 - Has least favorite kids
@@ -24,20 +24,20 @@
     - `dad/mom, chmode <target channel>: <user> +/-<mode(s)>` sends a mode change to a user in a specified channel.
 - Remaining admin commands do not allow for the above format, as it is not relevant to them
     - `dad/mom, send <message>` send any command to the IRC in the form "COMMAND <params>".
-    - 'dad/mom, join <channel>` joins a specified channel.
+    - `dad/mom, join <channel>` joins a specified channel.
     - `dad/mom, part <channel> <optional reason>` parts with a specified channel and an optional reason.
     - `dad/mom, quit <optional reason>` quits the IRC with an optional reason.
 
 #### PLANNED
 - Add dad, help for list of admin commands
-- Bring back joke getting scripts
+- Bring back reddit joke getting scripts
 - Attempt reconnect on drop
 - Listen briefly before speaking to see if any other bots were triggered by the message first, and ignore if one was
 - Add a list to track bots
 - Track users by name and IP
 
 #### ISSUES
-- Say commands without a targeted channel but containing a ":" don't work
+- none known
 
 #### CONFIG
 - All regex is tested with the case-insensitive flag
@@ -74,7 +74,7 @@
 - If no manipulation or reuse regex is required, leave an empty string for the "Variable" value
 - If an action is required, and it's not already defined, then you can pretty easily make and add your own by visiting "actions.go"
 - In PerformAction, add a check for your action, and from there you can modify both the captured variable and the target of the Reply with any function you may add.
-- Response Type comes from a list of predefined options (that can be expanded as needed). See "models.go" and the list of declared constant "...Type"s for each different kind of response available. 
+- Response Type comes from a list of predefined options (that can be expanded as needed). See "models.go" and the list of declared constant "...Type"s for each different kind of response available.
 
 #### SETUP
 - Disclaimer: Dad Bot is built and maintained using go version 1.8.1.
@@ -99,6 +99,6 @@
 - ### Both systems
     - Once Go is installed, run "go get github.com/alecwest/godaddyirc" and everything should download
     - If on windows, you'll get an additional error about some code in hellabot, which should just need a modification to recon_windows.go (lowercase the HijackSession function)
-    - After making sure Dad Bot conf.json is set up to point to the right server and channel, run "go run dad.go" or "go run mom.go"
+    - After making sure irc_config.json is set up to point to the right server and dad/mom_config.json is pointing to the right channel, run "go run dad.go" or "go run mom.go"
 
 \* At a limited rate. Dad can only tell so many jokes at one time.

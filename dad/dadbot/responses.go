@@ -1,13 +1,13 @@
 package dad
 
 import (
-    "fmt"
-    "math/rand"
-    "regexp"
-    "strings"
-    "time"
+	"fmt"
+	"math/rand"
+	"regexp"
+	"strings"
+	"time"
 
-    "github.com/whyrusleeping/hellabot"
+	"github.com/whyrusleeping/hellabot"
 )
 
 // FormatReply formulates the bot's response given the message, whether or
@@ -32,7 +32,7 @@ func FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 
 	// TODO refactor if all jokes are ever done through http get
 	joke := regexp.MustCompile("(?i)^joke$")
-	var configJokeOdds = 40
+	var configJokeOdds = 33
 	var configJokeOddsOutOf = 100
 	if !strings.Contains(speakData.Action, "none") {
 		reply, variable = PerformAction(reply, speakData, variable)
@@ -99,7 +99,7 @@ func SendMessageType(bot *hbot.Bot, m *hbot.Message, to string, replyType int, m
 	case SendType:
 		bot.Send(msg)
 	case ChModeType:
-        to, msg = GetChannelTargetOrDefault(to, msg)
+		to, msg = GetChannelTargetOrDefault(to, msg)
 		sliceUserMode := strings.SplitN(msg, " ", 2)
 		bot.ChMode(sliceUserMode[1], to, sliceUserMode[0])
 	case JoinType:

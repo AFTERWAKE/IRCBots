@@ -7,23 +7,23 @@ import (
 
 const (
 	// Send a message to where the message came from
-	ReplyType   = iota // 0
+	ReplyType = iota // 0
 	// Send a message to a specified user or channel
-	MessageType        // 1
+	MessageType // 1
 	// Send a notice to a specified user or channel
-	NoticeType         // 2
+	NoticeType // 2
 	// Send an action to a specified user or channel
-	ActionType         // 3
+	ActionType // 3
 	// Set the topic for the current channel
-	TopicType          // 4
+	TopicType // 4
 	// Send any command to the server
-	SendType           // 5
+	SendType // 5
 	// Changes a user's mode in the channel
-	ChModeType         // 6
+	ChModeType // 6
 	// Joins a channel
-	JoinType           // 7
+	JoinType // 7
 	// Leave a specified channel
-	PartType          // 8
+	PartType // 8
 	// Quit the existing IRC connection
 	QuitType // 9
 )
