@@ -1,15 +1,128 @@
 {
     "AdminSpeak": [
         {
-            "Action": "message",
+            "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(mom(my|ma)?|mother|(ma){1,2}), say ",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+say\\s+",
                 "Variable": ".*"
             },
             "Response": [
                 {
-                    "Message": "#c",
-                    "Count": 4
+                    "Message": "#v",
+                    "Count": 4,
+                    "Type": 1
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+notice\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 2
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+action\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 3
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+topic\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 4
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+send\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 5
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+chmode\\s+",
+                "Variable": "\\S+\\s+[+-]\\w+"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 6
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+join\\s+",
+                "Variable": "#\\S*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 7
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+part\\s+",
+                "Variable": "#\\S*(\\s+.*)?"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 8
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+quit\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 9
                 }
             ]
         }
@@ -29,7 +142,8 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 31
+                    "Count": 33,
+                    "Type": 0
                 }
             ]
         },
@@ -42,7 +156,8 @@
             "Response": [
                 {
                     "Message": "Ok",
-                    "Count": 4
+                    "Count": 7,
+                    "Type": 0
                 }
             ]
         }

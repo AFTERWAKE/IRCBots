@@ -24,9 +24,7 @@
                          "who:I think it was %s...",
                          "who:I believe it was %s",
                          "who:definitely %s!",
-                         "who:absolutely %s!",
-                         "who:not %s",
-                         "who:definitely not %s"]
+                         "who:absolutely %s!"]
         },
         {
             "pattern": "^.*:(?P<message>.*)$",
