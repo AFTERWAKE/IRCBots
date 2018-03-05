@@ -25,20 +25,7 @@ func AddArticle(s string) string {
 	return "a " + s
 }
 
-// ChooseDestination determines the target for the bot's reply
-// purely based on who sent the trigger message and where they sent it
-// Returns the destination
-func ChooseDestination(message *hbot.Message) string {
-	var to string
-	if strings.Contains(message.To, "#") {
-		to = message.To
-	} else {
-		to = message.From
-	}
-	return to
-}
-
-// GetChannelTargetOrDefault looks for a "#channel:" in the passed msg.
+// GetChannelTargetOrDefault looks for a "#channel:" or "user:" in the passed msg.
 // If found, it's split from the message and returned as the new destination,
 // alongside the rest of the message. If not found, the original destination
 // (to) and msg is returned
