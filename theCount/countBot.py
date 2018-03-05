@@ -164,7 +164,7 @@ class countBot(irc.IRCClient):
         return (self.numberForAlphabet)
 
     def declareWinner(self, userIndex, name):
-        topUser = self.getWinningUser
+        topUser = self.getWinningUser().username
         if name == topUser:
             self.msg(self.chatroom, '{} is the winner...AGAIN... with {} {}. Can\'t believe you all keep letting {} win!'.format(name, self.numberForGame, self.wordForGame, name))
             self.describe(self.chatroom, "*ahahah*'s mockingly")
@@ -175,7 +175,7 @@ class countBot(irc.IRCClient):
         return
 
     def incrementCount(self, name):
-        topUser = self.getWinningUser
+        topUser = self.getWinningUser().username
         if name == topUser:
             mockMsg = self.mockMe(name + ' counted ' + str(self.currentNumber) + ' ' + self.wordForGame + ', ahahah...')
             self.msg(self.chatroom, mockMsg)
