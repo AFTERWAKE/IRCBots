@@ -3,7 +3,7 @@
       Author: DavidS
    v2 Author: noahsiano
         Date: April 2015
-Last Updated: February 2018
+Last Updated: March 2018
         NOTE: Run in linux in order to get the dictionary to work.
  Description: This connects to an IRC chatroom and plays a counting game at the times 8:30,
               11:00, 1:30, and 4. The game can also be initiated by one or two hosts listed.
@@ -34,8 +34,6 @@ Last Updated: February 2018
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
 from random import (
-                    seed,
-                    randrange,
                     choice,
                     randint
                     )
@@ -49,7 +47,7 @@ serv_port = 6667
 
 
 class countBot(irc.IRCClient):
-    version = "2.7.0"
+    version = "2.8.1"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -125,18 +123,23 @@ class countBot(irc.IRCClient):
         return
 
     def playLimit(self):
-        if self.            numberForGame < 6:
+        if self.numberForGame < 6:
             self.numberPlayLimit = 3
         elif self.numberForGame < 8:
-            self.numberPlayLimit = randrange(int(self.numberForGame/2), int(self.numberForGame/2)+3)
+            self.numberPlayLimit = randint(int(self.numberForGame/2), int(self.numberForGame/2)+2)
         else:
-            self.numberPlayLimit = randrange(int(self.numberForGame/2)-1, int(self.numberForGame/2)+3)
+            self.numberPlayLimit = randint(int(self.numberForGame/2)-1, int(self.numberForGame/2)+2)
         return
 
     def startGame(self):
         self.gameRunning = True
-        seed(pow(self.numberForGame, randrange(0, 100)))
-        self.numberForGame = randrange(1, 32)
+        self.numberForGame = randint(1, 31)
+        # Let's reduce the number of times the winning number is < 6
+        if self.numberForGame < 6:
+            self.numberForGame = randint(1, 31)
+            if self.numberForGame < 3:
+                self.numberForGame = randint(1, 31)
+        # There we go... Should see a lot less games where 1 and 2 win
         self.playLimit()
         self.wordForGame = self.chooseWordForGame()
         print 'Winning number: {} (kick on: {})'.format(self.numberForGame, self.numberPlayLimit)
@@ -161,15 +164,28 @@ class countBot(irc.IRCClient):
         return (self.numberForAlphabet)
 
     def declareWinner(self, userIndex, name):
-        self.msg(self.chatroom, '{} is the winner with {} {}!'.format(name, self.numberForGame, self.wordForGame))
-        self.msg(self.chatroom, "*ahahah*")
+        topUser = self.getWinningUser
+        if name == topUser:
+            self.msg(self.chatroom, '{} is the winner...AGAIN... with {} {}. Can\'t believe you all keep letting {} win!'.format(name, self.numberForGame, self.wordForGame, name))
+            self.describe(self.chatroom, "*ahahah*'s mockingly")
+        else:
+            self.msg(self.chatroom, '{} is the winner with {} {}!'.format(name, self.numberForGame, self.wordForGame))
+            self.msg(self.chatroom, "*ahahah*")
         self.nameList[userIndex].timesWon += 1
         return
 
     def incrementCount(self, name):
-        self.msg(self.chatroom, name + " counted " + str(self.currentNumber) + ' ' + self.wordForGame + ', ahahah...')
+        topUser = self.getWinningUser
+        if name == topUser:
+            mockMsg = self.mockMe(name + ' counted ' + str(self.currentNumber) + ' ' + self.wordForGame + ', ahahah...')
+            self.msg(self.chatroom, mockMsg)
+        else:
+            self.msg(self.chatroom, name + " counted " + str(self.currentNumber) + ' ' + self.wordForGame + ', ahahah...')
         self.currentNumber += 1
         return
+
+    def mockMe(self, msg):
+        return "".join(choice([letter.upper(), letter]) for letter in msg)
 
     def kickUser(self, userIndex, name):
         self.msg(self.chatroom, name + " has been eliminated from the game. " +
