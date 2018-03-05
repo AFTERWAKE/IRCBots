@@ -175,9 +175,17 @@ class countBot(irc.IRCClient):
         return
 
     def incrementCount(self, name):
-        self.msg(self.chatroom, name + " counted " + str(self.currentNumber) + ' ' + self.wordForGame + ', ahahah...')
+        topUser = self.getWinningUser
+        if name == topUser:
+            mockMsg = self.mockMe(name + ' counted ' + str(self.currentNumber) + ' ' + self.wordForGame + ', ahahah...')
+            self.msg(self.chatroom, mockMsg)
+        else:
+            self.msg(self.chatroom, name + " counted " + str(self.currentNumber) + ' ' + self.wordForGame + ', ahahah...')
         self.currentNumber += 1
         return
+
+    def mockMe(self, msg):
+        return "".join(choice([letter.upper(), letter]) for letter in msg)
 
     def kickUser(self, userIndex, name):
         self.msg(self.chatroom, name + " has been eliminated from the game. " +
