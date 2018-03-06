@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	dad.Run(false)
+	dad.Irc.Run("irc_config.json", "mom_config.json")
 }

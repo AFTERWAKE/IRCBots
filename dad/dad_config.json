@@ -159,21 +159,6 @@
         "#main"
     ],
     "Debug": true,
-    "Grounded": [
-        "theCount",
-        "Doge",
-        "Magic_Conch",
-        "Seahorse",
-        "l",
-        "dootBot",
-        "botProtector",
-        "QuipBot",
-        "pointBot",
-        "Rogue",
-        "MemeBot",
-        "Mr_HighFive",
-        "OG_Grant"
-    ],
     "Name": "dad",
     "Speak": [
         {
@@ -227,7 +212,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 687,
+                    "Count": 689,
                     "Type": 0
                 }
             ]
@@ -241,7 +226,7 @@
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 29,
+                    "Count": 30,
                     "Type": 0
                 }
             ]
