@@ -35,7 +35,7 @@ class Doge(irc.IRCClient):
                         if randint(0, 5) == 1:
                             self.describe(self.chatroom, "borks")
                         else:
-                            self.describe(self.chatroom, "borks")
+                            self.describe(self.chatroom, "barks")
         if search(r"(^|\s)+treats*(!|\?)*(\s|$)+", message, IGNORECASE):
             timeRightNow = time.time()
             if (timeRightNow - self.timeLastCommand) > 4:
