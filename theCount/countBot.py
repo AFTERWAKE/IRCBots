@@ -21,6 +21,7 @@ Last Updated: March 2018
                    botNick, mute <user> (mutes a user by IP, they will be ignored for commands and will not be able to play the game)
                    botNick, unmute <user> (undoes the actions of the `mute` command)
                    botNick, whois <user> (Gives the IP address of a user on the server)
+                   botNick, mock <user> (Mocks the user and shows their current points)
                    botNick, quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
               USER COMMANDS
                    botNick, help (help message)
@@ -47,7 +48,7 @@ serv_port = 6667
 
 
 class countBot(irc.IRCClient):
-    version = "2.8.1"
+    version = "2.9.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -187,6 +188,11 @@ class countBot(irc.IRCClient):
     def mockMe(self, msg):
         return "".join(choice([letter.upper(), letter]) for letter in msg)
 
+    def mockUser(self, name):
+        nameIndex = self.getUserIndex(name)
+        if nameIndex != -1:
+            self.msg(self.chatroom, self.mockMe("i am " + name + " and i have " + str(self.nameList[nameIndex].timesWon) + " points"))
+
     def kickUser(self, userIndex, name):
         self.msg(self.chatroom, name + " has been eliminated from the game. " +
                  "Too many numbers submitted. " + '{} {} is what we\'re on.'
@@ -278,6 +284,8 @@ class countBot(irc.IRCClient):
             self.unmute(message.split()[2])
         elif (message.startswith(self.nickname + ', whois') or message.startswith(self.nickname + ': whois') or message.startswith(self.nickname + ' whois')):
             self._whois(message.split()[2])
+        elif (message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock')):
+            self.mockUser(message.split()[2])
         else:
             self.userCommands('noahsiano', message)
 
@@ -398,7 +406,7 @@ class countBot(irc.IRCClient):
         elif ((message == self.nickname + ', losers') or (message == self.nickname + ': losers') or (message == self.nickname + ' losers')):
             self.displayLosers()
         elif ((message == self.nickname + ', top') or (message == self.nickname + ': top') or (message == self.nickname + ' top')):
-            self.msg(self.chatroom, 'The current number 1 player is: ' + self.getWinningUser().username)
+            self.msg(self.chatroom, self.mockMe('The current number 1 player is: ' + self.getWinningUser().username))
         elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
         elif ((message == self.nickname + ', rules') or (message == self.nickname + ': rules') or (message == self.nickname + ' rules')):
