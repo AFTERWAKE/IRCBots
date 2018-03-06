@@ -191,7 +191,11 @@ class countBot(irc.IRCClient):
     def mockUser(self, name):
         nameIndex = self.getUserIndex(name)
         if nameIndex != -1:
-            self.msg(self.chatroom, self.mockMe("i am " + name + " and i have " + str(self.nameList[nameIndex].timesWon) + " points"))
+            points = self.nameList[nameIndex].timesWon
+            if points == 1:
+                self.msg(self.chatroom, self.mockMe("i am " + name + " and i have " + str(points) + " point"))
+            else:
+                self.msg(self.chatroom, self.mockMe("i am " + name + " and i have " + str(points) + " points"))
 
     def kickUser(self, userIndex, name):
         self.msg(self.chatroom, name + " has been eliminated from the game. " +
