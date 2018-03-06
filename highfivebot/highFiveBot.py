@@ -8,7 +8,7 @@ serv_ip = "coop.test.adtran.com"
 serv_port = 6667
 
 class HighFiveBot(irc.IRCClient):
-    nickname = "OG_HighFive"
+    nickname = "Mr_HighFive"
     chatroom = "#main"
     timeLastCommand = 0
 
