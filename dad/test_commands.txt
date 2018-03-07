@@ -4,7 +4,7 @@ dad, say Hello current channel!
 dad, say receiving a say command with awest as direction and expecting a greeting in private message
 dad, say awest: Hello awest!
 
-dad, say receiving a private say command without direction and expecting a response through main channel
+dad, say receiving a private say command without direction and expecting a private response
 /msg dad dad, say jlong sucks
 
 dad, say receiving a private say command with #main as direction and expecting response through main channel
