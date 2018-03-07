@@ -352,7 +352,7 @@ class countBot(irc.IRCClient):
             if (self.nameList[user].timesWon > 0):
                 if (not firstLoop):
                     winnerString += ', '
-                winnerString += '{}: {}'.format(self.nameList[user].username,
+                winnerString += '[{}]: {}'.format(self.nameList[user].username,
                                                 self.nameList[user].timesWon)
                 firstLoop = False
         return winnerString
@@ -364,7 +364,7 @@ class countBot(irc.IRCClient):
             if (self.nameList[user].timesWon == 0):
                 if (not firstLoop):
                     loserString += ', '
-                loserString += '{}'.format(self.nameList[user].username)
+                loserString += '[{}]'.format(self.nameList[user].username)
                 firstLoop = False
         return loserString
 
