@@ -69,8 +69,8 @@ class countBot(irc.IRCClient):
         "~dad", "~mom",
         "~nodebot", "~Magic_Con",
         "~Seahorse", "~dootbot",
-        "~pointbot", "botprotec",
-        "QuipBot"
+        "~pointbot", "~botprotec",
+        "~QuipBot"
     ]
     mutedList = []
     lastWHOIS = ''
