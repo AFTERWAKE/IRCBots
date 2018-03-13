@@ -43,6 +43,13 @@ func GetChannelTargetOrDefault(to, msg string) (string, string) {
 	}
 }
 
+// GetRandomResponse chooses a random response among all within the
+// given speak data. It returns a reference to the response it chose. 
+func (speak *SpeakData) GetRandomResponse() *Response {
+	chosenIndex := rand.Intn(len(speak.Responses))
+	return &speak.Responses[chosenIndex]
+}
+
 // GetRandomLeastUsedResponse chooses a random response among all
 // within the given speak data, giving priority to responses that have not
 // yet been used as much. It returns a reference to the response it chose
