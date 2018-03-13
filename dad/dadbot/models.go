@@ -28,30 +28,20 @@ const (
 	QuitType // 9
 )
 
-// Configuration lists all the high-level content of the config file
-type Configuration struct {
-	Admin       string
-	AdminSpeak  []SpeakData
-	Channels    []string
-	DadName     string
-	Debug       bool
-	Grounded    []string
-	IP          string
-	MessageRate int // Using 1 reply per x seconds
-	MomName     string
-	MomSpeak    []SpeakData
-	Speak       []SpeakData
-	Timeout     int // Timeout between multi-lined reply
-}
-
-// DadConfig gives structure to dad's config file
-type DadConfig struct {
+// BotConfiguration gives structure to any bot config file
+type BotConfiguration struct {
 	AdminSpeak []SpeakData
 	Channels   []string
 	Debug      bool
-	Grounded   []string
 	Name       string
 	Speak      []SpeakData
+}
+
+// GroundedList keeps track of grounded users as they are added
+// and removed.
+type MutedList struct {
+	Bots 	[]string
+	Users   []string
 }
 
 // ICanHazDadJoke declares the expected json format of jokes from
@@ -67,25 +57,34 @@ type ICanHazDadJoke struct {
 // last reply sent by the bot
 type IRCBot struct {
 	Bot       *hbot.Bot
-	Conf      IRCConfig
+	BotConfig 	BotConfiguration
+	BotConfigFile string
+	Muted	MutedList
+	MutedFile	string
+	IRCConfig      IRCConfiguration
+	IRCConfigFile string
+	CurrentReply Reply
 	LastReply Reply
 }
 
-// IRCConfig contains all content that should be common between the bots
-type IRCConfig struct {
+// TODO probably not needed, but just here for reference for now
+type IRCBotInterface interface {
+	AddTrigger(t *hbot.Trigger)
+	Run()
+	ReadConfig()
+	PerformReply()
+	SendReply()
+	SendMessageType()
+	TestMessage()
+	UpdateBotConfig()
+}
+
+// IRCConfiguration contains all content that should be common between the bots
+type IRCConfiguration struct {
 	Admin       string
 	IP          string
 	MessageRate int
 	Timeout     int
-}
-
-// MomConfig gives structure to mom's config file
-type MomConfig struct {
-	AdminSpeak []SpeakData
-	Channels   []string
-	Debug      bool
-	Name       string
-	Speak      []SpeakData
 }
 
 // RegexData makes it a little easier to capture text by having
@@ -101,7 +100,7 @@ type RegexData struct {
 // Reply includes the final formatted response (all text replacement blocks
 // dealt with), the destination, the time the message was sent at, and the type.
 type Reply struct {
-	Content []string
+	Content string
 	To      string
 	Sent    time.Time
 	Type    int
@@ -111,7 +110,7 @@ type Reply struct {
 // has been sent, and the type of response the bot should give. Message may
 // contain action tags (#<char>) for different types of text
 // replacement/manipulation.
-type ResponseData struct {
+type Response struct {
 	Message string
 	Count   int
 	Type    int
@@ -122,5 +121,5 @@ type ResponseData struct {
 type SpeakData struct {
 	Action   string
 	Regex    RegexData
-	Response []ResponseData
+	Responses []Response `json:"Response"`
 }

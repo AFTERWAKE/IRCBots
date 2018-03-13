@@ -12,29 +12,13 @@ import (
 	log "gopkg.in/inconshreveable/log15.v2"
 )
 
-// Dad indicates whether the bot is behaving like "mom" or "dad"
-var Dad bool
-
-// Dbot is the global variable that tracks all content of the dad config file.
-var Dbot DadConfig
-
-// IRCBot is the global variable that tracks any common, constant values between
-// the two bots. This is only accessed once at startup by each bot
-var Irc IRCBot
-
-// Mbot is the global variable that tracks all content of the mom config file.
-var Mbot MomConfig
-var ircConfigFile = "irc_config.json"
-var dadConfigFile = "dad_config.json"
-var momConfigFile = "mom_config.json"
-
 // UserTrigger is for all non-admin users.
 var UserTrigger = hbot.Trigger{
 	func(bot *hbot.Bot, m *hbot.Message) bool {
-		return (m.From != Irc.Conf.Admin)
+		return (m.From != Irc.IRCConfig.Admin)
 	},
 	func(bot *hbot.Bot, m *hbot.Message) bool {
-		PerformReply(bot, m, false)
+		Irc.PerformReply(m, false)
 		return false
 	},
 }
@@ -43,51 +27,51 @@ var UserTrigger = hbot.Trigger{
 // a user reponse is attempted.
 var AdminTrigger = hbot.Trigger{
 	func(bot *hbot.Bot, m *hbot.Message) bool {
-		return (m.From == Irc.Conf.Admin)
+		return (m.From == Irc.IRCConfig.Admin)
 	},
 	func(bot *hbot.Bot, m *hbot.Message) bool {
-		responded := PerformReply(bot, m, true)
+		responded := Irc.PerformReply(m, true)
 		if !responded {
-			PerformReply(bot, m, false)
+			Irc.PerformReply(m, false)
 		}
 		return false
 	},
 }
 
+// IRCBot is the global variable that tracks any common, constant values between
+// the two bots. This is only accessed once at startup by each bot
+var Irc IRCBot
+
 // Run starts an instance of the bot, with variable dad indicating whether
 // the bot should behave like a dad or a mom
-func Run(dad bool) {
-	Dad = dad
-	var nickStr string
+func (ib *IRCBot) Run(ircConfigFileName, botConfigFileName, mutedListFileName string) {
 	rand.Seed(time.Now().Unix())
 	flag.Parse()
-	Irc.Conf, Dbot, Mbot = ReadConfig()
-	if Dad {
-		nickStr = Dbot.Name
-	} else {
-		nickStr = Mbot.Name
-	}
-	serv := flag.String("server", Irc.Conf.IP+
+	ib.IRCConfigFile = ircConfigFileName
+	ib.BotConfigFile = botConfigFileName
+	ib.MutedFile = mutedListFileName
+	ib.ReadConfig(ib.IRCConfigFile, ib.BotConfigFile, ib.MutedFile)
+	serv := flag.String("server", ib.IRCConfig.IP+
 		":6667", "hostname and port for irc server to connect to")
-	nick := flag.String("nick", nickStr, "nickname for the bot")
+	nick := flag.String("nick", ib.BotConfig.Name, "nickname for the bot")
 
 	hijackSession := func(bot *hbot.Bot) {
 		bot.HijackSession = false
 	}
 	channels := func(bot *hbot.Bot) {
-		if Dad {
-			bot.Channels = Dbot.Channels
-		} else {
-			bot.Channels = Mbot.Channels
-		}
+		bot.Channels = ib.BotConfig.Channels
 	}
 	bot, err := hbot.NewBot(*serv, *nick, hijackSession, channels)
-	Irc.Bot = bot
+	ib.Bot = bot
 	checkErr(err)
-	Irc.Bot.AddTrigger(UserTrigger)
-	Irc.Bot.AddTrigger(AdminTrigger)
-	Irc.Bot.Logger.SetHandler(log.StdoutHandler)
+	ib.AddTrigger(UserTrigger)
+	ib.AddTrigger(AdminTrigger)
+	ib.Bot.Logger.SetHandler(log.StdoutHandler)
 	// Start up bot (this blocks until we disconnect)
-	Irc.Bot.Run()
+	ib.Bot.Run()
 	fmt.Println("Bot shutting down.")
+}
+
+func (ib IRCBot) AddTrigger(t hbot.Trigger) {
+	ib.Bot.AddTrigger(t)
 }

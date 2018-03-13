@@ -2,64 +2,53 @@ package dad
 
 import (
 	"encoding/json"
+	// "fmt"
 	"io/ioutil"
 	"os"
+
+	// log "gopkg.in/inconshreveable/log15.v2"
 )
 
 // ReadConfig reads each config file and returns a struct of each
-func ReadConfig() (IRCConfig, DadConfig, MomConfig) {
-	return readIrcConfig(), readDadConfig(), readMomConfig()
+func (ib *IRCBot) ReadConfig(ircFileName, botFileName, mutedFileName string) {
+	ib.readIrcConfiguration(ircFileName)
+	ib.readBotConfiguration(botFileName)
+	ib.readMutedList(mutedFileName)
 }
 
-func readIrcConfig() IRCConfig {
-	file, _ := os.Open(ircConfigFile)
+func (ib *IRCBot) readIrcConfiguration(fileName string) {
+	file, _ := os.Open(fileName)
 	defer file.Close()
 	decoder := json.NewDecoder(file)
-	conf := IRCConfig{}
-	err := decoder.Decode(&conf)
+	ib.IRCConfig = IRCConfiguration{}
+	err := decoder.Decode(&ib.IRCConfig)
 	checkErr(err)
-	return conf
 }
 
-func readDadConfig() DadConfig {
-	file, _ := os.Open(dadConfigFile)
+func (ib *IRCBot) readBotConfiguration(fileName string) {
+	file, _ := os.Open(fileName)
 	defer file.Close()
 	decoder := json.NewDecoder(file)
-	conf := DadConfig{}
-	err := decoder.Decode(&conf)
+	ib.BotConfig = BotConfiguration{}
+	err := decoder.Decode(&ib.BotConfig)
 	checkErr(err)
-	return conf
 }
 
-func readMomConfig() MomConfig {
-	file, _ := os.Open(momConfigFile)
+func (ib *IRCBot) readMutedList(fileName string) {
+	file, _ := os.Open(fileName)
 	defer file.Close()
 	decoder := json.NewDecoder(file)
-	conf := MomConfig{}
-	err := decoder.Decode(&conf)
+	ib.Muted = MutedList{}
+	err := decoder.Decode(&ib.Muted)
 	checkErr(err)
-	return conf
 }
 
+// TODO update doc
 // UpdateConfig dispatches a call to the appropriate update function
 // based on which bot is being run (mom or dad), parsing the current
 // config information and rewriting it to the appropriate config file.
-func UpdateConfig() {
-	if Dad {
-		updateDadConfig()
-	} else {
-		updateMomConfig()
-	}
-}
-
-func updateDadConfig() {
-	jsonData, err := json.MarshalIndent(Dbot, "", "    ")
+func (ib *IRCBot) UpdateBotConfig() {
+	jsonData, err := json.MarshalIndent(ib.BotConfig, "", "    ")
 	checkErr(err)
-	ioutil.WriteFile(dadConfigFile, jsonData, 0644)
-}
-
-func updateMomConfig() {
-	jsonData, err := json.MarshalIndent(Mbot, "", "    ")
-	checkErr(err)
-	ioutil.WriteFile(momConfigFile, jsonData, 0644)
+	ioutil.WriteFile(ib.BotConfigFile, jsonData, 0644)
 }

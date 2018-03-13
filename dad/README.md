@@ -5,6 +5,7 @@
 ### This bot mimics the behavior of everyone's favorite person... dad.
 ### Bot uses [hellabot](https://github.com/whyrusleeping/hellabot) as its base.
 ### Credit for jokes goes to [niceonedad](http://niceonedad.com/), [r/dadJokes](https://www.reddit.com/r/dadjokes/), and [icanhazdadjoke](https://icanhazdadjoke.com)
+### Backup of nodeJS dadbot can be found [here](https://github.com/alecwest/dadbot_js)
 
 #### FEATURES
 - Will respond to most common English forms of the word "dad"

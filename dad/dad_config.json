@@ -9,7 +9,7 @@
             "Response": [
                 {
                     "Message": "That's it, you're grounded #c!",
-                    "Count": 40,
+                    "Count": 41,
                     "Type": 0
                 }
             ]
@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 514,
+                    "Count": 560,
                     "Type": 1
                 }
             ]
@@ -37,7 +37,7 @@
             "Response": [
                 {
                     "Message": "#c, you're now ungrounded. Don't let me catch you misbehaving again.",
-                    "Count": 22,
+                    "Count": 23,
                     "Type": 0
                 }
             ]
@@ -65,7 +65,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 2,
+                    "Count": 4,
                     "Type": 3
                 }
             ]
@@ -121,7 +121,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 2,
+                    "Count": 3,
                     "Type": 7
                 }
             ]
@@ -135,7 +135,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 4,
+                    "Count": 5,
                     "Type": 8
                 }
             ]
@@ -159,21 +159,6 @@
         "#main"
     ],
     "Debug": true,
-    "Grounded": [
-        "theCount",
-        "Doge",
-        "Magic_Conch",
-        "Seahorse",
-        "l",
-        "dootBot",
-        "botProtector",
-        "QuipBot",
-        "pointBot",
-        "Rogue",
-        "MemeBot",
-        "Mr_HighFive",
-        "OG_Grant"
-    ],
     "Name": "dad",
     "Speak": [
         {
@@ -185,7 +170,7 @@
             "Response": [
                 {
                     "Message": "good morning #u!",
-                    "Count": 39,
+                    "Count": 42,
                     "Type": 0
                 }
             ]
@@ -199,7 +184,7 @@
             "Response": [
                 {
                     "Message": "Here is a list of grounded users:\n#c",
-                    "Count": 33,
+                    "Count": 35,
                     "Type": 0
                 }
             ]
@@ -213,7 +198,7 @@
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 40,
+                    "Count": 43,
                     "Type": 0
                 }
             ]
@@ -227,7 +212,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 687,
+                    "Count": 723,
                     "Type": 0
                 }
             ]
@@ -241,7 +226,7 @@
             "Response": [
                 {
                     "Message": "Awww... I love you too, #u :v)",
-                    "Count": 29,
+                    "Count": 30,
                     "Type": 0
                 }
             ]
@@ -263,13 +248,13 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i love\\s+\\w+\\b",
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+\\S+$",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 33,
+                    "Count": 38,
                     "Type": 0
                 }
             ]
@@ -283,7 +268,21 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 24,
+                    "Count": 25,
+                    "Type": 0
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pa){1,2})(\\W+\\b(wh)?y\\b[^?]*)\\?[!]*\\s*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Because I said so.",
+                    "Count": 0,
                     "Type": 0
                 }
             ]
@@ -297,7 +296,12 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 61,
+                    "Count": 65,
+                    "Type": 0
+                },
+                {
+                    "Message": "I'll tell you when you're older.",
+                    "Count": 0,
                     "Type": 0
                 }
             ]
@@ -311,7 +315,7 @@
             "Response": [
                 {
                     "Message": "Poof, you're #a #v!",
-                    "Count": 36,
+                    "Count": 42,
                     "Type": 0
                 }
             ]
@@ -325,7 +329,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 71,
+                    "Count": 76,
                     "Type": 0
                 }
             ]
@@ -639,7 +643,7 @@
                 },
                 {
                     "Message": "What do you call crystal clear urine?\n1080pee",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -814,7 +818,7 @@
                 },
                 {
                     "Message": "What is the difference between a fly and a bird?\nA bird can fly but a fly can't bird",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -889,7 +893,7 @@
                 },
                 {
                     "Message": "Today I threw my dog in the ocean.\nHe was a good buoy.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {

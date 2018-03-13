@@ -43,22 +43,29 @@ func GetChannelTargetOrDefault(to, msg string) (string, string) {
 	}
 }
 
-// GetRandomLeastUsedResponseIndex chooses a random response among all
+// GetRandomResponse chooses a random response among all within the
+// given speak data. It returns a reference to the response it chose. 
+func (speak *SpeakData) GetRandomResponse() *Response {
+	chosenIndex := rand.Intn(len(speak.Responses))
+	return &speak.Responses[chosenIndex]
+}
+
+// GetRandomLeastUsedResponse chooses a random response among all
 // within the given speak data, giving priority to responses that have not
-// yet been used as much. It returns the index of the response it chose
-func GetRandomLeastUsedResponseIndex(speak SpeakData) int {
+// yet been used as much. It returns a reference to the response it chose
+func (speak *SpeakData) GetRandomLeastUsedResponse() *Response {
 	var minCount = math.MaxUint32
-	chosenIndex := rand.Intn(len(speak.Response))
-	for _, response := range speak.Response {
+	chosenIndex := rand.Intn(len(speak.Responses))
+	for _, response := range speak.Responses {
 		if response.Count < minCount {
 			minCount = response.Count
 		}
 	}
-	for speak.Response[chosenIndex].Count > minCount {
-		chosenIndex = rand.Intn(len(speak.Response))
+	for speak.Responses[chosenIndex].Count > minCount {
+		chosenIndex = rand.Intn(len(speak.Responses))
 	}
-	// log.Debug(fmt.Sprintf("Chosen response %d : %s", chosenIndex, speak.Response[chosenIndex].Message))
-	return chosenIndex
+	// log.Debug(fmt.Sprintf("Chosen response %d : %s", chosenIndex, speak.Responses[chosenIndex].Message))
+	return &speak.Responses[chosenIndex]
 }
 
 // GetICanHazDadJoke sends an HTTP request to https://icanhazdadjoke.com
@@ -90,30 +97,30 @@ func GetICanHazDadJoke() string {
 // #v indicates the string captured by the Variable regex
 // Other conditionals can be added here. A string with all flags replaced is
 // returned.
-func HandleTextReplacement(message *hbot.Message, response ResponseData,
-	variable string) string {
-	if strings.Contains(response.Message, "#a") {
+func HandleTextReplacement(message *hbot.Message, response *Response, variable string) string {
+	handledMessage := response.Message
+	if strings.Contains(handledMessage, "#a") {
 		// TODO this will probably need to return just the correct article at some point
 		variable = AddArticle(variable)
-		response.Message = strings.Replace(response.Message, "#a ", "", -1)
+		handledMessage = strings.Replace(handledMessage, "#a ", "", -1)
 	}
-	if strings.Contains(response.Message, "#c") {
-		response.Message = strings.Replace(response.Message, "#c", variable, -1)
+	if strings.Contains(handledMessage, "#c") {
+		handledMessage = strings.Replace(handledMessage, "#c", variable, -1)
 	}
-	if strings.Contains(response.Message, "#u") {
-		response.Message = strings.Replace(response.Message, "#u", message.From, -1)
+	if strings.Contains(handledMessage, "#u") {
+		handledMessage = strings.Replace(handledMessage, "#u", message.From, -1)
 	}
-	if strings.Contains(response.Message, "#v") {
-		response.Message = strings.Replace(response.Message, "#v", variable, -1)
+	if strings.Contains(handledMessage, "#v") {
+		handledMessage = strings.Replace(handledMessage, "#v", variable, -1)
 	}
-	return response.Message
+	return handledMessage
 }
 
 // MessageRateMet checks whether or not enough time has passed since the Last
 // reply was sent. If the message just sent was from an admin, ignore
 // time passed.
-func MessageRateMet(message *hbot.Message) bool {
-	return (time.Since(Irc.LastReply.Sent) > (time.Duration(Irc.Conf.MessageRate)*time.Second) || message.From == Irc.Conf.Admin)
+func (ib *IRCBot) MessageRateMet(message *hbot.Message) bool {
+	return (time.Since(ib.LastReply.Sent) > (time.Duration(ib.IRCConfig.MessageRate)*time.Second) || message.From == ib.IRCConfig.Admin)
 }
 
 // StringInSlice checks slice s for string a and returns the first matching
@@ -127,22 +134,13 @@ func StringInSlice(a string, s []string) int {
 	return -1
 }
 
-func getSpeakData(adminSpeak bool) []SpeakData {
-	var s []SpeakData
-	if Dad == false {
-		if adminSpeak {
-			s = Mbot.AdminSpeak
-		} else {
-			s = Mbot.Speak
-		}
+// TODO stop using?
+func (ib *IRCBot) getSpeakData(adminSpeak bool, sIndex int) *SpeakData {
+	if adminSpeak {
+		return &ib.BotConfig.AdminSpeak[sIndex]
 	} else {
-		if adminSpeak {
-			s = Dbot.AdminSpeak
-		} else {
-			s = Dbot.Speak
-		}
+		return &ib.BotConfig.Speak[sIndex]
 	}
-	return s
 }
 
 func checkErr(err error) {

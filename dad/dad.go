@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	dad.Run(true)
+	dad.Irc.Run("irc_config.json", "dad_config.json", "muted_list.json")
 }
