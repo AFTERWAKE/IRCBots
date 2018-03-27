@@ -128,7 +128,7 @@
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
     "Debug": true,
     "Name": "mom",
@@ -142,7 +142,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 44,
+                    "Count": 46,
                     "Type": 0
                 }
             ]

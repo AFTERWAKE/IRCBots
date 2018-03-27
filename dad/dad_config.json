@@ -192,6 +192,25 @@
         {
             "Action": "none",
             "Regex": {
+                "Trigger": "(?i)^(dad(dy|a)?|father|(pa){1,2}),?\\s+((u|you)(\\s+(r|are))?|you're)\\s+(a|an)?.*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "I know you are but what am I? :v)",
+                    "Count": 4,
+                    "Type": 0
+                },
+                {
+                    "Message": "no u :v)",
+                    "Count": 1,
+                    "Type": 0
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
                 "Trigger": "(?i)(^|.*[^\\w])i(')?m\\W+(dad(dy|a)?|father|(pa){1,2})\\b",
                 "Variable": ""
             },
@@ -212,7 +231,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 1017,
+                    "Count": 1018,
                     "Type": 0
                 }
             ]
@@ -1158,7 +1177,7 @@
                 },
                 {
                     "Message": "Do you know what the first thing a couple says when they're married?\nI do",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
