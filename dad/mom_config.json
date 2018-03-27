@@ -93,7 +93,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 0,
+                    "Count": 1,
                     "Type": 7
                 }
             ]
@@ -107,7 +107,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 0,
+                    "Count": 1,
                     "Type": 8
                 }
             ]
@@ -128,7 +128,7 @@
         }
     ],
     "Channels": [
-        "#main"
+        "#rents"
     ],
     "Debug": true,
     "Name": "mom",
@@ -142,7 +142,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 43,
+                    "Count": 44,
                     "Type": 0
                 }
             ]

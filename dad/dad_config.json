@@ -121,7 +121,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 3,
+                    "Count": 4,
                     "Type": 7
                 }
             ]
@@ -135,7 +135,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 5,
+                    "Count": 6,
                     "Type": 8
                 }
             ]
@@ -156,7 +156,7 @@
         }
     ],
     "Channels": [
-        "#main"
+        "#rents"
     ],
     "Debug": true,
     "Name": "dad",
@@ -212,7 +212,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 1028,
+                    "Count": 1017,
                     "Type": 0
                 }
             ]
@@ -254,7 +254,7 @@
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 42,
+                    "Count": 41,
                     "Type": 0
                 }
             ]
@@ -296,12 +296,12 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 73,
+                    "Count": 74,
                     "Type": 0
                 },
                 {
                     "Message": "I'll tell you when you're older.",
-                    "Count": 9,
+                    "Count": 11,
                     "Type": 0
                 }
             ]
