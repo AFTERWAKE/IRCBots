@@ -17,8 +17,8 @@ class Doge(irc.IRCClient):
         self.join(self.chatroom)
 
     def privmsg(self, user, channel, message):
+        isOwner = user.split('@')[1] in self.owner
         if (message.startswith(self.nickname)):
-            isOwner = user.split('@')[1] in self.owner
             if isOwner or (randint(0, 3) == 1):
                 timeRightNow = time.time()
                 if ((timeRightNow - self.timeLastCommand) > 4) or isOwner:
@@ -35,22 +35,22 @@ class Doge(irc.IRCClient):
                         if randint(0, 5) == 1:
                             self.describe(self.chatroom, "borks")
                         else:
-                            self.describe(self.chatroom, "borks")
+                            self.describe(self.chatroom, "barks")
         if search(r"(^|\s)+treats*(!|\?)*(\s|$)+", message, IGNORECASE):
             timeRightNow = time.time()
-            if (timeRightNow - self.timeLastCommand) > 4:
+            if ((timeRightNow - self.timeLastCommand) > 4) or isOwner:
                 self.timeLastCommand = time.time()
                 self.describe(self.chatroom, "perks his head up")
         elif search(r"(^|\s)+good boy!*(\s|$)+", message, IGNORECASE):
             timeRightNow = time.time()
-            if (timeRightNow - self.timeLastCommand) > 4:
+            if ((timeRightNow - self.timeLastCommand) > 4) or isOwner:
                 self.timeLastCommand = time.time()
                 self.describe(self.chatroom, "barks")
         elif (search(r"(^|\s)+wow!*(\s|$)+", message, IGNORECASE) or
         search(r"(^|\s)+very(\s|$)+", message, IGNORECASE) or
         search(r"(^|\s)+such(\s|$)+", message, IGNORECASE)):
             timeRightNow = time.time()
-            if (timeRightNow - self.timeLastCommand) > 4:
+            if ((timeRightNow - self.timeLastCommand) > 4) or isOwner:
                 self.timeLastCommand = time.time()
                 self.msg(self.chatroom, "Wow!")
 
