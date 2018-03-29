@@ -116,3 +116,9 @@ I love mom
 
 dad, say testing colon use in command with target channel specified
 dad, say #main: jlong sucks :v)
+
+dad, say insulting dad and expecting a mature response
+dad, u ugly
+
+dad, say insulting dad again and expecting another mature response
+dad, you're a bad bot
