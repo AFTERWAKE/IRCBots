@@ -581,7 +581,7 @@ class countBot(irc.IRCClient):
                         self.adminCommands(message)
                     elif (user.split('@')[1] in self.mutedList):
                         return
-                    elif (user.split('!')[1] in self.botList):
+                    elif (user.split('!')[1].split('@')[0] in self.botList):
                         return
                     elif (user.split('!')[0] == self.getWinningUser().username):
                         timeRightNow = time.time()
