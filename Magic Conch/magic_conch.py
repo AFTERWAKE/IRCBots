@@ -15,9 +15,6 @@ serv_ip = "coop.test.adtran.com"
 serv_port = 6667
 channel = "#main"
 
-with open(r'Magic_Conch.json') as f:
-    config = json.load(f)
-
 try:
     with open(r'../admin_ip.txt', 'r') as infile:
         admin_ip = infile.readline().strip()
