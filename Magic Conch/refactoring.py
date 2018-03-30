@@ -13,7 +13,7 @@ from twisted.internet import defer
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#main"
+channel = "#test"
 
 with open(r'Magic_Conch.json') as f:
     config = json.load(f)
@@ -30,7 +30,7 @@ finally:
         print("WARNING: No admin IP recognized")
 
 class theMagicConch(irc.IRCClient):
-    nickname = config["nick"]
+    nickname = "Magic_Conch"
 
     def signedOn(self):
         self.join(channel)
@@ -153,51 +153,19 @@ class theMagicConch(irc.IRCClient):
                     ofile.write(each + "\n")
         return
 
-    def STALEprivmsg(self, user, channel, message):
-        # print(channel, user + ":", message)
-        user_ip = user.split("@")[1]
-        host = re.match(r"\w+!(~\w+)@", user).group(1)
-        user = user.split('!')[0]
-
-        # admin commands
-        if user_ip == admin_ip:
-            m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
-            if m:
-                if m.group(1) == "ignore":
-                    self.ignore(m.group(2).strip())
-                    return
-
-                elif m.group(1) == "unignore":
-                    self.unignore(m.group(2).strip())
-                    return
-
-                elif m.group(1) == "say":
-                    self.msg(self.__channel, m.group(2))
-                    return
-
-        # bypass pms
-        if channel != self.__channel:
-            return
-
-        # ignore list
-        if host in self.__ignore:
-            return
-
-        # triggers
-
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
         host = re.match(r"\w+!(~\w+)@", user).group(1)
-        temp_time = time.time()
 
         # pm privilages
         if (channel == self.nickname) and user_ip != admin_ip:
             return
 
         # admin commands
-        if user_ip == admin_ip:
+        if user_ip == admin_ip and not re.search(r"\?", message):
             self.admin_cmds(channel, message)
+            return
 
         # ignore list
         if host in self.__ignore:
@@ -205,15 +173,13 @@ class theMagicConch(irc.IRCClient):
 
         # Triggers
         # Pokemon
-        if re.search(r"Magic[ _]Conch,.*which\spokemon.*\?", message):
+        if re.search(self.nickname + r".*which\spokemon.*\?", message):
             msg = random.choice(["%s",
                                  "I choose %s!",
                                  "I think it was %s...",
                                  "I believe it was %s",
                                  "definitely %s!",
-                                 "absolutely %s!",
-                                 "not %s",
-                                 "definitely not %s"])
+                                 "absolutely %s!"])
 
             # choose random pokemon
             pokemon = random.choice(self.pokemon_list)
@@ -224,10 +190,6 @@ class theMagicConch(irc.IRCClient):
             # send message with pokemon's name inserted
             self.msg(channel, msg % pokemon["name"])
             return
-
-            else:
-                self.msg(channel, msg)
-                return
 
             self.msg(channel, msg)
             return
@@ -245,8 +207,8 @@ class theMagicConch(irc.IRCClient):
             return
 
         # how much/many
-        elif re.search(r"Magic[ _]Conch,.*\s*how\s(many|many).*\?", message):
-            msg = random.choice([ random.randint(0,20),
+        elif re.search(r"Magic[ _]Conch,.*\s*how\s(much|many).*\?", message):
+            msg = random.choice([ str(random.randint(0,20)),
                                   "A lot",
                                   "Some",
                                   "Not many",
@@ -257,12 +219,12 @@ class theMagicConch(irc.IRCClient):
             self.msg(channel, msg)
 
         # where
-        elif re.search(r"Magic[ _]Conch,.*\s+where\s+.*\?", message):
+        elif re.search(r"Magic[ _]Conch,.*\s*where\s*.*\?", message):
             msg = "Follow the seahorse"
             self.msg(channel, msg)
 
         # or
-        elif re.search(r"Magic[ _]Conch,.*\\s+or\\s+.*\\?", message):
+        elif re.search(r"Magic[ _]Conch,.*\s+or\s+.*\?", message):
             msg = random.choice(["Neither",
                                  "Both",
                                  "The first one.",
@@ -270,7 +232,7 @@ class theMagicConch(irc.IRCClient):
             self.msg(channel, msg)
 
         # what do
-        elif re.search(r"Magic[ _]Conch,.*what\\s+do.*\\?", message):
+        elif re.search(r"Magic[ _]Conch,.*what\sdo.*\\?", message):
             msg = random.choice(["Nothing.",
                                  "Everything.",
                                  "Very little.",
@@ -279,12 +241,12 @@ class theMagicConch(irc.IRCClient):
             self.msg(channel, msg)
 
         # what is love
-        elif re.search(r"Magic[ _]Conch,.*what\\s*is\\s*love.*\\?.", message):
+        elif re.search(r"Magic[ _]Conch,.*what\s*is\s*love.*\?.", message):
             msg = "Baby don't hurt me, don't hurt me, no more~"
             self.msg(channel, msg)
 
         # generic response
-        elif re.search(r"Magic[ _]Conch,.*\\?", message):
+        elif re.search(r"Magic[ _]Conch,.*\?", message):
             msg = random.choice([ "Maybe someday.",
                                   "Follow the seahorse.",
                                   "I don't think so.",
