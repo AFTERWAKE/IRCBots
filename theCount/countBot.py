@@ -21,6 +21,7 @@ Last Updated: March 2018
                    botNick, mute <user> (mutes a user by IP, they will be ignored for commands and will not be able to play the game)
                    botNick, unmute <user> (undoes the actions of the `mute` command)
                    botNick, whois <user> (Gives the IP address of a user on the server)
+                   botNick, mock <user> (Mocks the user and shows their current points)
                    botNick, quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
               USER COMMANDS
                    botNick, help (help message)
@@ -47,7 +48,7 @@ serv_port = 6667
 
 
 class countBot(irc.IRCClient):
-    version = "2.8.1"
+    version = "2.11.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -67,15 +68,16 @@ class countBot(irc.IRCClient):
     botList = [
         "~dad", "~mom",
         "~nodebot", "~Magic_Con",
-        "~Seahorse", "~dootbot",
-        "~pointbot", "botprotec",
-        "QuipBot"
+        "~Seahorse", "~MemeBot",
+        "~pointbot", "~botprotec",
+        "~QuipBot"
     ]
     mutedList = []
     lastWHOIS = ''
     muteMode = ''
     timeLastCommand = 0
     timestampBuffer = 0
+    currentDay = -1
 
     def __init__(self):
         currentHour = int(self.getCurrentTime().split(':')[0])
@@ -116,6 +118,15 @@ class countBot(irc.IRCClient):
         print 'GAME RESET!'
         return
 
+    def resetWieners(self):
+        print "Reset wieners"
+        for i in range(len(self.nameList)):
+            if (self.nameList[i].dayOfLastWiener != datetime.now().day):
+                self.nameList[i].hasNewWieners = False
+            else:
+                self.nameList[i].hasNewWieners = True
+
+
     def resetUsers(self):
         for i in range(len(self.nameList)):
             self.nameList[i].numbersAdded = 0
@@ -134,12 +145,12 @@ class countBot(irc.IRCClient):
     def startGame(self):
         self.gameRunning = True
         self.numberForGame = randint(1, 31)
-        # Let's reduce the number of times the winning number is < 6
-        if self.numberForGame < 6:
+        # Let's reduce the number of times the winning number is < 6 or > 25
+        if self.numberForGame < 6 or self.numberForGame > 25:
             self.numberForGame = randint(1, 31)
-            if self.numberForGame < 3:
+            if self.numberForGame < 3 or self.numberForGame > 29:
                 self.numberForGame = randint(1, 31)
-        # There we go... Should see a lot less games where 1 and 2 win
+        # There we go... Should see a lot less games where 1, 2, 30, and 31 win
         self.playLimit()
         self.wordForGame = self.chooseWordForGame()
         print 'Winning number: {} (kick on: {})'.format(self.numberForGame, self.numberPlayLimit)
@@ -187,6 +198,15 @@ class countBot(irc.IRCClient):
     def mockMe(self, msg):
         return "".join(choice([letter.upper(), letter]) for letter in msg)
 
+    def mockUser(self, name):
+        nameIndex = self.getUserIndex(name)
+        if nameIndex != -1:
+            points = self.nameList[nameIndex].timesWon
+            if points == 1:
+                self.msg(self.chatroom, self.mockMe("i am " + name + " and i have " + str(points) + " point"))
+            else:
+                self.msg(self.chatroom, self.mockMe("i am " + name + " and i have " + str(points) + " points"))
+
     def kickUser(self, userIndex, name):
         self.msg(self.chatroom, name + " has been eliminated from the game. " +
                  "Too many numbers submitted. " + '{} {} is what we\'re on.'
@@ -216,6 +236,12 @@ class countBot(irc.IRCClient):
                     self.hourOfLastGame = hour
                     self.resetGame()
                     self.startGame()
+
+    def checkResetWieners(self):
+        day = datetime.now().day
+        if (day != self.currentDay):
+            self.resetWieners()
+            self.currentDay = day
 
     def getWinningUser(self):
         topUser = player("")
@@ -278,6 +304,8 @@ class countBot(irc.IRCClient):
             self.unmute(message.split()[2])
         elif (message.startswith(self.nickname + ', whois') or message.startswith(self.nickname + ': whois') or message.startswith(self.nickname + ' whois')):
             self._whois(message.split()[2])
+        elif (message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock')):
+            self.mockUser(message.split()[2])
         else:
             self.userCommands('noahsiano', message)
 
@@ -301,9 +329,10 @@ class countBot(irc.IRCClient):
 
     def printAllUsers(self):
         for user in range(len(self.nameList)):
-            print '{}. {}: {}'.format(user,
+            print '{}. {}: {}: {}'.format(user,
                                       self.nameList[user].username,
-                                      self.nameList[user].timesWon)
+                                      self.nameList[user].timesWon,
+                                      self.nameList[user].wienerLevel)
         return
 
     def playGame(self, name):
@@ -330,8 +359,25 @@ class countBot(irc.IRCClient):
         self.msg(self.chatroom, self.getWinnerString())
 
     def displayWieners(self, name):
+        wieners = randint(0, 100)
+        nameIndex = self.handleUser(name)
+        if (not self.nameList[nameIndex].hasNewWieners):
+            self.nameList[nameIndex].wienerLevel = wieners
+            self.nameList[nameIndex].hasNewWieners = True
+            self.nameList[nameIndex].dayOfLastWiener = datetime.now().day
         self.msg(self.chatroom, 'Here is a list of wieners in the format \'User: Wiener Level\'')
-        self.msg(self.chatroom, name + ': ' + str(randint(0, 100)))
+        self.msg(self.chatroom, name + ': ' + str(self.nameList[nameIndex].wienerLevel) + self.exclPoints(self.nameList[nameIndex].wienerLevel))
+        self.saveScores()
+
+    def exclPoints(self, wieners):
+        excl = '!'
+        if wieners == 69:
+            excl += '!!!!!111!1!11!'
+        elif wieners > 80:
+            excl += '!!!'
+        elif wieners > 50:
+            excl += '!'
+        return excl
 
     def getWinnerString(self):
         winnerString = ''
@@ -340,10 +386,17 @@ class countBot(irc.IRCClient):
             if (self.nameList[user].timesWon > 0):
                 if (not firstLoop):
                     winnerString += ', '
-                winnerString += '{}: {}'.format(self.nameList[user].username,
+                winnerString += '[{}]: {}'.format(self.nameList[user].username,
                                                 self.nameList[user].timesWon)
                 firstLoop = False
         return winnerString
+
+    def getWienerString(self, name, level):
+        wienerString = name + ': '
+        for user in range(len(self.nameList)):
+            if self.nameList[user].username == name:
+                if(self.nameList[user].wienerLevel):
+                    wienerString += self.nameList[user].wienerLevel
 
     def getLoserString(self):
         loserString = ''
@@ -352,7 +405,7 @@ class countBot(irc.IRCClient):
             if (self.nameList[user].timesWon == 0):
                 if (not firstLoop):
                     loserString += ', '
-                loserString += '{}'.format(self.nameList[user].username)
+                loserString += '[{}]'.format(self.nameList[user].username)
                 firstLoop = False
         return loserString
 
@@ -362,8 +415,10 @@ class countBot(irc.IRCClient):
         for user in range(len(self.nameList)):
             if (not firstLoop):
                 users += '\n'
-            users += '{}:{}'.format(self.nameList[user].username,
-                                    self.nameList[user].timesWon)
+            users += '{}:{}:{}:{}'.format(self.nameList[user].username,
+                                       self.nameList[user].timesWon,
+                                       self.nameList[user].wienerLevel,
+                                       self.nameList[user].dayOfLastWiener)
             firstLoop = False
         return users
 
@@ -398,7 +453,7 @@ class countBot(irc.IRCClient):
         elif ((message == self.nickname + ', losers') or (message == self.nickname + ': losers') or (message == self.nickname + ' losers')):
             self.displayLosers()
         elif ((message == self.nickname + ', top') or (message == self.nickname + ': top') or (message == self.nickname + ' top')):
-            self.msg(self.chatroom, 'The current number 1 player is: ' + self.getWinningUser().username)
+            self.msg(self.chatroom, self.mockMe('The current number 1 player is: ' + self.getWinningUser().username))
         elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
         elif ((message == self.nickname + ', rules') or (message == self.nickname + ': rules') or (message == self.nickname + ' rules')):
@@ -461,6 +516,8 @@ class countBot(irc.IRCClient):
             user = user.split(':')
             index = self.handleUser(user[0])
             self.nameList[index].timesWon = int(user[1])
+            self.nameList[index].wienerLevel = int(user[2])
+            self.nameList[index].dayOfLastWiener = int(user[3])
 
     def restoreMutedUsersFromFile(self):
         returnFile = open(self.mutedFilePath, 'r')
@@ -541,6 +598,7 @@ class countBot(irc.IRCClient):
         self.saveMuted()
 
     def privmsg(self, user, channel, message):
+        self.checkResetWieners()
         if ((channel == self.chatroom) or (user.split('@')[1] in self.admin)):
             try:
                 if (self.gameRunning and int(message) != self.currentNumber):
@@ -569,7 +627,7 @@ class countBot(irc.IRCClient):
                         self.adminCommands(message)
                     elif (user.split('@')[1] in self.mutedList):
                         return
-                    elif (user.split('!')[1] in self.botList):
+                    elif (user.split('!')[1].split('@')[0] in self.botList):
                         return
                     elif (user.split('!')[0] == self.getWinningUser().username):
                         timeRightNow = time.time()
@@ -589,8 +647,11 @@ class countBot(irc.IRCClient):
 class player:
     numbersAdded = 0
     timesWon = 0
+    wienerLevel = 0
     username = ""
     isKicked = False
+    hasNewWieners = False
+    dayOfLastWiener = -1
 
     def __init__(self, name):
         self.username = name

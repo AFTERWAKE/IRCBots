@@ -9,7 +9,7 @@
             "Response": [
                 {
                     "Message": "That's it, you're grounded #c!",
-                    "Count": 41,
+                    "Count": 42,
                     "Type": 0
                 }
             ]
@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 559,
+                    "Count": 581,
                     "Type": 1
                 }
             ]
@@ -37,7 +37,7 @@
             "Response": [
                 {
                     "Message": "#c, you're now ungrounded. Don't let me catch you misbehaving again.",
-                    "Count": 23,
+                    "Count": 24,
                     "Type": 0
                 }
             ]
@@ -65,7 +65,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 2,
+                    "Count": 8,
                     "Type": 3
                 }
             ]
@@ -93,7 +93,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 7,
+                    "Count": 8,
                     "Type": 5
                 }
             ]
@@ -121,7 +121,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 2,
+                    "Count": 5,
                     "Type": 7
                 }
             ]
@@ -135,7 +135,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 4,
+                    "Count": 7,
                     "Type": 8
                 }
             ]
@@ -149,7 +149,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 2,
+                    "Count": 4,
                     "Type": 9
                 }
             ]
@@ -170,7 +170,7 @@
             "Response": [
                 {
                     "Message": "good morning #u!",
-                    "Count": 42,
+                    "Count": 43,
                     "Type": 0
                 }
             ]
@@ -184,7 +184,26 @@
             "Response": [
                 {
                     "Message": "Here is a list of grounded users:\n#c",
-                    "Count": 35,
+                    "Count": 36,
+                    "Type": 0
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(dad(dy|a)?|father|(pa){1,2}),?\\s+((u|you)(\\s+(r|are))?|you're)\\s+(a|an)?.*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "I know you are but what am I? :v)",
+                    "Count": 6,
+                    "Type": 0
+                },
+                {
+                    "Message": "no u :v)",
+                    "Count": 3,
                     "Type": 0
                 }
             ]
@@ -198,7 +217,7 @@
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 43,
+                    "Count": 59,
                     "Type": 0
                 }
             ]
@@ -212,7 +231,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 693,
+                    "Count": 1126,
                     "Type": 0
                 }
             ]
@@ -254,7 +273,7 @@
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 38,
+                    "Count": 41,
                     "Type": 0
                 }
             ]
@@ -268,7 +287,21 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 25,
+                    "Count": 27,
+                    "Type": 0
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])(dad(dy|a)?|father|(pa){1,2})(\\W+\\b(wh)?y\\b[^?]*)\\?[!]*\\s*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Because I said so.",
+                    "Count": 3,
                     "Type": 0
                 }
             ]
@@ -282,7 +315,12 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 65,
+                    "Count": 77,
+                    "Type": 0
+                },
+                {
+                    "Message": "I'll tell you when you're older.",
+                    "Count": 12,
                     "Type": 0
                 }
             ]
@@ -296,7 +334,7 @@
             "Response": [
                 {
                     "Message": "Poof, you're #a #v!",
-                    "Count": 38,
+                    "Count": 46,
                     "Type": 0
                 }
             ]
@@ -310,7 +348,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 76,
+                    "Count": 80,
                     "Type": 0
                 }
             ]
@@ -409,7 +447,7 @@
                 },
                 {
                     "Message": "I wouldn't buy anything with velcro\nIt's a total rip-off",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -424,7 +462,7 @@
                 },
                 {
                     "Message": "I'm reading a book on the history of glue\nI just can't seem to put it down",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -444,7 +482,7 @@
                 },
                 {
                     "Message": "Last night I dreamt I was a muffler\nI woke up exhausted",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -489,7 +527,7 @@
                 },
                 {
                     "Message": "What do prisoners use to call each other?\nCell phones",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -509,7 +547,7 @@
                 },
                 {
                     "Message": "What do you call a sketchy Italian neighbour hood?\nThe Spaghetto",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -524,7 +562,7 @@
                 },
                 {
                     "Message": "What do you call cheese that isn't yours?\nNacho Cheese",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -539,7 +577,7 @@
                 },
                 {
                     "Message": "What does an annoying pepper do?\nIt get's jalapeno face",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -614,7 +652,7 @@
                 },
                 {
                     "Message": "I have no children but I still tell dad jokes\nhe loves them",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -624,7 +662,7 @@
                 },
                 {
                     "Message": "What do you call crystal clear urine?\n1080pee",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -689,7 +727,7 @@
                 },
                 {
                     "Message": "How do you feel?\nWith your hands",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -734,7 +772,7 @@
                 },
                 {
                     "Message": "My daughter kept complaining that it was too cold.\nI told her to go stand in the corner, it's 90 degrees there.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -744,7 +782,7 @@
                 },
                 {
                     "Message": "What did the green grape say to the purple grape?\nBREATHE!",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -824,7 +862,7 @@
                 },
                 {
                     "Message": "What type of dog can do magic tricks?\nA labracadabrador",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -834,7 +872,7 @@
                 },
                 {
                     "Message": "I heard a beaver lost its home today.\nDam shame, too.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -854,7 +892,7 @@
                 },
                 {
                     "Message": "I saw an article about people snorting chocolate powder for a rush.\nThey wanted a Quik high.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -864,7 +902,7 @@
                 },
                 {
                     "Message": "What happened when the crustacean was late to work?\nShe LOBSTER job!",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -929,7 +967,7 @@
                 },
                 {
                     "Message": "Why did my TV start looking so good this year?\nIt was his new years resolution",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1074,7 +1112,7 @@
                 },
                 {
                     "Message": "I've said it before and I'll say it again\nI've said it before",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1139,7 +1177,7 @@
                 },
                 {
                     "Message": "Do you know what the first thing a couple says when they're married?\nI do",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1154,7 +1192,7 @@
                 },
                 {
                     "Message": "Your argument is like a naked banana\nIt simply lacks a peel",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1229,7 +1267,7 @@
                 },
                 {
                     "Message": "Why isn't a koala bear a real bear\nBecause they aren't koala-fied",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1269,7 +1307,7 @@
                 },
                 {
                     "Message": "What did the man say when he finished cutting up a green citrus fruit?\nWell, I guess that's the end of the lime",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {

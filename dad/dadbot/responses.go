@@ -19,7 +19,7 @@ import (
 func (ib *IRCBot) FormatReply(message *hbot.Message, adminSpeak bool, sIndex int) Reply {
 	var reply Reply
 	var speakData = ib.getSpeakData(adminSpeak, sIndex)
-	var response = speakData.GetRandomLeastUsedResponse()
+	var response = speakData.GetRandomResponse()
 	var variable = RemoveTriggerRegex(message.Content, speakData.Regex)
 	variable = strings.TrimSpace(GetVariableRegex(variable, speakData.Regex))
 	if (message.Params[0] == ib.BotConfig.Name) {
@@ -27,9 +27,11 @@ func (ib *IRCBot) FormatReply(message *hbot.Message, adminSpeak bool, sIndex int
 	} else {
 		reply.To = message.To
 	}
+	// TODO response needs to be set first at ALL times if different response
+	// types are to be allowed
 	reply.Type = response.Type
 
-	// TODO refactor if all jokes are ever done through http get
+	// TODO refactor... especially if all jokes are ever done through http get
 	joke := regexp.MustCompile("(?i)^joke$")
 	var configJokeOdds = 33
 	var configJokeOddsOutOf = 100
@@ -43,6 +45,8 @@ func (ib *IRCBot) FormatReply(message *hbot.Message, adminSpeak bool, sIndex int
 			// TODO this is a really dirty move to get around incrementing
 			// config jokes
 			response.Count--
+		} else {
+			response = speakData.GetRandomLeastUsedResponse()
 		}
 	}
 	reply.Content = HandleTextReplacement(message, response, variable)

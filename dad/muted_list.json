@@ -1,6 +1,7 @@
 {
     "Bots": [
         "theCount",
+        "burnBot",
         "Doge",
         "Magic_Conch",
         "Seahorse",
@@ -8,7 +9,9 @@
         "QuipBot",
         "pointBot",
         "MemeBot",
-        "Mr_HighFive"
+        "Mr_HighFive",
+        "dad",
+        "mom"
     ],
     "Users": [
         "l",
