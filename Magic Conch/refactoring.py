@@ -246,19 +246,69 @@ class theMagicConch(irc.IRCClient):
 
         # how much/many
         elif re.search(r"Magic[ _]Conch,.*\s*how\s(many|many).*\?", message):
-            msg = [ random.randint(0,20),
-                    "A lot",
-                    "Some",
-                    "Not many",
-                    "Few",
-                    "None",
-                    "All of them",
-                    "More than you'd expect"]
+            msg = random.choice([ random.randint(0,20),
+                                  "A lot",
+                                  "Some",
+                                  "Not many",
+                                  "Few",
+                                  "None",
+                                  "All of them",
+                                  "More than you'd expect"])
             self.msg(channel, msg)
 
         # where
         elif re.search(r"Magic[ _]Conch,.*\s+where\s+.*\?", message):
             msg = "Follow the seahorse"
+            self.msg(channel, msg)
+
+        # or
+        elif re.search(r"Magic[ _]Conch,.*\\s+or\\s+.*\\?", message):
+            msg = random.choice(["Neither",
+                                 "Both",
+                                 "The first one.",
+                                 "The second one."])
+            self.msg(channel, msg)
+
+        # what do
+        elif re.search(r"Magic[ _]Conch,.*what\\s+do.*\\?", message):
+            msg = random.choice(["Nothing.",
+                                 "Everything.",
+                                 "Very little.",
+                                 "Very much.",
+                                 "All the things."])
+            self.msg(channel, msg)
+
+        # what is love
+        elif re.search(r"Magic[ _]Conch,.*what\\s*is\\s*love.*\\?.", message):
+            msg = "Baby don't hurt me, don't hurt me, no more~"
+            self.msg(channel, msg)
+
+        # generic response
+        elif re.search(r"Magic[ _]Conch,.*\\?", message):
+            msg = random.choice([ "Maybe someday.",
+                                  "Follow the seahorse.",
+                                  "I don't think so.",
+                                  "No.",
+                                  "Yes.",
+                                  "Try asking again.",
+                                  "It is certain.",
+                                  "It is decidedly so.",
+                                  "Without a doubt.",
+                                  "Yes definitely.",
+                                  "You may rely on it.",
+                                  "As I see it, yes.",
+                                  "Most likely.",
+                                  "Outlook good.",
+                                  "Signs point to yes.",
+                                  "Don't count on it.",
+                                  "My sources say no.",
+                                  "Outlook not so good.",
+                                  "Very doubtful."])
+            self.msg(channel, msg)
+
+        # ALL HAIL THE MAGIC CONCH
+        elif re.search(r"all hail the magic conch", message.lower()):
+            msg = random.choice(["I am hailed!"])
             self.msg(channel, msg)
 
         else:
