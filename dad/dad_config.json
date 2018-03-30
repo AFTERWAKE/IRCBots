@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 565,
+                    "Count": 581,
                     "Type": 1
                 }
             ]
@@ -65,7 +65,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 6,
+                    "Count": 8,
                     "Type": 3
                 }
             ]
@@ -121,7 +121,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 4,
+                    "Count": 5,
                     "Type": 7
                 }
             ]
@@ -135,7 +135,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 6,
+                    "Count": 7,
                     "Type": 8
                 }
             ]
@@ -149,14 +149,14 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 3,
+                    "Count": 4,
                     "Type": 9
                 }
             ]
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
     "Debug": true,
     "Name": "dad",
@@ -198,12 +198,12 @@
             "Response": [
                 {
                     "Message": "I know you are but what am I? :v)",
-                    "Count": 4,
+                    "Count": 6,
                     "Type": 0
                 },
                 {
                     "Message": "no u :v)",
-                    "Count": 1,
+                    "Count": 3,
                     "Type": 0
                 }
             ]
@@ -231,7 +231,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 1018,
+                    "Count": 1126,
                     "Type": 0
                 }
             ]
@@ -287,7 +287,7 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 25,
+                    "Count": 27,
                     "Type": 0
                 }
             ]
@@ -315,12 +315,12 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 74,
+                    "Count": 77,
                     "Type": 0
                 },
                 {
                     "Message": "I'll tell you when you're older.",
-                    "Count": 11,
+                    "Count": 12,
                     "Type": 0
                 }
             ]
@@ -348,7 +348,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 78,
+                    "Count": 80,
                     "Type": 0
                 }
             ]
@@ -447,7 +447,7 @@
                 },
                 {
                     "Message": "I wouldn't buy anything with velcro\nIt's a total rip-off",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -482,7 +482,7 @@
                 },
                 {
                     "Message": "Last night I dreamt I was a muffler\nI woke up exhausted",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -652,7 +652,7 @@
                 },
                 {
                     "Message": "I have no children but I still tell dad jokes\nhe loves them",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -772,7 +772,7 @@
                 },
                 {
                     "Message": "My daughter kept complaining that it was too cold.\nI told her to go stand in the corner, it's 90 degrees there.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -902,7 +902,7 @@
                 },
                 {
                     "Message": "What happened when the crustacean was late to work?\nShe LOBSTER job!",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1192,7 +1192,7 @@
                 },
                 {
                     "Message": "Your argument is like a naked banana\nIt simply lacks a peel",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1307,7 +1307,7 @@
                 },
                 {
                     "Message": "What did the man say when he finished cutting up a green citrus fruit?\nWell, I guess that's the end of the lime",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
