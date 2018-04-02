@@ -48,7 +48,7 @@ serv_port = 6667
 
 
 class countBot(irc.IRCClient):
-    version = "2.12.0"
+    version = "2.12.1"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -70,7 +70,7 @@ class countBot(irc.IRCClient):
         "~nodebot", "~Magic_Con",
         "~Seahorse", "~MemeBot",
         "~pointbot", "~botprotec",
-        "~QuipBot"
+        "~QuipBot", "~burnbot"
     ]
     mutedList = []
     lastWHOIS = ''
