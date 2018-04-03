@@ -13,7 +13,7 @@ import string
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#test"
+channel = "#main"
 
 try:
     with open("../admin_ip.txt", "r") as infile:
@@ -288,6 +288,7 @@ class memeBot(irc.IRCClient):
         reactor.callLater(1, self.msg, channel, "2")
         reactor.callLater(2, self.msg, channel, "1")
         reactor.callLater(3, self.msg, channel, "GO!")
+        temp_time = time.time()
         return 
 
     def privmsg(self, user, channel, message):
