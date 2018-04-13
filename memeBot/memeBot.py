@@ -291,6 +291,11 @@ class memeBot(irc.IRCClient):
         temp_time = time.time()
         return 
 
+    def help_message(self, channel):
+        msg = "Hi! I'm memeBot!  I don't "
+        self.msg(channel, msg)
+        return
+
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
@@ -322,7 +327,7 @@ class memeBot(irc.IRCClient):
 
             # doot doot
             elif re.search(r"(\bdoot\b)", message.lower()):
-                self.doot(channel, message, temp_time)
+                self.doot(channel, message.lower(), temp_time)
 
             # achoo
             elif re.search(r"(\bachoo\b|\bsneeze\b|\basneeze\b)", message.lower()):
