@@ -5,7 +5,6 @@ import (
 	// "fmt"
 	"io/ioutil"
 	"os"
-
 	// log "gopkg.in/inconshreveable/log15.v2"
 )
 
@@ -43,10 +42,8 @@ func (ib *IRCBot) readMutedList(fileName string) {
 	checkErr(err)
 }
 
-// TODO update doc
-// UpdateConfig dispatches a call to the appropriate update function
-// based on which bot is being run (mom or dad), parsing the current
-// config information and rewriting it to the appropriate config file.
+// UpdateBotConfig parses the existing bot configuration data into
+// a writable format and updates the corresponding data file.
 func (ib *IRCBot) UpdateBotConfig() {
 	jsonData, err := json.MarshalIndent(ib.BotConfig, "", "    ")
 	checkErr(err)

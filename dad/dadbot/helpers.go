@@ -35,16 +35,14 @@ func GetChannelTargetOrDefault(to, msg string) (string, string) {
 		split := strings.SplitN(msg, ": ", 2)
 		if len(split) == 2 {
 			return split[0], split[1]
-		} else {
-			return to, msg
 		}
-	} else {
 		return to, msg
 	}
+	return to, msg
 }
 
 // GetRandomResponse chooses a random response among all within the
-// given speak data. It returns a reference to the response it chose. 
+// given speak data. It returns a reference to the response it chose.
 func (speak *SpeakData) GetRandomResponse() *Response {
 	chosenIndex := rand.Intn(len(speak.Responses))
 	return &speak.Responses[chosenIndex]
@@ -138,9 +136,8 @@ func StringInSlice(a string, s []string) int {
 func (ib *IRCBot) getSpeakData(adminSpeak bool, sIndex int) *SpeakData {
 	if adminSpeak {
 		return &ib.BotConfig.AdminSpeak[sIndex]
-	} else {
-		return &ib.BotConfig.Speak[sIndex]
 	}
+	return &ib.BotConfig.Speak[sIndex]
 }
 
 func checkErr(err error) {

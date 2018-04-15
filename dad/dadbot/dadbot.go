@@ -38,7 +38,7 @@ var AdminTrigger = hbot.Trigger{
 	},
 }
 
-// IRCBot is the global variable that tracks any common, constant values between
+// Irc is the global variable that tracks any common, constant values between
 // the two bots. This is only accessed once at startup by each bot
 var Irc IRCBot
 
@@ -72,6 +72,7 @@ func (ib *IRCBot) Run(ircConfigFileName, botConfigFileName, mutedListFileName st
 	fmt.Println("Bot shutting down.")
 }
 
+// AddTrigger adds the given Trigger to the bot
 func (ib IRCBot) AddTrigger(t hbot.Trigger) {
 	ib.Bot.AddTrigger(t)
 }
