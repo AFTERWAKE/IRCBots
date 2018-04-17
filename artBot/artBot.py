@@ -1,15 +1,15 @@
-'''
+"""
 ==============================================================================================================================
 
         Name: artBot
       Author: ldavis
 Date Written: February 2018
  Description: A simple irc bot that sends out a random ASCII art message at 11:30 and 3:00, along with a calming quote by
-        the one and only Bob Ross. The structure of artBot was inspired by jnguyen's work on Seahorse and memeBot, and also
+        the one and only Bob Ross. The structure of artBot was inspired by jnguyen's work on Seahorse and MemeBot, and also
         noahsiano's current revision of theCount.
 
 ==============================================================================================================================
-'''
+"""
 
 import random
 import re
@@ -30,7 +30,6 @@ class ArtBot(irc.IRCClient):
         self.join(config['channel'])
         print('Channel: ' + config['channel'])
         print('Nickname: ' + config['nick'])
-        self.msg(config['channel'], 'Hello, I\'m artBot')
     
     def luserClient(self, info):
         print(info)
@@ -67,7 +66,7 @@ class ArtBot(irc.IRCClient):
         numSeconds = 1
         for msg in painting['message']:
             reactor.callLater(numSeconds, self.printDelayedMessage, msg)
-            numSeconds += 1
+            numSeconds += 2
 
         reactor.callLater(numSeconds, self.printDelayedMessage, self.getQuote())
 
