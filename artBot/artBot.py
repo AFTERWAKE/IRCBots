@@ -26,6 +26,9 @@ with open(r'config.json') as file:
 class ArtBot(irc.IRCClient):
     nickname = config['nick']
 
+    def __init__(self):
+        self.painting = False
+
     def signedOn(self):
         self.join(config['channel'])
         print('Channel: ' + config['channel'])
@@ -61,14 +64,21 @@ class ArtBot(irc.IRCClient):
                 for painting in config['paintings']:
                     if re.match(arg, ' ' + painting['tag']):
                         self.paintMessage(painting)
+                    break
 
     def paintMessage(self, painting):
-        numSeconds = 1
+        if self.painting:
+            return
+
+        numSeconds = 0
+        reactor.callLater(numSeconds, self.enablePainting)
+
         for msg in painting['message']:
             reactor.callLater(numSeconds, self.printDelayedMessage, msg)
             numSeconds += 2
 
         reactor.callLater(numSeconds, self.printDelayedMessage, self.getQuote())
+        reactor.callLater(numSeconds, self.disablePainting)
 
     def getQuote(self):
         quote = random.choice(config['quotes'])
@@ -76,6 +86,12 @@ class ArtBot(irc.IRCClient):
 
     def printDelayedMessage(self, message):
         self.msg(config['channel'], message)
+
+    def enablePainting(self):
+        self.painting = True
+
+    def disablePainting(self):
+        self.painting = False
 
 def main():
     server = config['server']
