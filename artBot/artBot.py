@@ -30,9 +30,7 @@ class ArtBot(irc.IRCClient):
         self.join(config['channel'])
         print('Channel: ' + config['channel'])
         print('Nickname: ' + config['nick'])
-        #self.msg(config['channel'], "Hello, I'm artbot.")
-        #time.sleep(1)
-        #self.msg(config['channel'], "How do you do?")
+        self.msg(config['channel'], 'Hello, I\'m artBot')
     
     def luserClient(self, info):
         print(info)
@@ -50,40 +48,35 @@ class ArtBot(irc.IRCClient):
         print(oldName + ' has been renamed to ' + newName)
 
     def privmsg(self, user, channel, message):
-        print(channel + ' ' + user + ': ' + message)
-
-        if re.split('!', user)[0] != config['admin']:
-            print(user)
-            print('Invalid user!')
-            return
+        #if re.split('!', user)[0] != config['admin']:
+        #    print('Invalid user: ' + user)
+        #    return
 
         if re.match(config['nick'] + ', paint', message):
-            print('Matched command!')
-            print('Channel: ' + channel)
-            print('Config Channel: ' + config['channel'])
-            #self.msg(channel, 'Matched!')
-            
             arg = re.split(', paint', message)[1]
             
-            quote = random.choice(config['quotes'])
-
             if arg == '':
-                with random.choice(config['paintings']) as painting:
-                    for msg in painting['message']:
-                        self.msg(config['channel'], msg)
-                    self.msg(channel, quote + ' - Bob Ross')
+                painting = random.choice(config['paintings'])
+                self.paintMessage(painting)
             else:
                 for painting in config['paintings']:
-                    print(arg)
-                    print(painting['tag'])
                     if re.match(arg, ' ' + painting['tag']):
-                        print('found!')
-                        for msg in painting['message']:
-                            print(msg)
-                            self.msg(config['channel'], msg)
-                            time.sleep(1)
-                            print('hello.')
-                        self.msg(channel, quote + ' - Bob Ross')
+                        self.paintMessage(painting)
+
+    def paintMessage(self, painting):
+        numSeconds = 1
+        for msg in painting['message']:
+            reactor.callLater(numSeconds, self.printDelayedMessage, msg)
+            numSeconds += 1
+
+        reactor.callLater(numSeconds, self.printDelayedMessage, self.getQuote())
+
+    def getQuote(self):
+        quote = random.choice(config['quotes'])
+        return quote + ' - Bob Ross'
+
+    def printDelayedMessage(self, message):
+        self.msg(config['channel'], message)
 
 def main():
     server = config['server']
