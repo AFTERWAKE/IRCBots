@@ -55,16 +55,16 @@ class ArtBot(irc.IRCClient):
         #    return
 
         if re.match(config['nick'] + ', paint', message):
-            arg = re.split(', paint', message)[1]
+            args = re.split(' ', message)
             
-            if arg == '':
+            if len(args) == 2:
                 painting = random.choice(config['paintings'])
                 self.paintMessage(painting)
             else:
                 for painting in config['paintings']:
-                    if re.match(arg, ' ' + painting['tag']):
+                    if re.match(args[2], painting['tag']):
                         self.paintMessage(painting)
-                    break
+                        break
 
     def paintMessage(self, painting):
         if self.painting:
