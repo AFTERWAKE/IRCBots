@@ -25,3 +25,5 @@ Source code for bots used in the our fun IRC chatroom
 #### pointBot
 - A bot that keeps track of arbitrary points given out by IRC users.
 - Based off of theCount (Twisted IRC Client)
+#### lurkBot
+- A bot that hides in the shadows and steals usernames for fun.
