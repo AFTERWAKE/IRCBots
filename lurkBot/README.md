@@ -29,6 +29,8 @@ chatroom: The channel you want your bot in
 
 admin: The IP(s) of the admin user. Format is a list of strings.
 
+namesList: The usernames of the users you want lurkBot to steal. This is case insensitive.
+
 
 Twisted Documentation
 ---------------
