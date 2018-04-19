@@ -83,6 +83,15 @@ class LurkBot(irc.IRCClient):
         print "New nickname: " + nick
         self.nickname = nick
 
+    def privmsg(self, user, channel, message):
+        nick = user.split('!')[0]
+        ip = user.split('@')[1]
+        if (channel == self.nickname and ip not in self.admin):
+            print "lol " + nick + " just said " + message
+            self.msg(nick, "Just lurking here... Don't mind me...")
+        if (channel == self.nickname and ip in self.admin):
+            self.msg(self.chatroom, message)
+
 def main():
     f = protocol.ReconnectingClientFactory()
     f.protocol = LurkBot
