@@ -16,7 +16,6 @@ class LurkBot(irc.IRCClient):
                     "benji",
                     "berNs",
                     "cramey",
-                    "cadams",
                     "emturn",
                     "Isaiah",
                     "jlong",
