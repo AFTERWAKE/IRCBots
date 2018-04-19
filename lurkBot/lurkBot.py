@@ -30,7 +30,6 @@ class LurkBot(irc.IRCClient):
                     "story",
                     "tb",
                     "The_OG_Grant",
-                    "test",
                     "vshouse"
                 ]
     timeLastNickChange = 0
