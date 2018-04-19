@@ -48,7 +48,7 @@ class LurkBot(irc.IRCClient):
 
     def changeNick(self, name):
         timeRightNow = time.time()
-        if (((timeRightNow - self.timeLastNickChange) > 3600) and (name in self.namesList)):
+        if (((timeRightNow - self.timeLastNickChange) > 900) and (name in self.namesList)):
             self.timeLastNickChange = time.time()
             self.setNick(name)
 
