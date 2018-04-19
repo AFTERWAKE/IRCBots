@@ -41,7 +41,7 @@ class LurkBot(irc.IRCClient):
         self.who()
 
     def userRenamed(self, oldname, newname):
-        if (oldname.decode('utf-8').lower() != newname.decode('utf-8')):
+        if (oldname.decode('utf-8').lower() != newname.decode('utf-8').lower()):
             self.changeNick(oldname)
 
     def userQuit(self, user, quitMessage):
