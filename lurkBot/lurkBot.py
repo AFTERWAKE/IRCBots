@@ -10,7 +10,7 @@ serv_port = 6667
 class LurkBot(irc.IRCClient):
     nickname = "lurkBot"
     chatroom = "#main"
-    owner = ["172.22.117.48", "172.22.116.80"]
+    admin = ["172.22.117.48", "172.22.116.80"]
     namesList = [
                     "awest",
                     "benji",
