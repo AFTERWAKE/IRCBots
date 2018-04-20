@@ -1,7 +1,5 @@
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
-from re import search, IGNORECASE
-from random import randint
 import time
 
 serv_ip = "coop.test.adtran.com"
