@@ -5,3 +5,4 @@ theCount/muted.txt
 *.py~
 *.pyc
 *.old
+*.swp

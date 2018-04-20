@@ -1,30 +1,31 @@
 package dad
 
 import (
-	"github.com/whyrusleeping/hellabot"
 	"time"
+
+	"github.com/whyrusleeping/hellabot"
 )
 
 const (
-	// Send a message to where the message came from
+	// ReplyType indicates to send a message to where the message came from
 	ReplyType = iota // 0
-	// Send a message to a specified user or channel
+	// MessageType indicates to send a message to a specified user or channel
 	MessageType // 1
-	// Send a notice to a specified user or channel
+	// NoticeType indicates to send a notice to a specified user or channel
 	NoticeType // 2
-	// Send an action to a specified user or channel
+	// ActionType indicates to send an action to a specified user or channel
 	ActionType // 3
-	// Set the topic for the current channel
+	// TopicType indicates to set the topic for the current channel
 	TopicType // 4
-	// Send any command to the server
+	// SendType indicates to send any command to the server
 	SendType // 5
-	// Changes a user's mode in the channel
+	// ChModeType indicates to change a user's mode in the channel
 	ChModeType // 6
-	// Joins a channel
+	// JoinType indicates to join a channel
 	JoinType // 7
-	// Leave a specified channel
+	// PartType indicates to leave a specified channel
 	PartType // 8
-	// Quit the existing IRC connection
+	// QuitType indicates to quit the existing IRC connection
 	QuitType // 9
 )
 
@@ -37,11 +38,11 @@ type BotConfiguration struct {
 	Speak      []SpeakData
 }
 
-// GroundedList keeps track of grounded users as they are added
-// and removed.
+// MutedList keeps track of grounded users and bots as they are
+// added or removed.
 type MutedList struct {
-	Bots 	[]string
-	Users   []string
+	Bots  []string
+	Users []string
 }
 
 // ICanHazDadJoke declares the expected json format of jokes from
@@ -56,18 +57,18 @@ type ICanHazDadJoke struct {
 // whether the bot is acting as mom or dad, the config information, and the
 // last reply sent by the bot
 type IRCBot struct {
-	Bot       *hbot.Bot
-	BotConfig 	BotConfiguration
+	Bot           *hbot.Bot
+	BotConfig     BotConfiguration
 	BotConfigFile string
-	Muted	MutedList
-	MutedFile	string
-	IRCConfig      IRCConfiguration
+	Muted         MutedList
+	MutedFile     string
+	IRCConfig     IRCConfiguration
 	IRCConfigFile string
-	CurrentReply Reply
-	LastReply Reply
+	CurrentReply  Reply
+	LastReply     Reply
 }
 
-// TODO probably not needed, but just here for reference for now
+// IRCBotInterface is a temporary place-holder
 type IRCBotInterface interface {
 	AddTrigger(t *hbot.Trigger)
 	Run()
@@ -119,7 +120,7 @@ type Response struct {
 // SpeakData is the regex-to-response pairing for each possible response.
 // There can be more than one response, and it will be chosen semi-randomly.
 type SpeakData struct {
-	Action   string
-	Regex    RegexData
+	Action    string
+	Regex     RegexData
 	Responses []Response `json:"Response"`
 }

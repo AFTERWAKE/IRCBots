@@ -23,31 +23,34 @@ class Doge(irc.IRCClient):
         if (message.startswith(self.nickname)):
             # if isOwner or (randint(0, 3) == 1):
                 timeRightNow = time.time()
-                if (((timeRightNow - self.timeLastCommand) > 2) and self.willDoTrick) or isOwner:
-                    self.timeLastCommand = time.time()
-                    if message == (self.nickname + ', sit'):
-                        if randint(0,6) == 1:
-                            self.willDoTrick = False
-                        self.describe(self.chatroom, "sits")
-                    elif message == (self.nickname + ', roll over'):
-                        if randint(0,6) == 1:
-                            self.willDoTrick = False
-                        self.describe(self.chatroom, "rolls over")
-                    elif message == (self.nickname + ', shake'):
-                        if randint(0,6) == 1:
-                            self.willDoTrick = False
-                        self.describe(self.chatroom, "lifts up paw")
-                    elif message == (self.nickname + ', play dead'):
-                        if randint(0,6) == 1:
-                            self.willDoTrick = False
-                        self.describe(self.chatroom, "lays down dramatically")
-                    elif message == (self.nickname + ', speak'):
-                        if randint(0,6) == 1:
-                            self.willDoTrick = False
-                        if randint(0, 5) == 1:
-                            self.describe(self.chatroom, "borks")
-                        else:
-                            self.describe(self.chatroom, "barks")
+                if (((timeRightNow - self.timeLastCommand) > 2) or isOwner):
+                    if message == (self.nickname + ', help'):
+                        self.describe(self.chatroom, "bark bark bark, bark, bark woof, bork bark, bark bork h*ck bark bark woof")
+                    if (self.willDoTrick or isOwner):
+                        self.timeLastCommand = time.time()
+                        if message == (self.nickname + ', sit'):
+                            if randint(0,6) == 1:
+                                self.willDoTrick = False
+                            self.describe(self.chatroom, "sits")
+                        elif message == (self.nickname + ', roll over'):
+                            if randint(0,6) == 1:
+                                self.willDoTrick = False
+                            self.describe(self.chatroom, "rolls over")
+                        elif message == (self.nickname + ', shake'):
+                            if randint(0,6) == 1:
+                                self.willDoTrick = False
+                            self.describe(self.chatroom, "lifts up paw")
+                        elif message == (self.nickname + ', play dead'):
+                            if randint(0,6) == 1:
+                                self.willDoTrick = False
+                            self.describe(self.chatroom, "lays down dramatically")
+                        elif message == (self.nickname + ', speak'):
+                            if randint(0,6) == 1:
+                                self.willDoTrick = False
+                            if randint(0, 5) == 1:
+                                self.describe(self.chatroom, "borks")
+                            else:
+                                self.describe(self.chatroom, "barks")
         if search(r"(^|\s)+treats*(!|\?)*(\s|$)+", message, IGNORECASE):
             timeRightNow = time.time()
             if ((timeRightNow - self.timeLastTreatCommand) > 2) or isOwner:

@@ -48,7 +48,7 @@ serv_port = 6667
 
 
 class countBot(irc.IRCClient):
-    version = "2.11.0"
+    version = "2.12.1"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -70,7 +70,7 @@ class countBot(irc.IRCClient):
         "~nodebot", "~Magic_Con",
         "~Seahorse", "~MemeBot",
         "~pointbot", "~botprotec",
-        "~QuipBot"
+        "~QuipBot", "~burnbot"
     ]
     mutedList = []
     lastWHOIS = ''
@@ -456,6 +456,8 @@ class countBot(irc.IRCClient):
             self.msg(self.chatroom, self.mockMe('The current number 1 player is: ' + self.getWinningUser().username))
         elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
+        elif ((message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock')) and isTopUser):
+            self.mockUser(message.split()[2])
         elif ((message == self.nickname + ', rules') or (message == self.nickname + ': rules') or (message == self.nickname + ' rules')):
             self.rulesText()
 

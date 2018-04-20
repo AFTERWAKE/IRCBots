@@ -3,7 +3,7 @@
 [![Made with love](https://img.shields.io/badge/Built%20with-❤-f41621.svg)](https://www.merriam-webster.com/dictionary/love)
 
 # IRCbots
-Source code for bots used in the coop IRC @ coop.test.adtran.com
+Source code for bots used in the our fun IRC chatroom
 
 ## List of bots in this repo:
 #### Highfivebot
@@ -25,3 +25,5 @@ Source code for bots used in the coop IRC @ coop.test.adtran.com
 #### pointBot
 - A bot that keeps track of arbitrary points given out by IRC users.
 - Based off of theCount (Twisted IRC Client)
+#### lurkBot
+- A bot that hides in the shadows and steals usernames for fun.
