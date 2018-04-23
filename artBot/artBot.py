@@ -57,7 +57,7 @@ class ArtBot(irc.IRCClient):
         elif self.isListCommand(message):
             self.printTags()
         elif self.isPaintCommand(message):
-            args = re.split(' ', message)
+            args = message.split()
             
             if len(args) == 2:
                 self.paintMessageRandom()
@@ -65,13 +65,13 @@ class ArtBot(irc.IRCClient):
                 self.paintMessageByTag(args[2])
 
     def isHelpCommand(self, message):
-        return re.match('^' + config['nick'] + ', help$', message)
+        return re.match('^' + config['nick'] + ',\s+help$', message)
 
     def isListCommand(self, message):
-        return re.match('^' + config['nick'] + ', list$', message)
+        return re.match('^' + config['nick'] + ',\s+list$', message)
 
     def isPaintCommand(self, message):
-        return re.match('^' + config['nick'] + ', paint.*$', message)
+        return re.match('^' + config['nick'] + ',\s+paint.*$', message)
 
     def printHelpMessage(self):
         if self.painting:
