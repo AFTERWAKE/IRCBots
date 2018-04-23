@@ -19,7 +19,6 @@ class LurkBot(irc.IRCClient):
                     "Isaiah",
                     "jlong",
                     "jnguyen",
-                    "KBankston",
                     "kmarcrum",
                     "ldavis",
                     "meena",
