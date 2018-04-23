@@ -12,7 +12,7 @@ Commands
 --------
 
 * artBot, help: Shows the available commands
-* artBot, paint <tag>: Paint ASCII message by its corresponding tag (random by default)
+* artBot, paint `<`tag`>`: Paint ASCII message by its corresponding tag (random by default)
 * artBot, list: Lists all of the valid message tags for painting
 
 Config
