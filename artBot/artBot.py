@@ -5,7 +5,7 @@
          Author: ldavis
 Current Version: 1.1.1
    Date Written: February 2018
-    Description: A simple irc bot that sends out a random ASCII art message at 11:30 and 3:00, along with a calming quote by
+    Description: A simple irc bot that prints out from a selection of ASCII art messages, along with a calming quote by
         the one and only Bob Ross. The structure of artBot was inspired by jnguyen's work on Seahorse and MemeBot, and also
         noahsiano's current revision of theCount.
 
