@@ -93,7 +93,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 7
                 }
             ]
@@ -107,7 +107,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 8
                 }
             ]
@@ -142,7 +142,7 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 48,
+                    "Count": 54,
                     "Type": 0
                 }
             ]
