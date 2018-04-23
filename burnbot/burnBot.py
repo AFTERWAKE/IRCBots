@@ -5,14 +5,10 @@ import random
 import time
 import os
 
-
-
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
 
-
 class burnBot(irc.IRCClient):
-
 
     nickname = "burnBot"
     channel = "#main"
@@ -38,6 +34,7 @@ class burnBot(irc.IRCClient):
 
     def signedOn(self):
         self.join(self.channel)
+        self.who(self.channel)
 
     def irc_unknown(self, prefix, command, params):
         print "ERROR", prefix, command, params
@@ -57,16 +54,14 @@ class burnBot(irc.IRCClient):
         usr["nick"] = nargs[1][5]
         usr["host"] = nargs[1][2]
         usr["ip"] = nargs[1][3]
-        self.user_list.append(usr)
+        self.user_list.append(usr["nick"])
 
     def irc_RPL_ENDOFWHO(self, *nargs):
             "Called when WHO output is complete"
             print "Users:"
             for each in self.user_list:
-                print each["nick"],
-            print
-            return
-
+                print each
+            print self.user_list
     def privmsg(self, user, channel, message):
 
         if message.startswith(self.nickname):
