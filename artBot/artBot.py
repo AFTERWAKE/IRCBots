@@ -3,7 +3,7 @@
 
            Name: artBot
          Author: ldavis
-Current Version: 1.1.0
+Current Version: 1.1.1
    Date Written: February 2018
     Description: A simple irc bot that sends out a random ASCII art message at 11:30 and 3:00, along with a calming quote by
         the one and only Bob Ross. The structure of artBot was inspired by jnguyen's work on Seahorse and MemeBot, and also
@@ -15,8 +15,6 @@ Current Version: 1.1.0
 import random
 import re
 import json
-
-import time
 
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
@@ -76,25 +74,22 @@ class ArtBot(irc.IRCClient):
         return re.match(config['nick'] + ', paint', message)
 
     def printHelpMessage(self):
-        if not self.painting:
-            self.msg(config['channel'], 'Please use one of the following commands:')
-            self.msg(config['channel'], 'artBot, help: Ask me for help')
-            self.msg(config['channel'], 'artBot, paint <tag>: Paint ASCII message by its corresponding tag (random by default)')
-            self.msg(config['channel'], 'artBot, list: Lists all of the valid message tags for painting')
+        if self.painting:
+            return
+
+        self.msg(config['channel'], 'Please use one of the following commands:')
+        self.msg(config['channel'], 'artBot, help: Ask me for help')
+        self.msg(config['channel'], 'artBot, paint <tag>: Paint ASCII message by its corresponding tag (random by default)')
+        self.msg(config['channel'], 'artBot, list: Lists all of the valid message tags for painting')
 
     def printTags(self):
         if self.painting:
             return
 
-        numSeconds = 0
-        reactor.callLater(numSeconds, self.enablePainting)
-        reactor.callLater(numSeconds, self.printDelayedMessage, 'Here is a list of available tags (artBot, paint <tag>):')
-
-        for tag in sorted(self.tags):
-            reactor.callLater(numSeconds, self.printDelayedMessage, '\t' + tag)
-            numSeconds += 1
-
-        reactor.callLater(numSeconds, self.disablePainting)
+        self.msg(config['channel'], 'Here is a list of available tags (artBot, paint <tag>):')
+        
+        line = ', '.join(sorted(self.tags))
+        self.msg(config['channel'], line)
 
     def paintMessageRandom(self):
         painting = random.choice(config['paintings'])
