@@ -1,5 +1,5 @@
 from twisted.words.protocols import irc
-from twisted.internet import reactor, protocol
+from twisted.internet import reactor, protocol, defer
 from re import search, IGNORECASE
 import random
 import time
@@ -58,10 +58,16 @@ class burnBot(irc.IRCClient):
         usr["host"] = nargs[1][2]
         usr["ip"] = nargs[1][3]
         self.user_list.append(usr)
-        print self.user_list
+
+    def irc_RPL_ENDOFWHO(self, *nargs):
+            "Called when WHO output is complete"
+            print "Users:"
+            for each in self.user_list:
+                print each["nick"],
+            print
+            return
+
     def privmsg(self, user, channel, message):
-
-
 
         if message.startswith(self.nickname):
             nick = user.split('!')[0]
@@ -97,8 +103,6 @@ class burnBot(irc.IRCClient):
 
             elif search(r"(^|\s)+attack*(!|\?)*(\s|$)", message, IGNORECASE):
                 self.msg(self.channel, 'what a loser tb is')
-
-
 
 def main():
     f = protocol.ReconnectingClientFactory()
