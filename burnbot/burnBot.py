@@ -3,6 +3,9 @@ from twisted.internet import reactor, protocol
 from re import search, IGNORECASE
 import random
 import time
+import os
+
+
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
@@ -23,18 +26,11 @@ class burnBot(irc.IRCClient):
         "Seahorse", "dootbot",
         "pointbot", "botProtector",
         "QuipBot", "MemeBot", "burnBot", "Mr_HighFive"]
-    userList = []
+    userList = ['burnBot', 'KBankston', 'cramey', 'jlong', 'meena', 'vshouse', 'MemeBot', 'Doge', 'theCount', 'mina733' ,'dad', 'berNs', 'seeadams',
+                'Seahorse', 'Magic_Conch', 'jnguyen', 'grumble', 'ldavis', 'sboyett', 'mfoley', 'kmarcrum', 'awest', 'mom', 'botProtector',
+                'benji', 'OG_Grant', 'Isaiah', 'chasely', 'noahsiano', 'Mr_HighFive', 'tb', 'adtran_', 'Mr_HighFive', 'ffawest', 'The_OG_Grant']
 
-    # page = requests.get('https://humoropedia.com/best-comebacks-n-funny-insults/')
-    # page2= requests.get('http://www.lovepanky.com/my-life/work-and-office/awesomely-insulting-good-comebacks')
-    # tree = html.fromstring(page.content)
-    # tree2 = html.fromstring(page2.content)
-    # jokes = tree.xpath('//li/text()')
-    # jokes2 = tree2.xpath('//p/text()')
-    # jokes = jokes + jokes2
-
-    thefile = open('C:\Users\\bmoussad\PycharmProjects\maBoi\Responses.txt', 'r')
-    with open ('Responses.txt', 'r') as file:
+    with open(os.path.join(os.getcwd(), 'Responses.txt'), 'r') as file:
             harumph = file.readlines()
 
     jokes = harumph[0].split("',")
@@ -50,16 +46,12 @@ class burnBot(irc.IRCClient):
 
     def privmsg(self, user, channel, message):
 
-        # userList = RPL_NAMREPLY
 
 
         if message.startswith(self.nickname):
             nick = user.split('!')[0]
             user_ip = user.split('@')[1]
 
-
-            # if burn_name not in (userList or self.botList):
-            #     return
             if channel == self.nickname and user_ip != self.owner:
                 return
             if search(r'(^|\s)+help*(\s|$)+', message, IGNORECASE):
@@ -90,6 +82,7 @@ class burnBot(irc.IRCClient):
             elif search(r"(^|\s)+attack*(!|\?)*(\s|$)", message, IGNORECASE):
                 self.msg(self.channel, 'what a loser tb is')
     def update_user (self, channel):
+        self.userList = []
         self.sendLine('WHO %s' % channel)
 
 
