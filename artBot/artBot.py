@@ -65,13 +65,13 @@ class ArtBot(irc.IRCClient):
                 self.paintMessageByTag(args[2])
 
     def isHelpCommand(self, message):
-        return re.match(config['nick'] + ', help', message)
+        return re.match('^' + config['nick'] + ', help$', message)
 
     def isListCommand(self, message):
-        return re.match(config['nick'] + ', list', message)
+        return re.match('^' + config['nick'] + ', list$', message)
 
     def isPaintCommand(self, message):
-        return re.match(config['nick'] + ', paint', message)
+        return re.match('^' + config['nick'] + ', paint.*$', message)
 
     def printHelpMessage(self):
         if self.painting:
@@ -97,7 +97,7 @@ class ArtBot(irc.IRCClient):
 
     def paintMessageByTag(self, tag):
         for painting in config['paintings']:
-            if re.match(tag, painting['tag']):
+            if re.match('^' + tag + '$', painting['tag']):
                 self.paintMessage(painting)
                 break
 
