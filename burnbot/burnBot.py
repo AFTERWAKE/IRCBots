@@ -26,9 +26,7 @@ class burnBot(irc.IRCClient):
         "Seahorse", "dootbot",
         "pointbot", "botProtector",
         "QuipBot", "MemeBot", "burnBot", "Mr_HighFive"]
-    userList = ['burnBot', 'KBankston', 'cramey', 'jlong', 'meena', 'vshouse', 'MemeBot', 'Doge', 'theCount', 'mina733' ,'dad', 'berNs', 'seeadams',
-                'Seahorse', 'Magic_Conch', 'jnguyen', 'grumble', 'ldavis', 'sboyett', 'mfoley', 'kmarcrum', 'awest', 'mom', 'botProtector',
-                'benji', 'OG_Grant', 'Isaiah', 'chasely', 'noahsiano', 'Mr_HighFive', 'tb', 'adtran_', 'Mr_HighFive', 'ffawest', 'The_OG_Grant']
+    user_list = []
 
     with open(os.path.join(os.getcwd(), 'Responses.txt'), 'r') as file:
             harumph = file.readlines()
@@ -44,6 +42,23 @@ class burnBot(irc.IRCClient):
     def irc_unknown(self, prefix, command, params):
         print "ERROR", prefix, command, params
 
+    def userRenamed(self, oldname, newname):
+        print(oldname, "is now known as", newname.lower())
+        self.who(channel)
+
+    def who(self, channel):
+        "List the users in 'channel', usage: client.who('#testroom')"
+        self.user_list = []
+        self.sendLine('WHO %s' % channel)
+
+    def irc_RPL_WHOREPLY(self, *nargs):
+        "Receive WHO reply from server"
+        usr = {}
+        usr["nick"] = nargs[1][5]
+        usr["host"] = nargs[1][2]
+        usr["ip"] = nargs[1][3]
+        self.user_list.append(usr)
+        print self.user_list
     def privmsg(self, user, channel, message):
 
 
@@ -64,26 +79,25 @@ class burnBot(irc.IRCClient):
                 burn_name = message.split(" ")[2]
                 if burn_name.lower() == self.nickname.lower():
                     self.msg(self.channel, "Burn baby, burn.")
-                elif burn_name not in self.userList:
+                elif burn_name.lower() == self.owner_name.lower():
+                    self.msg(self.channel, 'Feel the burn')
+                elif burn_name not in self.user_list:
                     if user_ip == self.owner:
                         self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
                         print burn_name
                     else:
-                        return
+                        self.msg(self.channel, "Error 69: User NOT FOUND. Prepare for ultimate burning. \n" + nick + ": " + random.choice(self.jokes))
                 elif (burn_name) in self.botList:
                     self.msg(self.channel, "Silly human. Burns are for people. You looking to get burned " + nick + "?\n"
                              + nick + ": " + random.choice(self.jokes))
-                elif burn_name.lower() == self.owner_name.lower():
-                    self.msg(self.channel, 'Feel the burn')
+
                 else:
                     self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
                     
 
             elif search(r"(^|\s)+attack*(!|\?)*(\s|$)", message, IGNORECASE):
                 self.msg(self.channel, 'what a loser tb is')
-    def update_user (self, channel):
-        self.userList = []
-        self.sendLine('WHO %s' % channel)
+
 
 
 def main():
