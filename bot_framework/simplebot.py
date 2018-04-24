@@ -6,7 +6,7 @@ from twisted.internet import reactor
 
 
 class SimpleBot(mixins.EnableRateLimiting, mixins.PrintAllMessages, 
-                mixins.EnableIgnore, BasicBot):
+                mixins.EnableIgnore, BaseBot):
   def __init__(self):
     super(SimpleBot, self).__init__()
     self.set_channel_rate_limit(5)
