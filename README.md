@@ -29,3 +29,5 @@ Source code for bots used in the our fun IRC chatroom
 - Based off of theCount (Twisted IRC Client)
 #### lurkBot
 - A bot that hides in the shadows and steals usernames for fun.
+#### artBot
+- A simple IRC bot that sends out ASCII messages on the Art channel.
