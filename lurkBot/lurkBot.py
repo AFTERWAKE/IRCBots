@@ -46,7 +46,7 @@ class LurkBot(irc.IRCClient):
 
     def userQuit(self, user, quitMessage):
         currentHour = int(self.getCurrentTime().split(':')[0])
-        if ((currentHour <= 8) or (currentHour >= 17)):
+        if ((currentHour < 8) or (currentHour > 16)):
             self.changeNick(user.split("!")[0])
 
     def changeNick(self, name):
