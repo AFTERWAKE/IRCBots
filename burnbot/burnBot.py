@@ -5,14 +5,10 @@ import random
 import time
 import os
 
-
-
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
 
-
 class burnBot(irc.IRCClient):
-
 
     nickname = "burnBot"
     channel = "#main"
@@ -38,13 +34,18 @@ class burnBot(irc.IRCClient):
 
     def signedOn(self):
         self.join(self.channel)
+        self.who(self.channel)
 
     def irc_unknown(self, prefix, command, params):
         print "ERROR", prefix, command, params
 
+    def userJoined(self, user, channel):
+        print (user, "has joined")
+        self.who(channel)
+
     def userRenamed(self, oldname, newname):
         print(oldname, "is now known as", newname.lower())
-        self.who(channel)
+        self.who(self.channel)
 
     def who(self, channel):
         "List the users in 'channel', usage: client.who('#testroom')"
@@ -57,16 +58,14 @@ class burnBot(irc.IRCClient):
         usr["nick"] = nargs[1][5]
         usr["host"] = nargs[1][2]
         usr["ip"] = nargs[1][3]
-        self.user_list.append(usr)
+        self.user_list.append(usr["nick"])
 
     def irc_RPL_ENDOFWHO(self, *nargs):
             "Called when WHO output is complete"
             print "Users:"
             for each in self.user_list:
-                print each["nick"],
-            print
-            return
-
+                print each
+            print self.user_list
     def privmsg(self, user, channel, message):
 
         if message.startswith(self.nickname):
@@ -77,7 +76,7 @@ class burnBot(irc.IRCClient):
                 return
             if search(r'(^|\s)+help*(\s|$)+', message, IGNORECASE):
                 currentTime = time.time()
-                self.msg(self.channel, "Just point me in the direction of who to burn :^)")
+                self.msg(self.channel, "Just point me in the direction of who to burn :^). <warning>Be wary of whom/what you try to burn.</warning>")
             elif search(r"(^|\s)+say*(!|\?)*(\s|$)", message, IGNORECASE):
                 if user_ip == self.owner:
                     self.msg(self.channel, message.split('say ')[1])
@@ -92,7 +91,8 @@ class burnBot(irc.IRCClient):
                         self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
                         print burn_name
                     else:
-                        self.msg(self.channel, "Error 69: User NOT FOUND. Prepare for ultimate burning. \n" + nick + ": " + random.choice(self.jokes))
+                        self.msg(self.channel, "Error 69: User NOT FOUND. Prepare for ultimate burning. \n" + nick
+                            + ": " + random.choice(self.jokes))
                 elif (burn_name) in self.botList:
                     self.msg(self.channel, "Silly human. Burns are for people. You looking to get burned " + nick + "?\n"
                              + nick + ": " + random.choice(self.jokes))

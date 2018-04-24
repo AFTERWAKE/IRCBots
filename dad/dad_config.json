@@ -156,7 +156,7 @@
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
     "Debug": true,
     "Name": "dad",
@@ -185,25 +185,6 @@
                 {
                     "Message": "Here is a list of grounded users:\n#c",
                     "Count": 36,
-                    "Type": 0
-                }
-            ]
-        },
-        {
-            "Action": "none",
-            "Regex": {
-                "Trigger": "(?i).*\\b\\w+(er)\\b.*",
-                "Variable": "\\w+(er)\\b"
-            },
-            "Response": [
-                {
-                    "Message": "#v? I barely know her!",
-                    "Count": 4,
-                    "Type": 0
-                },
-                {
-                    "Message": "#v? I hardly know her!",
-                    "Count": 4,
                     "Type": 0
                 }
             ]
@@ -353,7 +334,7 @@
             "Response": [
                 {
                     "Message": "Poof, you're #a #v!",
-                    "Count": 46,
+                    "Count": 47,
                     "Type": 0
                 }
             ]
@@ -496,7 +477,7 @@
                 },
                 {
                     "Message": "Is this pool safe for diving?\nIt deep ends",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -511,7 +492,7 @@
                 },
                 {
                     "Message": "Our wedding was so beautiful,\neven the cake was in tiers",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -601,7 +582,7 @@
                 },
                 {
                     "Message": "What lies at the bottom of the ocean and twitches?\nA nervous wreck",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {

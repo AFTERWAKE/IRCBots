@@ -25,5 +25,6 @@ ADMIN COMMANDS
          botNick, loser (LOSER: <user who called>)
          botNick, losers (list of losers)
          botNick, winners (shows list of winners)
+         botNick, wieners (shows your wiener count for the day)
          botNick, rules (shows list of rules)
          botNick, version (shows version + link to github)

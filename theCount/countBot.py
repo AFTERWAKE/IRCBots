@@ -3,7 +3,7 @@
       Author: DavidS
    v2 Author: noahsiano
         Date: April 2015
-Last Updated: March 2018
+Last Updated: April 2018
         NOTE: Run in linux in order to get the dictionary to work.
  Description: This connects to an IRC chatroom and plays a counting game at the times 8:30,
               11:00, 1:30, and 4. The game can also be initiated by one or two hosts listed.
@@ -28,6 +28,7 @@ Last Updated: March 2018
                    botNick, loser (LOSER: <user who called>)
                    botNick, losers (list of losers)
                    botNick, winners (shows list of winners)
+                   botNick, wieners (shows your wiener count for the day)
                    botNick, rules (shows list of rules)
                    botNick, version (shows version + link to github)
 --------------------------------------------------------------------------------------------------------------------
@@ -48,7 +49,7 @@ serv_port = 6667
 
 
 class countBot(irc.IRCClient):
-    version = "2.12.1"
+    version = "2.12.2"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
