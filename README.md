@@ -31,3 +31,4 @@ Source code for bots used in the our fun IRC chatroom
 #### theCount (python)
 - A legendary bot created by David Stidham. [Check out his github repo for his original source code](https://github.com/dstidham23/countBot)
 - Instructions are simple. At 8:30, 11:00, 1:30, and 4:00, theCount will start a counting game. You just keep counting until you reach the number theCount has chosen. For available commands, see [`IRCBots/theCount/README.md`](theCount/README.md)
+- theCount has a few extra commands outside of the regularly scheduled counting game
