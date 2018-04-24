@@ -1,7 +1,7 @@
 artBot
 ======
 
-A simple IRC bot that sends out ASCII messages on the Art channel.
+A simple IRC bot that sends out ASCII paintings on the Art channel. A message is also sent out during lunchtime and break. All of this comes along with a calming quote from the one and only Bob Ross.
 
 Dependencies
 ------------
@@ -27,5 +27,4 @@ To Do
 -----
 
 * Add more ASCII messages
-* Add ability for bot to display ASCII messages at certain times, such as lunch or break
 * Add function to escape characters in JSON file

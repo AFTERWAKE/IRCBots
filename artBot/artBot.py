@@ -3,11 +3,11 @@
 
            Name: artBot
          Author: ldavis
-Current Version: 1.2.4
+Current Version: 1.3.0
    Date Written: February 2018
     Description: A simple irc bot that prints out from a selection of ASCII art messages, along with a calming quote by
-        the one and only Bob Ross. The structure of artBot was inspired by jnguyen's work on Seahorse and MemeBot, and also
-        noahsiano's current revision of theCount.
+        the one and only Bob Ross. artBot also sends out a message whenever lunchtime or break arrives. The structure of
+        artBot was inspired by jnguyen's work on Seahorse and MemeBot, and also noahsiano's current revision of theCount.
 
 ==============================================================================================================================
 """
@@ -16,8 +16,10 @@ import random
 import re
 import json
 
+import datetime
+
 from twisted.words.protocols import irc
-from twisted.internet import reactor, protocol
+from twisted.internet import task, reactor, protocol
 
 with open(r'config.json') as file:
     config = json.load(file)
@@ -27,9 +29,14 @@ class ArtBot(irc.IRCClient):
 
     def __init__(self):
         self.painting = False
+        self.lunchtimePaintingQueued = False
+        self.breaktimePaintingQueued = False
 
         self.tags = []
         self.loadTags()
+
+        lc = task.LoopingCall(self.scheduleEvents)
+        lc.start(60)
 
     def signedOn(self):
         self.join(config['channel'])
@@ -91,24 +98,38 @@ class ArtBot(irc.IRCClient):
         line = ', '.join(sorted(self.tags))
         self.msg(config['channel'], line)
 
+    def paintLunchtimeMessage(self):
+        if self.painting:
+            self.lunchtimePaintingQueued = True
+            return
+
+        self.paintMessage(config['lunchtime-painting'])
+
+    def paintBreaktimeMessage(self):
+        if self.painting:
+            self.breaktimePaintingQueued = True
+            return
+
+        self.paintMessage(config['breaktime-painting'])
+
     def paintMessageRandom(self):
         painting = random.choice(config['paintings'])
-        self.paintMessage(painting)
+        self.paintMessage(painting['message'])
 
     def paintMessageByTag(self, tag):
         for painting in config['paintings']:
             if re.match('^' + tag + '$', painting['tag']):
-                self.paintMessage(painting)
+                self.paintMessage(painting['message'])
                 break
 
-    def paintMessage(self, painting):
+    def paintMessage(self, message):
         if self.painting:
             return
 
         numSeconds = 0
         reactor.callLater(numSeconds, self.enablePainting)
 
-        for msg in painting['message']:
+        for msg in message:
             reactor.callLater(numSeconds, self.printDelayedMessage, msg)
             numSeconds += 2
 
@@ -131,6 +152,26 @@ class ArtBot(irc.IRCClient):
     def loadTags(self):
         for painting in config['paintings']:
             self.tags.append(painting['tag'])
+
+    def scheduleEvents(self):
+        if self.lunchtimePaintingQueued:
+            self.lunchtimePaintingQueued = False
+            self.paintLunchtimeMessage()
+            return
+        elif self.breaktimePaintingQueued:
+            self.breaktimePaintingQueued = False
+            self.paintBreaktimeMessage()
+            return
+
+        now = datetime.datetime.time(datetime.datetime.now())
+
+        lunchtime = datetime.time(hour=11, minute=30)
+        breaktime = datetime.time(hour=15, minute=0)
+
+        if now.hour == lunchtime.hour and now.minute == lunchtime.minute:
+            self.paintLunchtimeMessage()
+        elif now.hour == breaktime.hour and now.minute == breaktime.minute:
+            self.paintBreaktimeMessage()
 
 def main():
     server = config['server']
