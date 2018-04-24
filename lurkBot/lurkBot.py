@@ -35,6 +35,7 @@ class LurkBot(irc.IRCClient):
     timeLastNickChange = 0
     index = 0
     foundNick = False
+    ignoreUser = ""
 
     def signedOn(self):
         self.join(self.chatroom)
@@ -58,20 +59,19 @@ class LurkBot(irc.IRCClient):
     def who(self):
         "Get the user's name, hostname, and IP Address"
         "usage: client.whois('testUser')"
-        print "Trying user: " + self.namesList[self.index]
-        if (self.foundNick):
-            print "No user found."
-            print "USING " + self.namesList[self.index]
-            self.setNick(self.namesList[self.index])
-            self.foundNick = True
-        if (self.foundNick == False):
-            self.foundNick = True
-            self.index += 1
-            if len(self.namesList) > self.index:
-                self.sendLine('WHOIS %s' % self.namesList[self.index])
-            else:
-                print "No nick usable."
-                self.setNick("oops")
+        if self.namesList[self.index] != self.ignoreUser:
+            print "Trying user: " + self.namesList[self.index]
+            if (self.foundNick):
+                print "No user named " + self.namesList[self.index] + " found."
+                print "USING " + self.namesList[self.index]
+                self.setNick(self.namesList[self.index])
+                self.foundNick = True
+            if (self.foundNick == False):
+                self.foundNick = True
+                self.runNewWhoIs()
+        else:
+            print "Skipping user: " + self.namesList[self.index]
+            self.runNewWhoIs()
 
     def irc_RPL_WHOISUSER(self, *nargs):
         username = nargs[1][1]
@@ -80,6 +80,18 @@ class LurkBot(irc.IRCClient):
 
     def irc_RPL_ENDOFWHOIS(self, prefix, args):
         self.who()
+
+    def runNewWhoIs(self):
+        self.index += 1
+        if len(self.namesList) > self.index:
+            self.sendLine('WHOIS %s' % self.namesList[self.index])
+        else:
+            print "No nick usable."
+            if self.ignoreUser == "":
+                self.setNick("oops")
+            else:
+                self.msg(self.chatroom, "Looks like there's no other name to steal!")
+                self.ignoreUser = ""
 
     def nickChanged(self, nick):
         print "New nickname: " + nick
@@ -93,6 +105,18 @@ class LurkBot(irc.IRCClient):
             self.msg(nick, "Just lurking here... Don't mind me...")
         if (channel == self.nickname and ip in self.admin):
             self.msg(self.chatroom, message)
+        if (channel == self.chatroom):
+            msg = message.split()
+            if self.nickname in msg[0]:
+                if "please" in msg[1].lower() or "please" in msg[-1].lower():
+                    timeRightNow = time.time()
+                    if (((timeRightNow - self.timeLastNickChange) > 900) and (nick not in self.namesList)):
+                        self.msg(self.chatroom, "Fiiiine...")
+                        self.timeLastNickChange = time.time()
+                        self.index = 0
+                        self.foundNick = False
+                        self.ignoreUser = self.nickname
+                        self.who()
 
     @staticmethod
     def getCurrentTime():
