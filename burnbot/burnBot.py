@@ -41,7 +41,7 @@ class burnBot(irc.IRCClient):
 
     def userRenamed(self, oldname, newname):
         print(oldname, "is now known as", newname.lower())
-        self.who(channel)
+        self.who(self.channel)
 
     def who(self, channel):
         "List the users in 'channel', usage: client.who('#testroom')"
