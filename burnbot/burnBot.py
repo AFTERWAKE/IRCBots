@@ -39,6 +39,10 @@ class burnBot(irc.IRCClient):
     def irc_unknown(self, prefix, command, params):
         print "ERROR", prefix, command, params
 
+    def userJoined(self, user, channel):
+        print (user, "has joined")
+        self.who(channel)
+
     def userRenamed(self, oldname, newname):
         print(oldname, "is now known as", newname.lower())
         self.who(self.channel)
@@ -72,7 +76,7 @@ class burnBot(irc.IRCClient):
                 return
             if search(r'(^|\s)+help*(\s|$)+', message, IGNORECASE):
                 currentTime = time.time()
-                self.msg(self.channel, "Just point me in the direction of who to burn :^)")
+                self.msg(self.channel, "Just point me in the direction of who to burn :^). <warning>Be wary of whom/what you try to burn.</warning>")
             elif search(r"(^|\s)+say*(!|\?)*(\s|$)", message, IGNORECASE):
                 if user_ip == self.owner:
                     self.msg(self.channel, message.split('say ')[1])
@@ -87,7 +91,8 @@ class burnBot(irc.IRCClient):
                         self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
                         print burn_name
                     else:
-                        self.msg(self.channel, "Error 69: User NOT FOUND. Prepare for ultimate burning. \n" + nick + ": " + random.choice(self.jokes))
+                        self.msg(self.channel, "Error 69: User NOT FOUND. Prepare for ultimate burning. \n" + nick
+                            + ": " + random.choice(self.jokes))
                 elif (burn_name) in self.botList:
                     self.msg(self.channel, "Silly human. Burns are for people. You looking to get burned " + nick + "?\n"
                              + nick + ": " + random.choice(self.jokes))
