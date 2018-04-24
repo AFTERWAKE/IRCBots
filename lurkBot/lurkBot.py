@@ -1,5 +1,7 @@
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
+from datetime import datetime
+from re import match
 import time
 
 serv_ip = "coop.test.adtran.com"
@@ -7,6 +9,7 @@ serv_port = 6667
 
 class LurkBot(irc.IRCClient):
     nickname = "lurkBot"
+    username = "bhacker"
     chatroom = "#main"
     admin = ["172.22.117.48", "172.22.116.80"]
     namesList = [
@@ -18,7 +21,6 @@ class LurkBot(irc.IRCClient):
                     "Isaiah",
                     "jlong",
                     "jnguyen",
-                    "KBankston",
                     "kmarcrum",
                     "ldavis",
                     "meena",
@@ -43,7 +45,9 @@ class LurkBot(irc.IRCClient):
             self.changeNick(oldname)
 
     def userQuit(self, user, quitMessage):
-        self.changeNick(user.split("!")[0])
+        currentHour = int(self.getCurrentTime().split(':')[0])
+        if ((currentHour <= 8) or (currentHour >= 17)):
+            self.changeNick(user.split("!")[0])
 
     def changeNick(self, name):
         timeRightNow = time.time()
@@ -89,6 +93,11 @@ class LurkBot(irc.IRCClient):
             self.msg(nick, "Just lurking here... Don't mind me...")
         if (channel == self.nickname and ip in self.admin):
             self.msg(self.chatroom, message)
+
+    @staticmethod
+    def getCurrentTime():
+        time = match('^(\d+):(\d+)', str(datetime.now().time()))
+        return (time.group(1) + ":" + time.group(2))
 
 def main():
     f = protocol.ReconnectingClientFactory()
