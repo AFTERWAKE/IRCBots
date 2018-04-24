@@ -192,25 +192,6 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i).*\\b\\w+(er)\\b.*",
-                "Variable": "\\w+(er)\\b"
-            },
-            "Response": [
-                {
-                    "Message": "#v? I barely know her!",
-                    "Count": 4,
-                    "Type": 0
-                },
-                {
-                    "Message": "#v? I hardly know her!",
-                    "Count": 4,
-                    "Type": 0
-                }
-            ]
-        },
-        {
-            "Action": "none",
-            "Regex": {
                 "Trigger": "(?i)^(dad(dy|a)?|father|(pa){1,2}),?\\s+((u|you)(\\s+(r|are))?|you're)\\s+(a|an)?.*$",
                 "Variable": ""
             },
@@ -496,7 +477,7 @@
                 },
                 {
                     "Message": "Is this pool safe for diving?\nIt deep ends",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {

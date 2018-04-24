@@ -20,7 +20,7 @@ func (ib *IRCBot) FormatReply(message *hbot.Message, adminSpeak bool, sIndex int
 	var reply Reply
 	var speakData = ib.getSpeakData(adminSpeak, sIndex)
 	var response = speakData.GetRandomResponse()
-	var variable = GetVariableRegex(message.Content, speakData.Regex)
+	var variable = RemoveTriggerRegex(message.Content, speakData.Regex)
 	variable = strings.TrimSpace(GetVariableRegex(variable, speakData.Regex))
 	if message.Params[0] == ib.BotConfig.Name {
 		reply.To = message.From
@@ -161,6 +161,7 @@ func (ib *IRCBot) SendReply(m *hbot.Message, reply Reply) bool {
 // TestMessage tests the passed message against the passed regex and returns
 // whether or not a match was found
 func (ib *IRCBot) TestMessage(regex RegexData, message *hbot.Message) bool {
+	var substring string
 	match := false
 	t, v := MustCompileRegexData(regex)
 
@@ -169,7 +170,8 @@ func (ib *IRCBot) TestMessage(regex RegexData, message *hbot.Message) bool {
 		match = true
 	}
 	if match && regex.Variable != "" {
-		if v.FindString(message.Content) == "" {
+		substring = t.ReplaceAllLiteralString(message.Content, "")
+		if v.FindString(substring) == "" {
 			// log.Debug(fmt.Sprintf("Variable regex matched '%s' from '%s'", v.FindString(message.Content), message.Content))
 			match = false
 		}
