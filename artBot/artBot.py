@@ -3,7 +3,7 @@
 
            Name: artBot
          Author: ldavis
-Current Version: 1.3.0
+Current Version: 1.3.1
    Date Written: February 2018
     Description: A simple irc bot that prints out from a selection of ASCII art messages, along with a calming quote by
         the one and only Bob Ross. artBot also sends out a message whenever lunchtime or break arrives. The structure of
