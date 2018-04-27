@@ -1,6 +1,7 @@
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
 from datetime import datetime
+from random import shuffle
 from re import match
 import time
 
@@ -39,6 +40,7 @@ class LurkBot(irc.IRCClient):
     ignoreUser = ""
 
     def signedOn(self):
+        shuffle(self.namesList)
         self.join(self.chatroom)
         self.who()
 
