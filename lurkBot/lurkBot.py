@@ -35,8 +35,10 @@ class LurkBot(irc.IRCClient):
                     "vshouse"
                 ]
     timeLastNickChange = 0
+    timeLastPM = 0
     index = 0
     foundNick = False
+    hasMocked = True
     ignoreUser = ""
 
     def signedOn(self):
@@ -105,7 +107,14 @@ class LurkBot(irc.IRCClient):
         ip = user.split('@')[1]
         if (channel == self.nickname and ip not in self.admin):
             print "lol " + nick + " just said " + message
-            self.msg(nick, "Just lurking here... Don't mind me...")
+            timeRightNow = time.time()
+            if ((timeRightNow - self.timeLastPM) > 30):
+                self.msg(nick, "Just lurking here... Don't mind me...")
+                self.timeLastPM = time.time()
+                self.hasMocked = False
+            elif self.hasMocked == False:
+                self.msg(nick, "IDIOT!")
+                self.hasMocked = True
         if (channel == self.nickname and ip in self.admin):
             self.msg(self.chatroom, message)
         if (channel == self.chatroom):
