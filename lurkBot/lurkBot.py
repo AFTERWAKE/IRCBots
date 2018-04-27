@@ -111,6 +111,10 @@ class LurkBot(irc.IRCClient):
         if (channel == self.chatroom):
             msg = message.split()
             if self.nickname in msg[0]:
+                if ip in self.admin:
+                    if "nick" in msg[1].lower():
+                        if msg[2]:
+                            self.setNick(msg[2])
                 if "please" in msg[1].lower() or "please" in msg[-1].lower():
                     timeRightNow = time.time()
                     if (((timeRightNow - self.timeLastNickChange) > 900) and (nick not in self.namesList)):
