@@ -59,6 +59,8 @@ class ArtBot(irc.IRCClient):
         print(oldName + ' has been renamed to ' + newName)
 
     def privmsg(self, user, channel, message):
+        message = irc.stripFormatting(message)
+        
         if self.isHelpCommand(message):
             self.printHelpMessage()
         elif self.isListCommand(message):
