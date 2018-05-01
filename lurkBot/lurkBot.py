@@ -106,7 +106,7 @@ class LurkBot(irc.IRCClient):
         nick = user.split('!')[0]
         ip = user.split('@')[1]
         if (channel == self.nickname and ip not in self.admin):
-            print "lol " + nick + " just said " + message
+            print "<" + str(datetime.now().time()) + "> " + nick + ": " + message
             timeRightNow = time.time()
             if ((timeRightNow - self.timeLastPM) > 30):
                 self.msg(nick, "Just lurking here... Don't mind me...")
