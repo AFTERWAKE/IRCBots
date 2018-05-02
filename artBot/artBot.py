@@ -3,7 +3,7 @@
 
            Name: artBot
          Author: ldavis
-Current Version: 1.3.2
+Current Version: 1.3.5
    Date Written: February 2018
     Description: A simple irc bot that prints out from a selection of ASCII art messages, along with a calming quote by
         the one and only Bob Ross. artBot also sends out a message whenever lunchtime or break arrives. The structure of
@@ -63,7 +63,7 @@ class ArtBot(irc.IRCClient):
         
         if self.isHelpCommand(message):
             self.printHelpMessage()
-        elif self.isListCommand(message):
+        elif self.isListTagsCommand(message):
             self.printTags()
         elif self.isPaintCommand(message):
             args = message.split()
@@ -76,8 +76,8 @@ class ArtBot(irc.IRCClient):
     def isHelpCommand(self, message):
         return re.match('^' + config['nick'] + ',\s+help$', message)
 
-    def isListCommand(self, message):
-        return re.match('^' + config['nick'] + ',\s+list$', message)
+    def isListTagsCommand(self, message):
+        return re.match('^' + config['nick'] + ',\s+list-tags$', message)
 
     def isPaintCommand(self, message):
         return re.match('^' + config['nick'] + ',\s+paint.*$', message)
@@ -88,8 +88,8 @@ class ArtBot(irc.IRCClient):
 
         self.msg(config['channel'], 'Please use one of the following commands:')
         self.msg(config['channel'], 'artBot, help: Ask me for help')
-        self.msg(config['channel'], 'artBot, paint <tag>: Paint ASCII message by its corresponding tag (random by default)')
-        self.msg(config['channel'], 'artBot, list: Lists all of the valid message tags for painting')
+        self.msg(config['channel'], 'artBot, paint <tag>: Paint ASCII message by tag (random by default)')
+        self.msg(config['channel'], 'artBot, list-tags: Lists all message tags for painting')
 
     def printTags(self):
         if self.painting:
