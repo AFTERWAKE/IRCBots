@@ -1,41 +1,34 @@
-High Five Bot
+Doge Bot!
 =============
 
-[![Build Status](https://travis-ci.org/cadecairos/highfivebot.png?branch=master)](https://travis-ci.org/cadecairos/highfivebot)
-
-A node bot for giving out highfives to lonely people (OR AWESOME PEOPLE!)
+Very bot. Such wow.
 
 Setup
 -----
 
 Prerequisites:
 
-* Node > v0.8.23
-* NPM > v1.2.10
+* Twisted (pip install Twisted)
 
-1) `git clone https://github.com/cadecairos/highfivebot.git`
+1) `git clone https://github.com/AFTERWAKE/IRCBots.git`
 
-2) `cd highfivebot;`
+2) `cd IRCBots/doge;`
 
-3) `npm install`
+3) `pip install Twisted`
 
-4) `cp env.dist .env`
+4) Edit doge.py to configure the bot (see config section below)
 
-5) Edit the .env file to configure the bot (see confic section below)
-
-6) run `node app` to start the bot
+5) run `python doge.py` to start the bot
 
 Config
 ------
 
-HOST: The URL of the IRC server
+chatroom: The channel you want your bot in
 
-NICK: The nick of the bot
-
-CHANNELS: A comma delimited string of channels. channels can be optionally prefixed with '#'
+serv_ip: The IP or web address of your IRC server
 
 
-Troubleshooting
+Twisted Documentation
 ---------------
 
-If `npm install` is not working, [install nvm](https://github.com/creationix/nvm#installation) and run the command `nvm install 0.8.23` to use the older version of node and npm.
+http://twistedmatrix.com/documents/current/api/twisted.words.protocols.irc.IRC.html

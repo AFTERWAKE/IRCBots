@@ -1,0 +1,27 @@
+dad say #main: sending notice to #main
+dad notice #main: jlong sucks
+
+dad say #main: sending action to #main
+dad action #main: dabs on jlong
+
+dad say #main: setting topic in #main
+dad topic #main: jlong sucks
+
+dad say #main: sending nick command through send response
+dad send NICK jlong_sucks
+dad send NICK dad
+
+dad say #main: deOP'ing awest
+dad chmode #main: -o awest
+
+dad say #main: OP'ing awest
+dad chmode #main: +o awest
+
+dad say #main: joining #rents
+dad join #rents
+
+dad say #main: leaving #rents
+dad part #rents jlong sucks
+
+dad say #main: quitting IRC
+dad quit jlong sucks

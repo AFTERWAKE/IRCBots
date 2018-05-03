@@ -1,0 +1,165 @@
+{
+    "AdminSpeak": [
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+say\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 9,
+                    "Type": 1
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+notice\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 2
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+action\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 1,
+                    "Type": 3
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+topic\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 4
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+send\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 5
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+chmode\\s+",
+                "Variable": "\\S+\\s+[+-]\\w+"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 0,
+                    "Type": 6
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+join\\s+",
+                "Variable": "#\\S*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 2,
+                    "Type": 7
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+part\\s+",
+                "Variable": "#\\S*(\\s+.*)?"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 2,
+                    "Type": 8
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+quit\\s+",
+                "Variable": ".*"
+            },
+            "Response": [
+                {
+                    "Message": "#v",
+                    "Count": 2,
+                    "Type": 9
+                }
+            ]
+        }
+    ],
+    "Channels": [
+        "#rents"
+    ],
+    "Debug": true,
+    "Name": "mom",
+    "Speak": [
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Ask your father.",
+                    "Count": 54,
+                    "Type": 0
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(mom(my|ma)?|mother|(ma){1,2})$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Ok",
+                    "Count": 7,
+                    "Type": 0
+                }
+            ]
+        }
+    ]
+}

@@ -4,7 +4,7 @@ dad, say Hello current channel!
 dad, say receiving a say command with awest as direction and expecting a greeting in private message
 dad, say awest: Hello awest!
 
-dad, say receiving a private say command without direction and expecting a response through main channel
+dad, say receiving a private say command without direction and expecting a private response
 /msg dad dad, say jlong sucks
 
 dad, say receiving a private say command with #main as direction and expecting response through main channel
@@ -32,7 +32,7 @@ dad, say saying hello i'mj long and expecting nothing back
 hello i'mj long
 
 dad, say saying I'm 100% cooler than jlong and expecting mocking response
-I'm cooler than jlong
+I'm 100% cooler than jlong
 
 dad, say saying im .cooler than jlong and expecting response with . removed
 im .cooler than jlong
@@ -76,15 +76,11 @@ dad, unground jlong
 dad, say checking for ungrounded user and expecting list of users without grounded user
 dad, grounded
 
-dad, say saying dad, dada, daddy, father, pop, pops, poppop, poppops, pa, and papa and expecting 10 jokes
+dad, say saying dad, dada, daddy, father, pa, and papa and expecting 6 jokes
 dad
 dada
 daddy
 father
-pop
-pops
-poppop
-poppops
 pa
 papa
 
@@ -114,3 +110,15 @@ make me jlong
 
 dad, say #main: saying I love dad and expecting Awww... I love you too, awest :v)
 I love dad
+
+dad, say #main: saying I love mom and expecting nothing back
+I love mom
+
+dad, say testing colon use in command with target channel specified
+dad, say #main: jlong sucks :v)
+
+dad, say insulting dad and expecting a mature response
+dad, u ugly
+
+dad, say insulting dad again and expecting another mature response
+dad, you're a bad bot
