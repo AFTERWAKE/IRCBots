@@ -84,14 +84,14 @@ class burnBot(irc.IRCClient):
                 self.user_list = [names for names in self.user_list if names not in self.botList]
                 if channel == self.nickname and user_ip != self.owner:
                     return
+                elif search(r"(^|\s)+say*(!|\?)*(\s|$)", message, IGNORECASE):
+                    if user_ip == self.owner:
+                        self.msg(self.channel, message.split('say ')[1])
                 elif nick in self.ignoreList:
                     return
                 elif search(r'(^|\s)+help*(\s|$)+', message, IGNORECASE):
                     self.currentTime = time.time()
                     self.msg(self.channel, "Just point me in the direction of who to burn :^). <warning>Be wary of whom/what you try to burn.</warning>")
-                elif search(r"(^|\s)+say*(!|\?)*(\s|$)", message, IGNORECASE):
-                    if user_ip == self.owner:
-                        self.msg(self.channel, message.split('say ')[1])
                 elif search(r"(^|\s)+burn*(!|\?)*(\s|$)", message, IGNORECASE):
                     self.currentTime = time.time()
                     items = message.split(" ")
