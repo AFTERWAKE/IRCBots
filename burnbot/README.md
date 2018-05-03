@@ -33,7 +33,7 @@ serv_ip: The IP or web address of your IRC server
 
 	Admin Commands
 	
-burnbot, ignore <user>
-burnbot, unignore <user>
-burnbot, say <msg>
-burnbot, burn <anything_you_want>
+-burnbot, ignore <user_name>
+-burnbot, unignore <user_name>
+-burnbot, say <your_message>
+-burnbot, burn <anything_you_want>
