@@ -30,23 +30,23 @@ class Doge(irc.IRCClient):
                         self.timeLastCommand = time.time()
                         if message == (self.nickname + ', sit'):
                             if randint(0,6) == 1:
-                                self.willDoTrick = False
+                                self.needsMoreTreats()
                             self.describe(self.chatroom, "sits")
                         elif message == (self.nickname + ', roll over'):
                             if randint(0,6) == 1:
-                                self.willDoTrick = False
+                                self.needsMoreTreats()
                             self.describe(self.chatroom, "rolls over")
                         elif message == (self.nickname + ', shake'):
                             if randint(0,6) == 1:
-                                self.willDoTrick = False
+                                self.needsMoreTreats()
                             self.describe(self.chatroom, "lifts up paw")
                         elif message == (self.nickname + ', play dead'):
                             if randint(0,6) == 1:
-                                self.willDoTrick = False
+                                self.needsMoreTreats()
                             self.describe(self.chatroom, "lays down dramatically")
                         elif message == (self.nickname + ', speak'):
                             if randint(0,6) == 1:
-                                self.willDoTrick = False
+                                self.needsMoreTreats()
                             if randint(0, 5) == 1:
                                 self.describe(self.chatroom, "borks")
                             else:
@@ -54,9 +54,10 @@ class Doge(irc.IRCClient):
         if search(r"(^|\s)+treats*(!|\?)*(\s|$)+", message, IGNORECASE):
             timeRightNow = time.time()
             if ((timeRightNow - self.timeLastTreatCommand) > 2) or isOwner:
-                self.timeLastTreatCommand = time.time()
-                self.describe(self.chatroom, "perks his head up")
-                self.willDoTrick = True
+                if (self.willDoTrick == False):
+                    self.timeLastTreatCommand = time.time()
+                    self.describe(self.chatroom, "perks his head up")
+                    self.willDoTrick = True
         elif search(r"(^|\s)+good boy!*(\s|$)+", message, IGNORECASE):
             timeRightNow = time.time()
             if ((timeRightNow - self.timeLastCommand) > 2) or isOwner:
@@ -69,6 +70,10 @@ class Doge(irc.IRCClient):
             if ((timeRightNow - self.timeLastCommand) > 4) or isOwner:
                 self.timeLastCommand = time.time()
                 self.msg(self.chatroom, "Wow!")
+
+    def needsMoreTreats(self):
+        self.willDoTrick = False
+        self.describe(self.chatroom, "wanders away")
 
 
 def main():
