@@ -1,6 +1,7 @@
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
 from datetime import datetime
+from random import shuffle
 from re import match
 import time
 
@@ -34,11 +35,14 @@ class LurkBot(irc.IRCClient):
                     "vshouse"
                 ]
     timeLastNickChange = 0
+    timeLastPM = 0
     index = 0
     foundNick = False
+    hasMocked = True
     ignoreUser = ""
 
     def signedOn(self):
+        shuffle(self.namesList)
         self.join(self.chatroom)
         self.who()
 
@@ -102,13 +106,24 @@ class LurkBot(irc.IRCClient):
         nick = user.split('!')[0]
         ip = user.split('@')[1]
         if (channel == self.nickname and ip not in self.admin):
-            print "lol " + nick + " just said " + message
-            self.msg(nick, "Just lurking here... Don't mind me...")
+            print "<" + str(datetime.now().time()) + "> " + nick + ": " + message
+            timeRightNow = time.time()
+            if ((timeRightNow - self.timeLastPM) > 30):
+                self.msg(nick, "Just lurking here... Don't mind me...")
+                self.timeLastPM = time.time()
+                self.hasMocked = False
+            elif self.hasMocked == False:
+                self.msg(nick, "IDIOT!")
+                self.hasMocked = True
         if (channel == self.nickname and ip in self.admin):
             self.msg(self.chatroom, message)
         if (channel == self.chatroom):
             msg = message.split()
             if self.nickname in msg[0]:
+                if ip in self.admin:
+                    if "nick" in msg[1].lower():
+                        if msg[2]:
+                            self.setNick(msg[2])
                 if "please" in msg[1].lower() or "please" in msg[-1].lower():
                     timeRightNow = time.time()
                     if (((timeRightNow - self.timeLastNickChange) > 900) and (nick not in self.namesList)):
