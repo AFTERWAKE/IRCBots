@@ -3,7 +3,7 @@
       Author: DavidS
    v2 Author: noahsiano
         Date: April 2015
-Last Updated: April 2018
+Last Updated: June 2018
         NOTE: Run in linux in order to get the dictionary to work.
  Description: This connects to an IRC chatroom and plays a counting game at the times 8:30,
               11:00, 1:30, and 4. The game can also be initiated by one or two hosts listed.
@@ -22,6 +22,8 @@ Last Updated: April 2018
                    botNick, unmute <user> (undoes the actions of the `mute` command)
                    botNick, whois <user> (Gives the IP address of a user on the server)
                    botNick, mock <user> (Mocks the user and shows their current points)
+                   botNick, pmock <user> (Everything the user says is mocked)
+                   botNick, unpmock <user> (Undoes the pmock command)
                    botNick, quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
               USER COMMANDS
                    botNick, help (help message)
@@ -49,7 +51,7 @@ serv_port = 6667
 
 
 class countBot(irc.IRCClient):
-    version = "2.12.2"
+    version = "2.13.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -208,6 +210,23 @@ class countBot(irc.IRCClient):
             else:
                 self.msg(self.chatroom, self.mockMe("i am " + name + " and i have " + str(points) + " points"))
 
+    def permaMockUser(self, name):
+        nameIndex = self.getUserIndex(name)
+        if nameIndex != -1:
+            self.nameList[nameIndex].permaMock = True
+
+    def unpermaMockUser(self, name):
+        nameIndex = self.getUserIndex(name)
+        if nameIndex != -1:
+            self.nameList[nameIndex].permaMock = False
+
+    def userPermaMocked(self, name):
+        nameIndex = self.getUserIndex(name)
+        if nameIndex != -1:
+            return self.nameList[nameIndex].permaMock
+        else:
+            return False
+
     def kickUser(self, userIndex, name):
         self.msg(self.chatroom, name + " has been eliminated from the game. " +
                  "Too many numbers submitted. " + '{} {} is what we\'re on.'
@@ -307,6 +326,10 @@ class countBot(irc.IRCClient):
             self._whois(message.split()[2])
         elif (message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock')):
             self.mockUser(message.split()[2])
+        elif (message.startswith(self.nickname + ', pmock') or message.startswith(self.nickname + ': pmock') or message.startswith(self.nickname + ' pmock')):
+            self.permaMockUser(message.split()[2])
+        elif (message.startswith(self.nickname + ', unpmock') or message.startswith(self.nickname + ': unpmock') or message.startswith(self.nickname + ' unpmock')):
+            self.unpermaMockUser(message.split()[2])
         else:
             self.userCommands('noahsiano', message)
 
@@ -604,6 +627,8 @@ class countBot(irc.IRCClient):
         self.checkResetWieners()
         if ((channel == self.chatroom) or (user.split('@')[1] in self.admin)):
             try:
+                if (not self.gameRunning and self.userPermaMocked(user.split('!')[0])):
+                    self.msg(self.chatroom, self.mockMe(message))
                 if (self.gameRunning and int(message) != self.currentNumber):
                     print "[{}] {}: {}".format(str(datetime.now().time()), user, message)
                 elif (not self.gameRunning and self.timestampBuffer > 0):
@@ -655,6 +680,7 @@ class player:
     isKicked = False
     hasNewWieners = False
     dayOfLastWiener = -1
+    permaMock = False
 
     def __init__(self, name):
         self.username = name
