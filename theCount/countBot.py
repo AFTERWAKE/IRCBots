@@ -63,7 +63,7 @@ class countBot(irc.IRCClient):
     hourOfLastGame = 0
     gameRunning = False
     nameList = []
-    admin = ["172.22.117.48", "172.22.116.80"]
+    admin = ["172.22.117.48", "172.22.116.80", "nsiano800w10.adtran.com"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'

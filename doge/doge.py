@@ -12,7 +12,7 @@ class Doge(irc.IRCClient):
     chatroom = "#main"
     timeLastCommand = 0
     timeLastTreatCommand = 0
-    owner = ["172.22.117.48", "172.22.116.80"]
+    owner = ["172.22.117.48", "172.22.116.80", "nsiano800w10.adtran.com"]
     willDoTrick = False
 
     def signedOn(self):

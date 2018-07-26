@@ -12,7 +12,7 @@ class LurkBot(irc.IRCClient):
     nickname = "lurkBot"
     username = "bhacker"
     chatroom = "#main"
-    admin = ["172.22.117.48", "172.22.116.80"]
+    admin = ["172.22.117.48", "172.22.116.80", "nsiano800w10.adtran.com"]
     namesList = [
                     "awest",
                     "benji",
