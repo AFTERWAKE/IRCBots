@@ -296,7 +296,7 @@ class memeBot(irc.IRCClient):
         self.__last_response = temp_time
 
     def help_message(self, channel):
-        msg = "Hi! I'm memeBot!  I don't "
+        msg = "Hi! I'm memeBot!  Do you how do!"
         self.msg(channel, msg)
         return
 
@@ -368,6 +368,9 @@ class memeBot(irc.IRCClient):
 
             # general business
             #TODO
+
+            elif re.search(self.nickname + r",*\shelp", message.lower()):
+                self.help_message()
 
             else:
                 return
