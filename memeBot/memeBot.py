@@ -13,7 +13,7 @@ import string
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#main"
+channel = "#test"
 
 try:
     with open("../admin_ip.txt", "r") as infile:
@@ -296,9 +296,8 @@ class memeBot(irc.IRCClient):
         self.__last_response = temp_time
 
     def help_message(self, channel):
-        msg = "Hi! I'm memeBot!  Do you how do!"
+        msg = "Hi! I'm memeBot!  Do you how do :^)"
         self.msg(channel, msg)
-        return
 
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
@@ -316,9 +315,13 @@ class memeBot(irc.IRCClient):
             if user_ip == admin_ip:
                 self.admin_cmds(channel, message)
 
+            print message.lower()
             # ignore list
             if host in self.__ignore:
                 return
+
+            elif re.search(self.nickname + r",*\shelp", message):
+                self.help_message(channel)
 
             # murica
             elif message == "murica"\
@@ -359,18 +362,12 @@ class memeBot(irc.IRCClient):
                 self.clark(channel, temp_time, host)
 
             # odds
-            elif re.search(self.nickname + r",*\sodds", message.lower()):
+            elif re.search(self.nickname + r",*\sodds", message):
                 self.odds(channel, temp_time)
 
             # oof owie
             elif re.search(r"\boof\b|\b:oof:\b", message.lower()):
                 self.oof_owie(channel, temp_time)
-
-            # general business
-            #TODO
-
-            elif re.search(self.nickname + r",*\shelp", message.lower()):
-                self.help_message()
 
             else:
                 return
