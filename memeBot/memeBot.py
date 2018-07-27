@@ -289,7 +289,7 @@ class memeBot(irc.IRCClient):
         reactor.callLater(2, self.msg, channel, "1")
         reactor.callLater(3, self.msg, channel, "GO!")
         temp_time = time.time()
-        return 
+        return
 
     def oof_owie(self, channel, temp_time):
         self.msg(channel, "owie")
