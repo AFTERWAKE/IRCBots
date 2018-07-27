@@ -17,6 +17,8 @@ ADMIN COMMANDS
          botNick, unmute <user> (undoes the actions of the `mute` command)
          botNick, whois <user> (Gives the IP address of a user on the server)
          botNick, mock <user> (Mocks the user and shows their current points)
+         botNick, pmock <user> (Everything the user says is mocked)
+         botNick, unpmock <user> (Undoes the pmock command)
          botNick, quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
 
   USER COMMANDS
