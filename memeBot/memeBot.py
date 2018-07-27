@@ -315,7 +315,6 @@ class memeBot(irc.IRCClient):
             if user_ip == admin_ip:
                 self.admin_cmds(channel, message)
 
-            print message.lower()
             # ignore list
             if host in self.__ignore:
                 return
