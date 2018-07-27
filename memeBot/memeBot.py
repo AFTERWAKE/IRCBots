@@ -359,7 +359,7 @@ class memeBot(irc.IRCClient):
                 self.clark(channel, temp_time, host)
 
             # odds
-            elif re.search(self.nickname + r",*\sodds", message):
+            elif re.search(self.nickname + r",*\sodds", message.lower()):
                 self.odds(channel, temp_time)
 
             # oof owie
