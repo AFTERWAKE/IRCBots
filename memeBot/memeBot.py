@@ -291,6 +291,10 @@ class memeBot(irc.IRCClient):
         temp_time = time.time()
         return 
 
+    def oof_owie(self, channel, temp_time):
+        self.msg(channel, "owie")
+        self.__last_response = temp_time
+
     def help_message(self, channel):
         msg = "Hi! I'm memeBot!  I don't "
         self.msg(channel, msg)
@@ -357,6 +361,10 @@ class memeBot(irc.IRCClient):
             # odds
             elif re.search(self.nickname + r",*\sodds", message):
                 self.odds(channel, temp_time)
+
+            # oof owie
+            elif re.search(r"\boof\b|\b:oof:\b", message.lower()):
+                self.oof_owie(channel, temp_time)
 
             # general business
             #TODO
