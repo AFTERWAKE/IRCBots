@@ -116,7 +116,17 @@ class LurkBot(irc.IRCClient):
                 self.msg(nick, "IDIOT!")
                 self.hasMocked = True
         if (channel == self.nickname and ip in self.admin):
-            self.msg(self.chatroom, message)
+            msg = message.split()
+            if "!op" in msg[0]:
+                if msg[1]:
+                    print "Opping user <" + msg[1] + ">"
+                    self.mode(self.chatroom, True, "o", user=msg[1])
+            elif "!deop" in msg[0]:
+                if msg[1]:
+                    print "De-opping user <" + msg[1] + ">"
+                    self.mode(self.chatroom, False, "o", user=msg[1])
+            else:
+                self.msg(self.chatroom, message)
         if (channel == self.chatroom):
             msg = message.split()
             if self.nickname in msg[0]:
