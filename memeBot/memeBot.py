@@ -13,7 +13,7 @@ import string
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#test"
+channel = "#main"
 
 try:
     with open("../admin_ip.txt", "r") as infile:
