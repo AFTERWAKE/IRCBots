@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 581,
+                    "Count": 586,
                     "Type": 1
                 }
             ]
@@ -93,7 +93,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 8,
+                    "Count": 12,
                     "Type": 5
                 }
             ]
@@ -217,7 +217,7 @@
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 59,
+                    "Count": 62,
                     "Type": 0
                 }
             ]
@@ -231,7 +231,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 1126,
+                    "Count": 1415,
                     "Type": 0
                 }
             ]
@@ -273,7 +273,7 @@
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 41,
+                    "Count": 42,
                     "Type": 0
                 }
             ]
@@ -287,7 +287,7 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 27,
+                    "Count": 32,
                     "Type": 0
                 }
             ]
@@ -315,12 +315,12 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 77,
+                    "Count": 78,
                     "Type": 0
                 },
                 {
                     "Message": "I'll tell you when you're older.",
-                    "Count": 12,
+                    "Count": 15,
                     "Type": 0
                 }
             ]
@@ -334,7 +334,7 @@
             "Response": [
                 {
                     "Message": "Poof, you're #a #v!",
-                    "Count": 46,
+                    "Count": 47,
                     "Type": 0
                 }
             ]
@@ -372,12 +372,12 @@
                 },
                 {
                     "Message": "Dad, can you put my shoes on?\nI don't think they'll fit me",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
                     "Message": "Dad, can you put the cat out?\nI didn't know it was on fire",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -387,7 +387,7 @@
                 },
                 {
                     "Message": "Did you hear about the cheese factory that exploded in France?\nThere was nothing left but de Brie",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -477,7 +477,7 @@
                 },
                 {
                     "Message": "Is this pool safe for diving?\nIt deep ends",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -492,7 +492,7 @@
                 },
                 {
                     "Message": "Our wedding was so beautiful,\neven the cake was in tiers",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -502,7 +502,7 @@
                 },
                 {
                     "Message": "Two satellites decided to get married\nThe wedding wasn't much, but the reception was incredible",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -557,7 +557,7 @@
                 },
                 {
                     "Message": "What do you call cheese by itself?\nProvolone",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -582,7 +582,7 @@
                 },
                 {
                     "Message": "What lies at the bottom of the ocean and twitches?\nA nervous wreck",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -592,7 +592,7 @@
                 },
                 {
                     "Message": "Where does Fonzie like to go for lunch?\nChick-Fil-Eyyyyyyyy",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -627,7 +627,7 @@
                 },
                 {
                     "Message": "Why do bees hum?\nBecause they don't know the words",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -677,7 +677,7 @@
                 },
                 {
                     "Message": "I got a haircut last week...\nAt first I didn't like it, but it's growing on me",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -702,7 +702,7 @@
                 },
                 {
                     "Message": "A judge sentenced me to take a guy out to dinner.\nIt was a court mandate",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -767,7 +767,7 @@
                 },
                 {
                     "Message": "What does an oyster wear into battle?\nClamouflage",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -952,7 +952,7 @@
                 },
                 {
                     "Message": "How do you fight off the flu?\nWith kung-flu",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1027,7 +1027,7 @@
                 },
                 {
                     "Message": "To the mathematicians who thought of the idea of zero...\nThanks for nothing.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1047,7 +1047,7 @@
                 },
                 {
                     "Message": "How do subatomic pirates mutiny?\nThey make the captain walk the planck.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1157,7 +1157,7 @@
                 },
                 {
                     "Message": "I don't know why Euthanasia is so controversial.\nI personally don't mind Asian kids.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1187,7 +1187,7 @@
                 },
                 {
                     "Message": "In the annual scientistific track and field meet, the geologists always lose\nProving once again that gneiss guys finish last.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1227,7 +1227,7 @@
                 },
                 {
                     "Message": "Mary had a little lamb\nand a side of veggies for dinner.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1252,7 +1252,7 @@
                 },
                 {
                     "Message": "Did you hear about the kidnapping in Denver?\nHe woke up.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1302,7 +1302,7 @@
                 },
                 {
                     "Message": "Did you know that Abraham Lincoln was wrongly accused?\nTurns out he was in a cent.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1312,7 +1312,7 @@
                 },
                 {
                     "Message": "My jar of Miracle Whip tasted funny.\nLMAYO",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {

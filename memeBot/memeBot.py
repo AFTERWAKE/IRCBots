@@ -8,7 +8,7 @@ from lxml import html
 import requests
 
 from twisted.words.protocols import irc
-from twisted.internet import reactor, protocol
+from twisted.internet import reactor, protocol, defer
 import string
 
 serv_ip = "coop.test.adtran.com"
@@ -283,6 +283,22 @@ class memeBot(irc.IRCClient):
         except (IOError):
             print "ERROR: disciples.txt not found"
 
+    def odds(self, channel, temp_time):
+        reactor.callLater(0, self.msg, channel, "3")
+        reactor.callLater(1, self.msg, channel, "2")
+        reactor.callLater(2, self.msg, channel, "1")
+        reactor.callLater(3, self.msg, channel, "GO!")
+        temp_time = time.time()
+        return
+
+    def oof_owie(self, channel, temp_time):
+        self.msg(channel, "owie")
+        self.__last_response = temp_time
+
+    def help_message(self, channel):
+        msg = "Hi! I'm memeBot!  Do you how do :^)"
+        self.msg(channel, msg)
+
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
@@ -293,7 +309,7 @@ class memeBot(irc.IRCClient):
         if (channel == self.nickname) and user_ip != admin_ip:
             return
 
-        print(channel, user, message)
+        # print(channel, user, message)
         if (temp_time - self.__last_response > 5) or user.split("@")[1] == admin_ip:
             # admin commands
             if user_ip == admin_ip:
@@ -302,6 +318,9 @@ class memeBot(irc.IRCClient):
             # ignore list
             if host in self.__ignore:
                 return
+
+            elif re.search(self.nickname + r",*\shelp", message):
+                self.help_message(channel)
 
             # murica
             elif message == "murica"\
@@ -314,7 +333,7 @@ class memeBot(irc.IRCClient):
 
             # doot doot
             elif re.search(r"(\bdoot\b)", message.lower()):
-                self.doot(channel, message, temp_time)
+                self.doot(channel, message.lower(), temp_time)
 
             # achoo
             elif re.search(r"(\bachoo\b|\bsneeze\b|\basneeze\b)", message.lower()):
@@ -341,8 +360,13 @@ class memeBot(irc.IRCClient):
             elif re.search(r"praise\sclark\s(in\sthe\s|and\shis\s)ark|\bf\b", message.lower()):
                 self.clark(channel, temp_time, host)
 
-            # general business
-            #TODO
+            # odds
+            elif re.search(self.nickname + r",*\sodds", message):
+                self.odds(channel, temp_time)
+
+            # oof owie
+            elif re.search(r"\boof\b|\b:oof:\b", message.lower()):
+                self.oof_owie(channel, temp_time)
 
             else:
                 return

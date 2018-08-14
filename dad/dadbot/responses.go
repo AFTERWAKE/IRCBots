@@ -22,7 +22,7 @@ func (ib *IRCBot) FormatReply(message *hbot.Message, adminSpeak bool, sIndex int
 	var response = speakData.GetRandomResponse()
 	var variable = RemoveTriggerRegex(message.Content, speakData.Regex)
 	variable = strings.TrimSpace(GetVariableRegex(variable, speakData.Regex))
-	if (message.Params[0] == ib.BotConfig.Name) {
+	if message.Params[0] == ib.BotConfig.Name {
 		reply.To = message.From
 	} else {
 		reply.To = message.To
@@ -73,9 +73,8 @@ func (ib *IRCBot) PerformReply(m *hbot.Message, adminSpeak bool) bool {
 	}
 	if adminSpeak {
 		return ib.performAdminReply(m)
-	} else {
-		return ib.performUserReply(m)
 	}
+	return ib.performUserReply(m)
 }
 
 func (ib *IRCBot) performAdminReply(m *hbot.Message) bool {
@@ -165,15 +164,15 @@ func (ib *IRCBot) TestMessage(regex RegexData, message *hbot.Message) bool {
 	var substring string
 	match := false
 	t, v := MustCompileRegexData(regex)
-	// log.Debug(fmt.Sprintf("Trigger regex matched '%s' from '%s'", t.FindString(message.Content), message.Content))
 
 	if t.FindString(message.Content) != "" {
+		// log.Debug(fmt.Sprintf("Trigger regex matched '%s' from '%s'", t.FindString(message.Content), message.Content))
 		match = true
 	}
 	if match && regex.Variable != "" {
 		substring = t.ReplaceAllLiteralString(message.Content, "")
-		// log.Debug(fmt.Sprintf("Variable regex matched '%s' from '%s'", v.FindString(substring), substring))
 		if v.FindString(substring) == "" {
+			// log.Debug(fmt.Sprintf("Variable regex matched '%s' from '%s'", v.FindString(message.Content), message.Content))
 			match = false
 		}
 	}

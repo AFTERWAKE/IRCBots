@@ -15,9 +15,6 @@ serv_ip = "coop.test.adtran.com"
 serv_port = 6667
 channel = "#main"
 
-with open(r'Magic_Conch.json') as f:
-    config = json.load(f)
-
 try:
     with open(r'../admin_ip.txt', 'r') as infile:
         admin_ip = infile.readline().strip()
@@ -194,7 +191,7 @@ class theMagicConch(irc.IRCClient):
             return
 
         # who
-        elif re.search(r"Magic[ _]Conch,.*who.*", message):
+        elif re.search(r"Magic[ _]Conch.*who.*", message):
             msg = random.choice(["%s",
                                  "I think it was %s...",
                                  "I believe it was %s",
@@ -206,7 +203,7 @@ class theMagicConch(irc.IRCClient):
             return
 
         # how much/many
-        elif re.search(r"Magic[ _]Conch,.*\s*how\s(much|many).*\?", message):
+        elif re.search(r"Magic[ _]Conch.*\s*how\s(much|many).*\?", message):
             msg = random.choice([ str(random.randint(0,20)),
                                   "A lot",
                                   "Some",
@@ -218,12 +215,12 @@ class theMagicConch(irc.IRCClient):
             self.msg(channel, msg)
 
         # where
-        elif re.search(r"Magic[ _]Conch,.*\s*where\s*.*\?", message):
+        elif re.search(r"Magic[ _]Conch.*\s*where\s*.*\?", message):
             msg = "Follow the seahorse"
             self.msg(channel, msg)
 
         # or
-        elif re.search(r"Magic[ _]Conch,.*\s+or\s+.*\?", message):
+        elif re.search(r"Magic[ _]Conch.*\s+or\s+.*\?", message):
             msg = random.choice(["Neither",
                                  "Both",
                                  "The first one.",
@@ -231,7 +228,7 @@ class theMagicConch(irc.IRCClient):
             self.msg(channel, msg)
 
         # what do
-        elif re.search(r"Magic[ _]Conch,.*what\sdo.*\\?", message):
+        elif re.search(r"Magic[ _]Conch.*what\sdo.*\\?", message):
             msg = random.choice(["Nothing.",
                                  "Everything.",
                                  "Very little.",
@@ -240,12 +237,12 @@ class theMagicConch(irc.IRCClient):
             self.msg(channel, msg)
 
         # what is love
-        elif re.search(r"Magic[ _]Conch,.*what\s*is\s*love.*\?.", message):
+        elif re.search(r"Magic[ _]Conch.*what\s*is\s*love.*\?.", message):
             msg = "Baby don't hurt me, don't hurt me, no more~"
             self.msg(channel, msg)
 
         # generic response
-        elif re.search(r"Magic[ _]Conch,.*\?", message):
+        elif re.search(r"Magic[ _]Conch.*\?", message):
             msg = random.choice([ "Maybe someday.",
                                   "Follow the seahorse.",
                                   "I don't think so.",
