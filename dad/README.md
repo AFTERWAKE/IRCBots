@@ -98,7 +98,7 @@
     - gvm use go(desired 1.5+ version)
     - Continue to Both systems for the final steps once Go is set up
 - ### Both systems
-    - Once Go is installed, run "go get github.com/alecwest/godaddyirc" and everything should download
+    - Once Go is installed, run "go get github.com/AFTERWAKE/IRCBots" and everything should download
     - If on windows, you'll get an additional error about some code in hellabot, which should just need a modification to recon_windows.go (lowercase the HijackSession function)
     - After making sure irc_config.json is set up to point to the right server and dad/mom_config.json is pointing to the right channel, run "go run dad.go" or "go run mom.go"
 
