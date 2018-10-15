@@ -14,7 +14,7 @@ class burnBot(irc.IRCClient):
     nickname = "burnBot"
     channel = "#main"
     owner = 'mreams800w7p.adtran.com'
-    owner_name = "berns"
+    owner_name = ""
     currentTime = 0
     default = 'burn berNs'
     botList = [
@@ -22,7 +22,7 @@ class burnBot(irc.IRCClient):
         "nodebot", "Magic_Conch",
         "Seahorse", "dootbot",
         "pointbot", "botProtector",
-        "QuipBot", "MemeBot", "burnBot", "Mr_HighFive", "theCount", "Doge"]
+        "QuipBot", "MemeBot", "burnBot", "Mr_HighFive", "theCount", "Doge", "Calculator"]
     user_list = []
     ignoreList = []
     with open(os.path.join(os.getcwd(), 'Responses.txt'), 'r') as file:
@@ -59,21 +59,31 @@ class burnBot(irc.IRCClient):
     def irc_RPL_WHOREPLY(self, *nargs):
         "Receive WHO reply from server"
         usr = {}
+        finUsr = {}
         usr["nick"] = nargs[1][5]
         usr["host"] = nargs[1][2]
         usr["ip"] = nargs[1][3]
-        self.user_list.append(usr["nick"])
-
+        # for (key, value) in usr:
+        #     usr[key] = [(value)]
+        if (usr["ip"] == self.owner):
+               self.owner_name = usr["nick"]
+        self.user_list.append(usr)
+        # print self.user_list    
     def irc_RPL_ENDOFWHO(self, *nargs):
             "Called when WHO output is complete"
             print ("Users:")
             for each in self.user_list:
-                print (each)
+                print (each["nick"] + each["ip"])
+				#print (each["ip"])
+	# def join(self, channel)
+ #    	self.join(channel)	
 
     def privmsg(self, user, channel, message):
+		
         timeRightNow = time.time()
         nick = user.split('!')[0]
         user_ip = user.split('@')[1]
+       
 
         if message.startswith(self.nickname):
             if search(r'(^|\s)+ignore*(\s|$)+', message, IGNORECASE) and user_ip == self.owner:
