@@ -83,7 +83,8 @@ class burnBot(irc.IRCClient):
         timeRightNow = time.time()
         nick = user.split('!')[0]
         user_ip = user.split('@')[1]
-       
+        user_name = []
+        for name in self.user_list: user_name.append(name["nick"])
 
         if message.startswith(self.nickname):
             if search(r'(^|\s)+ignore*(\s|$)+', message, IGNORECASE) and user_ip == self.owner:
@@ -109,14 +110,12 @@ class burnBot(irc.IRCClient):
                     if len(items) > 2:
                         burn_name = irc.stripFormatting(message.split(" ")[2])
                     if len(items) == 2:
-                        user_name = []
-                        for name in self.user_list: user_name.append(name["nick"])
                         self.msg(self.channel, random.choice(user_name) + ": " + random.choice(self.jokes))
                     elif burn_name.lower() == self.nickname.lower():
                         self.msg(self.channel, "Burn baby, burn.")
                     elif burn_name.lower() == self.owner_name.lower():
                         self.msg(self.channel, 'Feel the burn')
-                    elif burn_name not in self.user_list:
+                    elif burn_name not in user_name:
                         if user_ip == self.owner:
                             self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
                             print (burn_name)
