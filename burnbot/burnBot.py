@@ -65,8 +65,9 @@ class burnBot(irc.IRCClient):
         usr["ip"] = nargs[1][3]
         # for (key, value) in usr:
         #     usr[key] = [(value)]
-        if (usr["ip"] == self.owner):
+        if (usr["ip"] == self.owner and usr["nick"] not in self.botList):
                self.owner_name = usr["nick"]
+               print self.owner_name
         self.user_list.append(usr)
         # print self.user_list    
     def irc_RPL_ENDOFWHO(self, *nargs):
