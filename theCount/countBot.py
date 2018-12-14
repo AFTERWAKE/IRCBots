@@ -392,12 +392,16 @@ class CountBot(irc.IRCClient):
         self.msg(self.chatroom, name + ': ' + str(self.nameList[nameIndex].wienerLevel) + self.exclPoints(self.nameList[nameIndex].wienerLevel))
         if self.nameList[nameIndex].wienerLevel == 69:
             self.msg(self.chatroom, 'Nice.')
+        elif self.nameList[nameIndex].wienerLevel == 0:
+            self.msg(self.chatroom, 'Oof.')
         self.saveScores()
 
     def exclPoints(self, wieners):
         excl = '!'
         if wieners == 69:
             excl += '!!!!!111!1!11!'
+        elif wieners == 0:
+            excl = '.'
         elif wieners > 80:
             excl += '!!!'
         elif wieners > 50:
@@ -440,10 +444,11 @@ class CountBot(irc.IRCClient):
         for user in range(len(self.nameList)):
             if (not firstLoop):
                 users += '\n'
-            users += '{}:{}:{}:{}'.format(self.nameList[user].username,
+            users += '{}:{}:{}:{}:{}:'.format(self.nameList[user].username,
                                        self.nameList[user].timesWon,
                                        self.nameList[user].wienerLevel,
-                                       self.nameList[user].dayOfLastWiener)
+                                       self.nameList[user].dayOfLastWiener,
+                                       self.get_winning_words(self.getUserIndex(self.nameList[user].username)))
             firstLoop = False
         return users
 
@@ -464,7 +469,6 @@ class CountBot(irc.IRCClient):
 
     def userCommands(self, name, message, isTopUser=False, already_stripped=False):
         if not already_stripped:
-            print('Not stripped yet')
             if message.startswith(self.nickname + ', ') or message.startswith(self.nickname + ': '):
                 command = message[len(self.nickname) + 2:].strip()
             elif message.startswith(self.nickname + ' '):
@@ -504,8 +508,21 @@ class CountBot(irc.IRCClient):
         if player_index is -1:
             return
 
-        #for word in self.nameList[player_index].winning_words:
+        word_string = self.get_winning_words(player_index)
 
+        self.msg(self.chatroom, '{}\'s winning words:'.format(name))
+        self.msg(self.chatroom, word_string)
+
+    def get_winning_words(self, player_index):
+        word_string = ''
+        for word in self.nameList[player_index].winning_words:
+            if word:
+                word_string += word + ', '
+
+        if word_string.endswith(', '):
+            word_string = word_string[:-2]
+
+        return word_string
 
     def showLoserMsg(self, name):
         self.msg(self.chatroom, 'LOSER: {}'.format(name))
@@ -566,6 +583,9 @@ class CountBot(irc.IRCClient):
             self.nameList[index].timesWon = int(user[1])
             self.nameList[index].wienerLevel = int(user[2])
             self.nameList[index].dayOfLastWiener = int(user[3])
+            self.nameList[index].winning_words = user[4].split(', ')
+            if not self.nameList[index].winning_words[0]:
+                self.nameList[index].winning_words.pop(0)
 
     def restoreMutedUsersFromFile(self):
         returnFile = open(self.mutedFilePath, 'r')
