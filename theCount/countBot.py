@@ -63,7 +63,7 @@ class countBot(irc.IRCClient):
     hourOfLastGame = 0
     gameRunning = False
     nameList = []
-    admin = ["172.22.117.48", "172.22.116.80", "nsiano800w10.adtran.com"]
+    admin = ["~apayne@tarp-coop-ubuntu.adtran.com", "172.22.113.22", "apayne", "tarp-coop-ubuntu.adtran.com"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -186,6 +186,7 @@ class countBot(irc.IRCClient):
             self.msg(self.chatroom, '{} is the winner with {} {}!'.format(name, self.numberForGame, self.wordForGame))
             self.msg(self.chatroom, "*ahahah*")
         self.nameList[userIndex].timesWon += 1
+        self.nameList[userIndex].wordsWon = self.nameList[userIndex].wordsWon + self.wordForGame + " "
         return
 
     def incrementCount(self, name):
@@ -331,7 +332,7 @@ class countBot(irc.IRCClient):
         elif (message.startswith(self.nickname + ', unpmock') or message.startswith(self.nickname + ': unpmock') or message.startswith(self.nickname + ' unpmock')):
             self.unpermaMockUser(message.split()[2])
         else:
-            self.userCommands('noahsiano', message)
+            self.userCommands('apayne', message)
 
     def delUserFromList(self, message):
         nameIndex = self.getUserIndex(message.split()[2])
@@ -439,8 +440,9 @@ class countBot(irc.IRCClient):
         for user in range(len(self.nameList)):
             if (not firstLoop):
                 users += '\n'
-            users += '{}:{}:{}:{}'.format(self.nameList[user].username,
+            users += '{}:{}:{}:{}:{}'.format(self.nameList[user].username,
                                        self.nameList[user].timesWon,
+                                       self.nameList[user].wordsWon,
                                        self.nameList[user].wienerLevel,
                                        self.nameList[user].dayOfLastWiener)
             firstLoop = False
@@ -449,7 +451,7 @@ class countBot(irc.IRCClient):
     def helpText(self):
         self.msg(self.chatroom, 'Hello co-ops of ADTRAN, I am countBot. My sole purpose is to spawn a quick ' +
                  'and fun counting game at 8:30, 11:00, 1:30, and 4. I can also be initialized by an admin, ' +
-                 'noahsiano. If you have any problems with me, please defer to Noah. Have a nice day :) ' +
+                 'apayne. If you have any problems with me, please defer to Griff. Have a nice day :) ' +
                  'Also... Bots are not allowed to play this game. Please don\'t ruin the fun.')
     def rulesText(self):
         self.msg(self.chatroom,
@@ -480,10 +482,19 @@ class countBot(irc.IRCClient):
             self.msg(self.chatroom, self.mockMe('The current number 1 player is: ' + self.getWinningUser().username))
         elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
             self.msg(self.chatroom, message[len(self.nickname)+6:])
-        elif ((message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock')) and isTopUser):
+        elif ((message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock'))):
             self.mockUser(message.split()[2])
         elif ((message == self.nickname + ', rules') or (message == self.nickname + ': rules') or (message == self.nickname + ' rules')):
             self.rulesText()
+        elif ((message == self.nickname + ', words') or (message == self.nickname + ': words') or (message == self.nickname + ' words')):
+            self.displayWords(name)
+
+
+    def displayWords(self, name):
+        self.getAllUsers()
+        nameIndex = self.getUserIndex(name)
+        self.msg(self.chatroom, 'Here is a list of words in the format \'User: Words\'')
+        self.msg(self.chatroom, name + ':' + self.nameList[nameIndex].wordsWon)
 
     def showLoserMsg(self, name):
         self.msg(self.chatroom, 'LOSER: {}'.format(name))
@@ -542,8 +553,10 @@ class countBot(irc.IRCClient):
             user = user.split(':')
             index = self.handleUser(user[0])
             self.nameList[index].timesWon = int(user[1])
-            self.nameList[index].wienerLevel = int(user[2])
-            self.nameList[index].dayOfLastWiener = int(user[3])
+            self.nameList[index].wordsWon = str(user[2])
+            self.nameList[index].wienerLevel = int(user[3])
+            self.nameList[index].dayOfLastWiener = int(user[4])
+            
 
     def restoreMutedUsersFromFile(self):
         returnFile = open(self.mutedFilePath, 'r')
@@ -681,6 +694,7 @@ class player:
     hasNewWieners = False
     dayOfLastWiener = -1
     permaMock = False
+    wordsWon = " "
 
     def __init__(self, name):
         self.username = name
