@@ -13,7 +13,7 @@ class complimentBot(irc.IRCClient):
 
     nickname = "niceBot"
     channel = "#main"
-    owner = 'coop392-430w7.adtran.com'
+    owner = 'tarp-coop-ubuntu.adtran.com'
     owner_name = ""
     currentTime = 0
     default = 'burn berNs'
