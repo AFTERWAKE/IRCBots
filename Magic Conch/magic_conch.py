@@ -158,6 +158,7 @@ class theMagicConch(irc.IRCClient):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
         host = re.match(r"\w+!(~\w+)@", user).group(1)
+        print message
 
         # pm privilages
         if (channel == self.nickname) and user_ip != admin_ip:
@@ -242,12 +243,13 @@ class theMagicConch(irc.IRCClient):
             self.msg(channel, msg)
 
         # what is love
-        elif re.search(r"Magic[ _]Conch.*what\s*is\s*love.*\?.", message):
+        elif re.search(r"Magic[ _]Conch.*what\s*is\s*love.*\?", message):
             msg = "Baby don't hurt me, don't hurt me, no more~"
             self.msg(channel, msg)
 
         # generic response
         elif re.search(r"Magic[ _]Conch.*\?", message):
+            print "generic response"
             msg = random.choice([ "Maybe someday.",
                                   "Follow the seahorse.",
                                   "I don't think so.",
