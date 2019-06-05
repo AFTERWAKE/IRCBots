@@ -14,7 +14,7 @@ from twisted.internet import defer
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#doctors_office"
+channel = "#main"
 
 try:
     with open(r'../admin_ip.txt', 'r') as infile:
