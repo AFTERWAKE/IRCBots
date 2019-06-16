@@ -14,7 +14,7 @@ from twisted.internet import defer
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#main"
+channel = "#doctors_office"
 
 try:
     with open(r'../admin_ip.txt', 'r') as infile:
@@ -249,7 +249,6 @@ class theMagicConch(irc.IRCClient):
 
         # generic response
         elif re.search(r"Magic[ _]Conch.*\?", message):
-            print "generic response"
             msg = random.choice([ "Maybe someday.",
                                   "Follow the seahorse.",
                                   "I don't think so.",
