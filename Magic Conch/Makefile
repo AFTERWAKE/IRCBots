@@ -4,6 +4,6 @@ build:
 	docker build --tag=magic_conch .
 
 run:
-	docker run -i -t magic_conch
+	docker run -it --rm magic_conch
 
 clean:
