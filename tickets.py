@@ -1,7 +1,7 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 import time
-
+import getpass
 #opening of page
 options = Options()
 options.headless = True
@@ -12,7 +12,8 @@ print("Page opened")
 text_area = driver.find_element_by_xpath("//input[@name='username']")
 text_area.send_keys("brm0029")
 text_area = driver.find_element_by_xpath("//input[@name='password']")
-text_area.send_keys("Robotic12")
+password = getpass.getpass()
+text_area.send_keys(password)
 submit_button = driver.find_element_by_xpath("//input[@name='submit']")
 submit_button.click()
 print("Login Successful")
