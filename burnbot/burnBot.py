@@ -115,7 +115,7 @@ class burnBot(irc.IRCClient):
                     elif burn_name.lower() == self.nickname.lower():
                         self.msg(self.channel, "Burn baby, burn.")
                     elif burn_name.lower() == self.owner_name.lower():
-                        self.msg(self.channel, 'noodles.txt')
+                        self.msg(self.channel, 'Feel the burn')
                     elif burn_name not in user_name:
                         if user_ip == self.owner:
                             self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
