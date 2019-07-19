@@ -13,7 +13,7 @@ class complimentBot(irc.IRCClient):
 
     nickname = "niceBot"
     channel = "#main"
-    owner = 'coop392-430w7.adtran.com'
+    owner = 'tarp-coop-ubuntu.adtran.com'
     owner_name = ""
     currentTime = 0
     default = 'burn berNs'
@@ -135,6 +135,17 @@ class complimentBot(irc.IRCClient):
                                  + nick + "<3 \n" + nick + ": " + random.choice(self.jokes))
                     else:
                         self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
+                print (self.currentTime)
+        elif message.lower().strip() == "nice" or message.lower().strip() == "nice." or message.find('69') != -1:
+            if timeRightNow - self.currentTime > 5:
+                self.user_list = [names for names in self.user_list if names not in self.botList]
+                if channel == self.nickname and user_ip != self.owner:
+                    return
+                elif nick in self.ignoreList:
+                    return
+                else:
+                    self.currentTime = time.time()
+                    self.msg(self.channel, "Nice.")
                 print (self.currentTime)
 
 def main():
