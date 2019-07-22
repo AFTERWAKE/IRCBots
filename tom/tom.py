@@ -24,7 +24,7 @@ fightSongLyrics = ["I'm in the lake!!! DUN DUN DUNNNN!!!!",
 class complimentBot(irc.IRCClient):
 
     nickname = "tom"
-    channel = "#tom"
+    channel = "#main"
     owner = 'cn-vm-gbeagle.adtran.com'
     owner_name = ""
     currentTime = 0
