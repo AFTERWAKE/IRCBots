@@ -1,10 +1,8 @@
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol, defer
 from re import search, IGNORECASE
-from random import (
-                    choice,
-                    randint
-                    )
+from random import choice
+
 import random
 import time
 import os
@@ -66,20 +64,15 @@ class complimentBot(irc.IRCClient):
         usr["nick"] = nargs[1][5]
         usr["host"] = nargs[1][2]
         usr["ip"] = nargs[1][3]
-        # for (key, value) in usr:
-        #     usr[key] = [(value)]
         if (usr["ip"] == self.owner):
                self.owner_name = usr["nick"]
         self.user_list.append(usr)
-        # print self.user_list    
+	
     def irc_RPL_ENDOFWHO(self, *nargs):
             "Called when WHO output is complete"
             print ("Users:")
             for each in self.user_list:
                 print (each["nick"] + each["ip"])
-				#print (each["ip"])
-	# def join(self, channel)
- #    	self.join(channel)	
 
     def privmsg(self, user, channel, message):
 		
@@ -140,7 +133,6 @@ class complimentBot(irc.IRCClient):
             self.msg(self.channel, "*applause*")
 
 
-
 def main():
     f = protocol.ReconnectingClientFactory()
     f.protocol = complimentBot
@@ -148,5 +140,6 @@ def main():
     reactor.connectTCP(serv_ip, serv_port, f)
     reactor.run()
 
+	
 while 1:
     main()
