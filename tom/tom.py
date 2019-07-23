@@ -29,7 +29,8 @@ class complimentBot(irc.IRCClient):
     owner_name = ""
     currentTime = 0
     default = 'burn berNs'
-    botList = [ "dad", "Seahorse", "pointbot", "botProtector",
+    botList = [ "jsheffie",
+        "dad", "Seahorse", "pointbot", "botProtector",
         "QuipBot", "MemeBot", "theCount", "Doge", "Calculator", "complimentBot"]
     user_list = []
     ignoreList = []
@@ -66,15 +67,20 @@ class complimentBot(irc.IRCClient):
         usr["nick"] = nargs[1][5]
         usr["host"] = nargs[1][2]
         usr["ip"] = nargs[1][3]
+        # for (key, value) in usr:
+        #     usr[key] = [(value)]
         if (usr["ip"] == self.owner):
                self.owner_name = usr["nick"]
         self.user_list.append(usr)
-
+        # print self.user_list    
     def irc_RPL_ENDOFWHO(self, *nargs):
             "Called when WHO output is complete"
             print ("Users:")
             for each in self.user_list:
                 print (each["nick"] + each["ip"])
+				#print (each["ip"])
+	# def join(self, channel)
+ #    	self.join(channel)	
 
     def privmsg(self, user, channel, message):
 		
@@ -84,7 +90,11 @@ class complimentBot(irc.IRCClient):
         user_name = []
         for name in self.user_list: user_name.append(name["nick"])
 
-        if search(r"(\bidea\b)", message, IGNORECASE):
+        if search(self.nickname+ r",*\shelp", message, IGNORECASE):
+            self.currentTime = timeRightNow
+            self.msg(self.channel, "ADTRAN, Inc. is a provider of telecommunications networking equipment and "
+                                   "internetworking products. Its headquarters are in Huntsville, Alabama.")
+        elif search(r"(\bidea\b)", message, IGNORECASE):
             self.currentTime = timeRightNow
             self.msg(self.channel, "That's a great idea!!")
         elif search(r"(\bhackathon\b)", message, IGNORECASE):
@@ -130,7 +140,8 @@ class complimentBot(irc.IRCClient):
             self.currentTime = timeRightNow
             self.msg(self.channel, "*applause*")
 
-            
+
+
 def main():
     f = protocol.ReconnectingClientFactory()
     f.protocol = complimentBot
