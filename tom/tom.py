@@ -3,7 +3,6 @@ from twisted.internet import reactor, protocol, defer
 from re import search, IGNORECASE
 from random import choice
 
-import random
 import time
 import os
 
