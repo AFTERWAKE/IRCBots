@@ -69,7 +69,7 @@ class complimentBot(irc.IRCClient):
         if (usr["ip"] == self.owner):
                self.owner_name = usr["nick"]
         self.user_list.append(usr)
-  
+
     def irc_RPL_ENDOFWHO(self, *nargs):
             "Called when WHO output is complete"
             print ("Users:")
@@ -130,7 +130,7 @@ class complimentBot(irc.IRCClient):
             self.currentTime = timeRightNow
             self.msg(self.channel, "*applause*")
 
-
+            
 def main():
     f = protocol.ReconnectingClientFactory()
     f.protocol = complimentBot

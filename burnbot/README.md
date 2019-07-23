@@ -1,39 +1,41 @@
-Burn Bot
+# Burn Bot
 
-A simple IRC bot that issues burns to whomever you chose (within reason) :^)
+### A simple IRC bot that issues burns to whomever you chose (within reason) :^)
 
-Setup
+## Prerequisites:
+	
+	python 3 
 
-Prerequisites:
+	make
 
-	Twisted (pip install Twisted)
 
-	Setup
+## Setup:
 
-Prerequisites:
-
-    Twisted (pip install Twisted)
 
  1.   git clone https://github.com/AFTERWAKE/IRCBots.git
 
- 2.   cd IRCBots/burnbot;
+ 2.   cd IRCBots/burnbot
 
- 3.   pip install Twisted
+ 3.   make install
 
  4.   Edit burnbot.py to configure the bot (see config section below)
 
- 5.   run python burnbot.py to start the bot
+ 5.   make run
 
 
-	Config
 
-chatroom: The channel you want your bot in
+## Config
 
-serv_ip: The IP or web address of your IRC server
+	chatroom: The channel you want your bot in (ex. #main)
 
-	Admin Commands
+	serv_ip: The IP or web address of your IRC server (ex. coop.test.dyanetics.com)
+
+	owner (not owner_name): Your computer name (ex. cn-vm-developer.shrug.com)
+
+
+## Admin Commands
 	
--burnbot, ignore <user_name>
--burnbot, unignore <user_name>
--burnbot, say <your_message>
--burnbot, burn <anything_you_want>
+	burnbot, ignore <user_name>
+	burnbot, unignore <user_name>
+	burnbot, say <your_message>
+	burnbot, burn <anything_you_want>
