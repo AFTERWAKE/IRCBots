@@ -112,7 +112,7 @@ class complimentBot(irc.IRCClient):
         elif search(r"(\bta5ks\b)", message, IGNORECASE):
             self.currentTime = timeRightNow
             self.msg(self.channel, "our pride and joy the TA5K")
-        elif search(r"(\br-olt\b)", message, IGNORECASE):
+        elif search(r"(\b(rolt|r-olt)\b)", message, IGNORECASE):
             self.currentTime = timeRightNow
             self.msg(self.channel, "Tomothy Remote-Optical-Line-Terminal Stanton is the name, don't wear it out ;)")
         elif search(r"(\bdynetics\b)", message, IGNORECASE):
