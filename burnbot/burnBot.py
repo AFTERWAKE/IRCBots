@@ -4,13 +4,19 @@ from re import search, IGNORECASE
 import random
 import time
 import os
+import yaml
 
-serv_ip = "coop.test.adtran.com"
-serv_port = 6667
+
 
 
 class burnBot(irc.IRCClient):
-
+    with open("config.yaml", 'r') as stream:
+        try:
+            print(yaml.safe_load(stream))
+        except yaml.YAMLError as exc:
+            print(exc)
+    serv_ip = "coop.test.adtran.com"
+    serv_port = 6667
     nickname = "burnBot"
     channel = "#main"
     owner = 'bmoussadcomp.adtran.com'
@@ -73,11 +79,7 @@ class burnBot(irc.IRCClient):
 
     def privmsg(self, user, channel, message):
         timeRightNow = time.time()
-        nick = user.split('!')[0]
-        user_ip = user.split('@')[1]
-        user_name = []
-        for name in self.user_list: user_name.append(name["nick"])
-        self.user_list = [names for names in self.user_list if names not in self.botList]
+        user_ip, nick, user_name = self.user_extraction(user)
         if message.startswith(self.nickname):
             if search(r'(^|\s)+ignore*(\s|$)+', message, IGNORECASE) and user_ip == self.owner:
                 self.ignoreList.append(message.split(" ")[2])
@@ -96,6 +98,15 @@ class burnBot(irc.IRCClient):
                 elif search(r"(^|\s)+burn*(!|\?)*(\s|$)", message, IGNORECASE):
                     self.burn(message, user_name, user_ip, nick)
 
+    def user_extraction(self, user):
+        nick = user.split('!')[0]
+        user_ip = user.split('@')[1]
+        user_name = []
+        for name in self.user_list: 
+            user_name.append(name["nick"])
+        self.user_list = [names for names in self.user_list if names not in self.botList]
+        return user_ip, nick, user_name
+    
     def burn(self, message, user_name, user_ip, nick):
         self.currentTime = time.time()
         items = message.split(" ")
@@ -132,13 +143,17 @@ class burnBot(irc.IRCClient):
             self.msg(self.channel, f"{burn_name}: {random.choice(self.jokes)}")
         else:
             self.msg(self.channel, anti_message)
+    
+    def get_server_info(self):
+        return self.serv_ip, self.serv_port
 
-def main():
-    f = protocol.ReconnectingClientFactory()
-    f.protocol = burnBot
-
-    reactor.connectTCP(serv_ip, serv_port, f)
-    reactor.run()
+    def main(self):
+        f = protocol.ReconnectingClientFactory()
+        f.protocol = burnBot
+        serv_ip, serv_port = self.get_server_info()
+        reactor.connectTCP(serv_ip, serv_port, f)
+        reactor.run()
 
 if __name__ == "__main__":
-    main()
+    bot = burnBot()
+    bot.main()

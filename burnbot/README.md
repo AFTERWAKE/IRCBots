@@ -4,7 +4,9 @@
 
 ## Prerequisites:
 	
-	python 3 
+	python 3
+
+	pip 
 
 	make
 
