@@ -29,8 +29,7 @@ class complimentBot(irc.IRCClient):
     owner_name = ""
     currentTime = 0
     default = 'burn berNs'
-    botList = [ "jsheffie",
-        "dad", "Seahorse", "pointbot", "botProtector",
+    botList = ["dad", "Seahorse", "pointbot", "botProtector",
         "QuipBot", "MemeBot", "theCount", "Doge", "Calculator", "complimentBot"]
     user_list = []
     ignoreList = []
