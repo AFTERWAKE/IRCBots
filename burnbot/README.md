@@ -4,7 +4,9 @@
 
 ## Prerequisites:
 	
-	python 3 
+	python >=3.6
+
+	pip 
 
 	make
 
@@ -18,19 +20,23 @@
 
  3.   make install
 
- 4.   Edit burnbot.py to configure the bot (see config section below)
+ 4.   Edit ```config.yaml``` to configure the bot (see config section below)
 
  5.   make run
 
 
 
 ## Config
-
-	chatroom: The channel you want your bot in (ex. #main)
-
+	
 	serv_ip: The IP or web address of your IRC server (ex. coop.test.dyanetics.com)
 
-	owner (not owner_name): Your computer name (ex. cn-vm-developer.shrug.com)
+	serv_port: The port the bot will use to connect to the server
+
+	channel: The channel you want your bot in (ex. #main)
+
+	owner (not owner_name): Your computer name (ex. cn-vm-developer.shrug.com) (could also be an actual ip)
+
+	nickname: name given to the bot
 
 
 ## Admin Commands
