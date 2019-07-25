@@ -1,7 +1,7 @@
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol, defer
 from re import search, IGNORECASE
-import random
+from random import choice
 import time
 import os
 import yaml
@@ -11,15 +11,15 @@ import yaml
 
 class burnBot(irc.IRCClient):
     with open("config.yaml", 'r') as stream:
-        try:
-            print(yaml.safe_load(stream))
-        except yaml.YAMLError as exc:
-            print(exc)
-    serv_ip = "coop.test.adtran.com"
-    serv_port = 6667
-    nickname = "burnBot"
-    channel = "#main"
-    owner = 'bmoussadcomp.adtran.com'
+            try:
+                config = (yaml.safe_load(stream))
+            except yaml.YAMLError as exc:
+                print(exc)
+    serv_ip = config['serv_ip']
+    serv_port = config['serv_port']
+    nickname = config['nickname']
+    channel = config['channel']
+    owner = config['owner']
     owner_name = ''
     currentTime = 0
     with open(os.path.join(os.getcwd(), 'bot_list.txt'), 'r') as f:
@@ -114,33 +114,33 @@ class burnBot(irc.IRCClient):
         if len(items) > 2:
             burn_name = irc.stripFormatting(message.split(" ")[2])
         if len(items) == 2:
-            self.msg(self.channel, random.choice(user_name) + ": " + random.choice(self.jokes))
+            self.msg(self.channel, choice(user_name) + ": " + choice(self.jokes))
         elif burn_name.lower() == self.nickname.lower():
             self.msg(self.channel, "Burn baby, burn.")
         elif burn_name.lower() == self.owner_name.lower():
             self.msg(self.channel, 'Feel the burn')
         elif burn_name not in user_name:
             if user_ip == self.owner:
-                self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
+                self.msg(self.channel, burn_name + ": " + choice(self.jokes))
             else:
                 self.user_not_found(nick)
         elif burn_name in self.botList:
             self.anti_bot_burn(user_ip, burn_name, nick)
         else:
-            self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
+            self.msg(self.channel, burn_name + ": " + choice(self.jokes))
 
     def user_not_found(self, nick):
         self.msg(self.channel, "Error 69: User NOT FOUND. Prepare for ultimate burning. \n" + nick
-            + ": " + random.choice(self.jokes))
+            + ": " + choice(self.jokes))
 
     def help(self):
         self.currentTime = time.time()
         self.msg(self.channel, "Just point me in the direction of who to burn. Just don't get burned yourself. ;^)")
 
     def anti_bot_burn(self, user_ip, burn_name, nick):
-        anti_message = f"Silly human. Burns are for people.\n{nick}: {random.choice(self.jokes)}"
+        anti_message = f"Silly human. Burns are for people.\n{nick}: {choice(self.jokes)}"
         if user_ip == self.owner:
-            self.msg(self.channel, f"{burn_name}: {random.choice(self.jokes)}")
+            self.msg(self.channel, f"{burn_name}: {choice(self.jokes)}")
         else:
             self.msg(self.channel, anti_message)
     
