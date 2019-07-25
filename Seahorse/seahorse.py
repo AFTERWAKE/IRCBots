@@ -203,7 +203,7 @@ class Seahorse(irc.IRCClient):
         return pokemon_list
 
 def main():
-    serv_ip = "coop.test.adtran.com"
+    serv_ip = config["server"]
     serv_port = 6667
 
     f = protocol.ClientFactory()
