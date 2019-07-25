@@ -3,6 +3,7 @@
 import random
 import re
 import json
+import exceptions
 
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
@@ -62,8 +63,11 @@ class Seahorse(irc.IRCClient):
     def privmsg(self, user, channel, message):
         print(channel, user + ":", message)
         user_ip = user.split("@")[1]
-        host = re.match(r"\w+!~(\w+)@", user).group(1)
         user = user.split('!')[0]
+        try:
+            host = re.match(r"\w+!~(\w+)@", user).group(1)
+        except exceptions.AttributeError:
+            host = ""
 
         # admin commands
         if user_ip == admin_ip:
