@@ -4,6 +4,7 @@ import random
 import re
 import json
 import os.path
+import exceptions
 
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
@@ -14,7 +15,7 @@ from twisted.internet import defer
 
 serv_ip = "coop.test.adtran.com"
 serv_port = 6667
-channel = "#doctors_office"
+channel = "#main"
 
 try:
     with open(r'../admin_ip.txt', 'r') as infile:
@@ -157,7 +158,10 @@ class theMagicConch(irc.IRCClient):
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
-        host = re.match(r"\w+!(~\w+)@", user).group(1)
+        try:
+            host = re.match(r"\w+!~(\w+)@", user).group(1)
+        except exceptions.AttributeError:
+            host = ""
         print message
 
         # pm privilages
