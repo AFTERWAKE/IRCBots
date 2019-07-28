@@ -6,7 +6,6 @@ RUN apt install -y \
         python \
         python-dev \
         python-pip
-WORKDIR /magic_conch
-COPY . /magic_conch
+WORKDIR /bot
+COPY ./requirements.txt /bot
 RUN pip install -r requirements.txt
-CMD ["python", "magic_conch.py"]
