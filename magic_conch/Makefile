@@ -1,9 +1,3 @@
-all: build run
-
-build:
-	docker build --tag=magic_conch .
-
-run:
-	docker run -it --rm magic_conch
-
-clean:
+include ../IRCBot_docker.mk
+DOCKER_SHARE	:= -v $(realpath .):/bot
+BOT				:= magic_conch.py
