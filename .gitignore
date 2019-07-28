@@ -6,3 +6,4 @@ theCount/muted.txt
 *.pyc
 *.swp
 .built
+tags
