@@ -63,7 +63,7 @@ class countBot(irc.IRCClient):
     hourOfLastGame = 0
     gameRunning = False
     nameList = []
-    admin = ["~apayne@tarp-coop-ubuntu.adtran.com", "172.22.113.22", "apayne", "tarp-coop-ubuntu.adtran.com"]
+    admin = ["~yaypayne@tarp-coop-ubuntu.adtran.com", "172.22.113.22", "yaypayne", "tarp-coop-ubuntu.adtran.com"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -332,7 +332,7 @@ class countBot(irc.IRCClient):
         elif (message.startswith(self.nickname + ', unpmock') or message.startswith(self.nickname + ': unpmock') or message.startswith(self.nickname + ' unpmock')):
             self.unpermaMockUser(message.split()[2])
         else:
-            self.userCommands('apayne', message)
+            self.userCommands('yaypayne', message)
 
     def delUserFromList(self, message):
         nameIndex = self.getUserIndex(message.split()[2])
@@ -480,9 +480,9 @@ class countBot(irc.IRCClient):
             self.displayLosers()
         elif ((message == self.nickname + ', top') or (message == self.nickname + ': top') or (message == self.nickname + ' top')):
             self.msg(self.chatroom, self.mockMe('The current number 1 player is: ' + self.getWinningUser().username))
-        elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
-            self.msg(self.chatroom, message[len(self.nickname)+6:])
-        elif ((message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock'))):
+        #elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
+         #   self.msg(self.chatroom, message[len(self.nickname)+6:])
+        elif ((message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock')) and isTopUser):
             self.mockUser(message.split()[2])
         elif ((message == self.nickname + ', rules') or (message == self.nickname + ': rules') or (message == self.nickname + ' rules')):
             self.rulesText()
