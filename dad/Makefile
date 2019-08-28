@@ -1,4 +1,4 @@
 DOCKER_SHARE	:= -v $(realpath .):/bot
-CMD				:= python
-BOT				:= highFiveBot.py
+CMD				:= go run
+BOT				:= dad.go
 include ../IRCBot_docker.mk

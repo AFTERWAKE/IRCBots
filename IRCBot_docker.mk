@@ -2,6 +2,10 @@ DOCKER_IMG			?= ircbot
 DOCKER_BUILD_ARG	:=
 DOCKER_FLAGS		:= --rm -v $(PWD):/bot
 
+ifeq ($(CMD),)
+$(error Missing macro CMD)
+endif
+
 usage:
 	@echo "Make Interface"
 	@echo "run	: run the container in interactive mode"
@@ -10,10 +14,10 @@ usage:
 	@echo "clean	: you'll need to do this if you want to rebuild the bot (this will also rm the current image)"
 
 run: build
-	docker run -it $(DOCKER_FLAGS) $(DOCKER_IMG) ./$(BOT)
+	docker run -it $(DOCKER_FLAGS) $(DOCKER_IMG) $(CMD) $(BOT)
 
 detached: build
-	docker run -d $(DOCKER_FLAGS) $(DOCKER_IMG) ./$(BOT)
+	docker run -d $(DOCKER_FLAGS) $(DOCKER_IMG) $(CMD) $(BOT)
 
 build: ../.built
 
