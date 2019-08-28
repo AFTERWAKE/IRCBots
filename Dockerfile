@@ -1,5 +1,4 @@
 FROM ubuntu:latest
-RUN ln -sf /bin/bash /bin/sh
 RUN readlink $(which sh)
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y \
