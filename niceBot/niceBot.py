@@ -147,6 +147,17 @@ class complimentBot(irc.IRCClient):
                     else:
                         self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
                 print (self.currentTime)
+        elif message.lower().strip() == "nice" or message.lower().strip() == "nice." or message.find('69') != -1:
+            if timeRightNow - self.currentTime > 5:
+                self.user_list = [names for names in self.user_list if names not in self.botList]
+                if channel == self.nickname and user_ip != self.owner:
+                    return
+                elif nick in self.ignoreList:
+                    return
+                else:
+                    self.currentTime = time.time()
+                    self.msg(self.channel, "Nice.")
+                print (self.currentTime)
 
 def main():
     f = protocol.ReconnectingClientFactory()
