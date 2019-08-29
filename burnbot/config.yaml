@@ -1,0 +1,5 @@
+serv_ip: coop.test.adtran.com
+serv_port: 6667
+channel: '#main'
+owner: bmoussadcomp.adtran.com
+nickname: burnBot

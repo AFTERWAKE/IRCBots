@@ -63,7 +63,7 @@ class CountBot(irc.IRCClient):
     hourOfLastGame = 0
     gameRunning = False
     nameList = []
-    admin = ["172.22.107.152", "ssicoop-lnx.adtran.com"]
+    admin = ["~apayne@tarp-coop-ubuntu.adtran.com", "172.22.113.22", "apayne", "tarp-coop-ubuntu.adtran.com"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -446,6 +446,7 @@ class CountBot(irc.IRCClient):
                 users += '\n'
             users += '{}:{}:{}:{}:{}:'.format(self.nameList[user].username,
                                        self.nameList[user].timesWon,
+                                       self.nameList[user].wordsWon,
                                        self.nameList[user].wienerLevel,
                                        self.nameList[user].dayOfLastWiener,
                                        self.get_winning_words(self.getUserIndex(self.nameList[user].username)))
