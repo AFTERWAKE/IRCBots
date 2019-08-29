@@ -18,11 +18,8 @@ class complimentBot(irc.IRCClient):
     currentTime = 0
     default = 'burn berNs'
     botList = [
-        "dad", "mom",
-        "nodebot", "Magic_Conch",
-        "Seahorse", "dootbot",
-        "pointbot", "botProtector",
-        "QuipBot", "MemeBot", "Mr_HighFive", "theCount", "Doge", "Calculator", "complimentBot"]
+        "dad", "burnBot", "pointbot", "botProtector",
+        "QuipBot", "MemeBot", "theCount", "Doge", "Calculator", "complimentBot"]
     user_list = []
     ignoreList = []
     with open(os.path.join(os.getcwd(), 'Responses.txt'), 'r') as file:
@@ -85,6 +82,17 @@ class complimentBot(irc.IRCClient):
         user_ip = user.split('@')[1]
         user_name = []
         for name in self.user_list: user_name.append(name["nick"])
+        
+
+        if search(r'(^|\s)+nice *(\s|$)+', message, IGNORECASE):
+            self.currentTime = time.time()
+            self.msg(self.channel, "nice!")
+        elif search(r'(^|\s)+Nice *(\s|$)+', message, IGNORECASE):
+            self.currentTime = time.time()
+            self.msg(self.channel, "nice!")
+        elif search(r'(^|\s)+69 *(\s|$)+', message, IGNORECASE):
+            self.currentTime = time.time()
+            self.msg(self.channel, "NICE!") 
 
         if message.startswith(self.nickname):
             if search(r'(^|\s)+ignore*(\s|$)+', message, IGNORECASE) and user_ip == self.owner:
@@ -100,9 +108,10 @@ class complimentBot(irc.IRCClient):
                         self.msg(self.channel, message.split('say ')[1])
                 elif nick in self.ignoreList:
                     return
+   
                 elif search(r'(^|\s)+help*(\s|$)+', message, IGNORECASE):
                     self.currentTime = time.time()
-                    self.msg(self.channel, "I love all the adtran co-ops with all my heart, and with so much hatred in this irc (@berns @burnbot), I would like to spread some kindess. Give me someone to compliment!")
+                    self.msg(self.channel, "I love all the adtran co-ops with all my heart, and with so much hatred in this irc (@berns @burnbot), I would like to spread some kindess. Give me someone to compliment!")                
                 elif search(r'(^|\s)+attack*(\s|$)+', message, IGNORECASE):
                     self.currentTime = time.time()
                     self.msg(self.channel, "I will not \n")
@@ -119,7 +128,9 @@ class complimentBot(irc.IRCClient):
                     elif burn_name.lower() == self.owner_name.lower():
                         self.msg(self.channel, "she\'s the best, isn\'t she?" + "\n" + self.owner_name.lower() + ": " + random.choice(self.jokes))
                     elif burn_name.lower() == "burnbot":
-                        self.msg(self.channel, "burnBot: I'm rubber and you're glue...")
+                        self.msg(self.channel, "I will not \n")
+                    elif burn_name.lower() == "berns":
+                        self.msg(self.channel, "but he's mean and I don't wanna \n")
                     elif burn_name not in user_name:
                         if user_ip == self.owner:
                             self.msg(self.channel, burn_name + ": " + random.choice(self.jokes))
