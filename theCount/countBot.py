@@ -46,7 +46,7 @@ from re import match
 from sys import exit
 import time
 
-serv_ip = "coop.test.adtran.com"
+serv_ip = "noahsiano.com"
 serv_port = 6667
 
 
@@ -63,17 +63,18 @@ class countBot(irc.IRCClient):
     hourOfLastGame = 0
     gameRunning = False
     nameList = []
-    admin = ["172.22.117.48", "172.22.116.80", "nsiano800w10.adtran.com"]
+    admin = ["localhost", "162.243.65.242"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     numberForAlphabet = -1
     botList = [
-        "~dad", "~mom",
-        "~nodebot", "~Magic_Con",
-        "~Seahorse", "~MemeBot",
-        "~pointbot", "~botprotec",
-        "~QuipBot", "~burnbot"
+        "dad", "mom",
+        "nodebot", "Magic_Conch",
+        "Seahorse", "MemeBot",
+        "pointbot", "botprotec",
+        "QuipBot", "burnBot",
+        "niceBot", "Mr_HighFive"
     ]
     mutedList = []
     lastWHOIS = ''
@@ -138,11 +139,11 @@ class countBot(irc.IRCClient):
 
     def playLimit(self):
         if self.numberForGame < 6:
-            self.numberPlayLimit = 3
+            self.numberPlayLimit = 5
         elif self.numberForGame < 8:
-            self.numberPlayLimit = randint(int(self.numberForGame/2), int(self.numberForGame/2)+2)
+            self.numberPlayLimit = randint(int(self.numberForGame/2) + 2, int(self.numberForGame/2)+4)
         else:
-            self.numberPlayLimit = randint(int(self.numberForGame/2)-1, int(self.numberForGame/2)+2)
+            self.numberPlayLimit = randint(int(self.numberForGame/2)+1, int(self.numberForGame/2)+4)
         return
 
     def startGame(self):
@@ -330,6 +331,8 @@ class countBot(irc.IRCClient):
             self.permaMockUser(message.split()[2])
         elif (message.startswith(self.nickname + ', unpmock') or message.startswith(self.nickname + ': unpmock') or message.startswith(self.nickname + ' unpmock')):
             self.unpermaMockUser(message.split()[2])
+        elif (message.startswith(self.nickname + ': whowho')):
+            self.whowho(self.chatroom)
         else:
             self.userCommands('noahsiano', message)
 
@@ -426,7 +429,7 @@ class countBot(irc.IRCClient):
         loserString = ''
         firstLoop = True
         for user in range(len(self.nameList)):
-            if (self.nameList[user].timesWon == 0):
+            if (self.nameList[user].timesWon <= 0):
                 if (not firstLoop):
                     loserString += ', '
                 loserString += '[{}]'.format(self.nameList[user].username)
@@ -593,13 +596,19 @@ class countBot(irc.IRCClient):
         "usage: client.whois('testUser')"
         self.sendLine('WHOIS %s' % user)
 
+    def whowho(self, ch):
+        self.sendLine('WHO %s' % ch)
+
+    def irc_RPL_WHOREPLY(self, *nargs):
+        print "WHO: ", nargs
+
     def irc_RPL_WHOISUSER(self, *nargs):
         "Receive WHOIS reply from server"
         "nargs in the format:"
         "(Server, [user-who-called-whois, username, hostname, IP, '*', realname])"
         ip = nargs[1][3]
         user = nargs[1][1]
-        username = nargs[1][2].split("~")[1]
+        username = nargs[1][2]
         print 'WHOIS:', ip
         self.lastWHOIS = ip
         if (self.muteMode == 'mute'):
@@ -607,6 +616,8 @@ class countBot(irc.IRCClient):
         elif (self.muteMode == 'unmute'):
             self.unmute2(ip)
         elif (self.muteMode == 'just a whois'):
+            for i in range(0, len(nargs)):
+                print(nargs[i])
             self.msg(self.chatroom, "%s's username is %s and their IP address is %s" % (user, username, ip))
         self.muteMode = ''
 
