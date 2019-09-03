@@ -3,7 +3,7 @@
       Author: DavidS
    v2 Author: noahsiano
         Date: April 2015
-Last Updated: June 2018
+Last Updated: August 2019
         NOTE: Run in linux in order to get the dictionary to work.
  Description: This connects to an IRC chatroom and plays a counting game at the times 8:30,
               11:00, 1:30, and 4. The game can also be initiated by one or two hosts listed.
@@ -24,6 +24,7 @@ Last Updated: June 2018
                    botNick, mock <user> (Mocks the user and shows their current points)
                    botNick, pmock <user> (Everything the user says is mocked)
                    botNick, unpmock <user> (Undoes the pmock command)
+                   botNick, whowho <user> (Prints a WHO: command for <user>)
                    botNick, quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
               USER COMMANDS
                    botNick, help (help message)
@@ -31,6 +32,7 @@ Last Updated: June 2018
                    botNick, losers (list of losers)
                    botNick, winners (shows list of winners)
                    botNick, wieners (shows your wiener count for the day)
+                   botNick, words (shows the words you won the counting game with)
                    botNick, rules (shows list of rules)
                    botNick, version (shows version + link to github)
 --------------------------------------------------------------------------------------------------------------------
@@ -46,12 +48,12 @@ from re import match
 from sys import exit
 import time
 
-serv_ip = "coop.test.adtran.com"
+serv_ip = "noahsiano.com"
 serv_port = 6667
 
 
 class CountBot(irc.IRCClient):
-    version = "2.13.0"
+    version = "2.14.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -63,17 +65,18 @@ class CountBot(irc.IRCClient):
     hourOfLastGame = 0
     gameRunning = False
     nameList = []
-    admin = ["~yaypayne@tarp-coop-ubuntu.adtran.com", "172.22.113.22", "yaypayne", "tarp-coop-ubuntu.adtran.com"]
+    admin = ["localhost", "162.243.65.242"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
     numberForAlphabet = -1
     botList = [
-        "~dad", "~mom",
-        "~nodebot", "~Magic_Con",
-        "~Seahorse", "~MemeBot",
-        "~pointbot", "~botprotec",
-        "~QuipBot", "~burnbot"
+        "dad", "mom",
+        "nodebot", "Magic_Conch",
+        "Seahorse", "MemeBot",
+        "pointbot", "botprotec",
+        "QuipBot", "burnBot",
+        "niceBot", "Mr_HighFive"
     ]
     mutedList = []
     lastWHOIS = ''
@@ -138,11 +141,11 @@ class CountBot(irc.IRCClient):
 
     def playLimit(self):
         if self.numberForGame < 6:
-            self.numberPlayLimit = 3
+            self.numberPlayLimit = 5
         elif self.numberForGame < 8:
-            self.numberPlayLimit = randint(int(self.numberForGame/2), int(self.numberForGame/2)+2)
+            self.numberPlayLimit = randint(int(self.numberForGame/2) + 2, int(self.numberForGame/2)+4)
         else:
-            self.numberPlayLimit = randint(int(self.numberForGame/2)-1, int(self.numberForGame/2)+2)
+            self.numberPlayLimit = randint(int(self.numberForGame/2)+1, int(self.numberForGame/2)+4)
         return
 
     def startGame(self):
@@ -329,6 +332,8 @@ class CountBot(irc.IRCClient):
             self.permaMockUser(message.split()[2])
         elif command.startswith('unpmock'):
             self.unpermaMockUser(message.split()[2])
+        elif command.startswith('whowho'):
+            self.whowho(self.chatroom)
         else:
             self.userCommands('story', command, already_stripped=True)
 
@@ -431,7 +436,7 @@ class CountBot(irc.IRCClient):
         loserString = ''
         firstLoop = True
         for user in range(len(self.nameList)):
-            if (self.nameList[user].timesWon == 0):
+            if (self.nameList[user].timesWon <= 0):
                 if (not firstLoop):
                     loserString += ', '
                 loserString += '[{}]'.format(self.nameList[user].username)
@@ -636,20 +641,28 @@ class CountBot(irc.IRCClient):
         "usage: client.whois('testUser')"
         self.sendLine('WHOIS %s' % user)
 
+    def whowho(self, ch):
+        self.sendLine('WHO %s' % ch)
+
+    def irc_RPL_WHOREPLY(self, *nargs):
+        print "WHO: ", nargs
+
     def irc_RPL_WHOISUSER(self, *nargs):
         "Receive WHOIS reply from server"
         "nargs in the format:"
         "(Server, [user-who-called-whois, username, hostname, IP, '*', realname])"
         ip = nargs[1][3]
         user = nargs[1][1]
-        username = nargs[1][2].split("~")[1]
-        print('WHOIS:', ip)
+        username = nargs[1][2]
+        print 'WHOIS:', ip
         self.lastWHOIS = ip
         if (self.muteMode == 'mute'):
             self.mute2(ip)
         elif (self.muteMode == 'unmute'):
             self.unmute2(ip)
         elif (self.muteMode == 'just a whois'):
+            for i in range(0, len(nargs)):
+                print(nargs[i])
             self.msg(self.chatroom, "%s's username is %s and their IP address is %s" % (user, username, ip))
         self.muteMode = ''
 
