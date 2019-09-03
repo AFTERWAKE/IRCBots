@@ -645,7 +645,7 @@ class CountBot(irc.IRCClient):
         self.sendLine('WHO %s' % ch)
 
     def irc_RPL_WHOREPLY(self, *nargs):
-        print "WHO: ", nargs
+        print("WHO: {}".format(nargs))
 
     def irc_RPL_WHOISUSER(self, *nargs):
         "Receive WHOIS reply from server"
@@ -654,7 +654,7 @@ class CountBot(irc.IRCClient):
         ip = nargs[1][3]
         user = nargs[1][1]
         username = nargs[1][2]
-        print 'WHOIS:', ip
+        print('WHOIS: {}'.format(ip))
         self.lastWHOIS = ip
         if (self.muteMode == 'mute'):
             self.mute2(ip)
