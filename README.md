@@ -8,6 +8,11 @@ Source code for bots used in the our fun IRC chatroom
 ## List of bots in this repo:
 #### artBot (python)
 - A simple IRC bot that sends out ASCII messages on the Art channel.
+#### burnbot (python)
+- For burning your friends
+- For burning not your friends
+- For burning whomever you'd like
+- Just tell him who to burn
 #### dad (Go)
 - For all things dad
 - Dad is in Golang now! [Original Repo](https://github.com/alecwest/godaddyirc.git)

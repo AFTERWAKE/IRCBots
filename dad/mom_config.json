@@ -3,13 +3,13 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+say\\s+",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}|mum),?\\s+say\\s+",
                 "Variable": ".*"
             },
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 9,
+                    "Count": 31,
                     "Type": 1
                 }
             ]
@@ -17,7 +17,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+notice\\s+",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}|mum),?\\s+notice\\s+",
                 "Variable": ".*"
             },
             "Response": [
@@ -31,7 +31,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+action\\s+",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}|mum),?\\s+action\\s+",
                 "Variable": ".*"
             },
             "Response": [
@@ -45,7 +45,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+topic\\s+",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}|mum),?\\s+topic\\s+",
                 "Variable": ".*"
             },
             "Response": [
@@ -59,13 +59,13 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+send\\s+",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}|mum),?\\s+send\\s+",
                 "Variable": ".*"
             },
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 0,
+                    "Count": 5,
                     "Type": 5
                 }
             ]
@@ -73,7 +73,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+chmode\\s+",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}|mum),?\\s+chmode\\s+",
                 "Variable": "\\S+\\s+[+-]\\w+"
             },
             "Response": [
@@ -87,7 +87,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+join\\s+",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}|mum),?\\s+join\\s+",
                 "Variable": "#\\S*"
             },
             "Response": [
@@ -101,7 +101,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+part\\s+",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}|mum),?\\s+part\\s+",
                 "Variable": "#\\S*(\\s+.*)?"
             },
             "Response": [
@@ -115,7 +115,7 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}),?\\s+quit\\s+",
+                "Trigger": "(?i)^(mom(my|ma)?|mother|(ma){1,2}|mum),?\\s+quit\\s+",
                 "Variable": ".*"
             },
             "Response": [
@@ -128,7 +128,7 @@
         }
     ],
     "Channels": [
-        "#rents"
+        "#main"
     ],
     "Debug": true,
     "Name": "mom",
@@ -136,13 +136,23 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2})(\\W+[^?]*)?\\?[!]*\\s*$",
+                "Trigger": "(?i)([:=8]'?[vV^]?\\(|\\)[vV^]?'?[:=8])",
                 "Variable": ""
             },
             "Response": [
                 {
-                    "Message": "Ask your father.",
-                    "Count": 54,
+                    "Message": "You better wipe that look off your face.",
+                    "Count": 3,
+                    "Type": 0
+                },
+                {
+                    "Message": "Stop crying or I'll give you something to cry about.",
+                    "Count": 6,
+                    "Type": 0
+                },
+                {
+                    "Message": "If you keep making that face, it'll freeze that way",
+                    "Count": 8,
                     "Type": 0
                 }
             ]
@@ -150,13 +160,81 @@
         {
             "Action": "none",
             "Regex": {
-                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(mom(my|ma)?|mother|(ma){1,2})$",
+                "Trigger": "(?i)(^|.*[^\\w])(mom(my|ma)?|mother|(ma){1,2}|mum)(\\W+[^?]*)?\\?[!]*\\s*$",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Ask your father.",
+                    "Count": 58,
+                    "Type": 0
+                },
+                {
+                    "Message": "God gave you a brain, why don't you use it?",
+                    "Count": 7,
+                    "Type": 0
+                },
+                {
+                    "Message": "Ask a stupid question, get a stupid answer",
+                    "Count": 5,
+                    "Type": 0
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)(^|.*[^\\w])i love\\s+(mom(my|ma)?|mother|(ma){1,2}|mum)$",
                 "Variable": ""
             },
             "Response": [
                 {
                     "Message": "Ok",
                     "Count": 7,
+                    "Type": 0
+                }
+            ]
+        },
+        {
+            "Action": "none",
+            "Regex": {
+                "Trigger": "(?i)\\b+(mom(my|ma)?|mother|(ma){1,2}|mum)\\b+",
+                "Variable": ""
+            },
+            "Response": [
+                {
+                    "Message": "Children are to be seen, not heard.",
+                    "Count": 1,
+                    "Type": 0
+                },
+                {
+                    "Message": "Shut the hell up!",
+                    "Count": 3,
+                    "Type": 0
+                },
+                {
+                    "Message": "Quiet down, I can't even hear myself think!",
+                    "Count": 3,
+                    "Type": 0
+                },
+                {
+                    "Message": "Let's play the quiet game.",
+                    "Count": 1,
+                    "Type": 0
+                },
+                {
+                    "Message": "Someone better be bleeding.",
+                    "Count": 1,
+                    "Type": 0
+                },
+                {
+                    "Message": "When you have kids, I hope they're just like you.",
+                    "Count": 0,
+                    "Type": 0
+                },
+                {
+                    "Message": "Don't you use that tone with me.",
+                    "Count": 5,
                     "Type": 0
                 }
             ]

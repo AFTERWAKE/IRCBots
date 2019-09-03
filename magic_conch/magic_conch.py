@@ -3,6 +3,8 @@
 import random
 import re
 import json
+import os.path
+import exceptions
 
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
@@ -37,6 +39,10 @@ class theMagicConch(irc.IRCClient):
         self.__channel = channel
         print("Channel: " + self.__channel)
         print("Nick: " + self.nickname)
+
+        if not os.path.exists("ignore_list.txt"):
+            print "ignore_list.txt not found, creating an empty one..."
+            open("ignore_list.txt", 'w').close()
 
         with open("ignore_list.txt", 'r') as infile:
             for each in infile:
@@ -152,7 +158,11 @@ class theMagicConch(irc.IRCClient):
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
-        host = re.match(r"\w+!(~\w+)@", user).group(1)
+        try:
+            host = re.match(r"\w+!~(\w+)@", user).group(1)
+        except exceptions.AttributeError:
+            host = ""
+        print message
 
         # pm privilages
         if (channel == self.nickname) and user_ip != admin_ip:
@@ -237,7 +247,7 @@ class theMagicConch(irc.IRCClient):
             self.msg(channel, msg)
 
         # what is love
-        elif re.search(r"Magic[ _]Conch.*what\s*is\s*love.*\?.", message):
+        elif re.search(r"Magic[ _]Conch.*what\s*is\s*love.*\?", message):
             msg = "Baby don't hurt me, don't hurt me, no more~"
             self.msg(channel, msg)
 

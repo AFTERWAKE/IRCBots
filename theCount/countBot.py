@@ -3,7 +3,7 @@
       Author: DavidS
    v2 Author: noahsiano
         Date: April 2015
-Last Updated: June 2018
+Last Updated: August 2019
         NOTE: Run in linux in order to get the dictionary to work.
  Description: This connects to an IRC chatroom and plays a counting game at the times 8:30,
               11:00, 1:30, and 4. The game can also be initiated by one or two hosts listed.
@@ -24,6 +24,7 @@ Last Updated: June 2018
                    botNick, mock <user> (Mocks the user and shows their current points)
                    botNick, pmock <user> (Everything the user says is mocked)
                    botNick, unpmock <user> (Undoes the pmock command)
+                   botNick, whowho <user> (Prints a WHO: command for <user>)
                    botNick, quit <msg>{optional} (the bot leaves the channel, with an optional quit message)
               USER COMMANDS
                    botNick, help (help message)
@@ -31,6 +32,7 @@ Last Updated: June 2018
                    botNick, losers (list of losers)
                    botNick, winners (shows list of winners)
                    botNick, wieners (shows your wiener count for the day)
+                   botNick, words (shows the words you won the counting game with)
                    botNick, rules (shows list of rules)
                    botNick, version (shows version + link to github)
 --------------------------------------------------------------------------------------------------------------------
@@ -50,8 +52,8 @@ serv_ip = "noahsiano.com"
 serv_port = 6667
 
 
-class countBot(irc.IRCClient):
-    version = "2.13.0"
+class CountBot(irc.IRCClient):
+    version = "2.14.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -84,46 +86,46 @@ class countBot(irc.IRCClient):
     currentDay = -1
 
     def __init__(self):
-        currentHour = int(self.getCurrentTime().split(':')[0])
-        currentMinute = int(self.getCurrentTime().split(':')[1])
-        self.hourOfLastGame = currentHour
-        if ((currentHour == 8) or (currentHour == 13)):
-            if (currentMinute < 30):
+        current_hour = int(self.getCurrentTime().split(':')[0])
+        current_minute = int(self.getCurrentTime().split(':')[1])
+        self.hourOfLastGame = current_hour
+        if current_hour == 8 or current_hour == 13:
+            if current_minute < 30:
                 self.hourOfLastGame = self.hourOfLastGame - 1
         try:
             self.restoreUsersFromFile()
-            print 'Winners restored'
+            print('Winners restored')
         except:
-            print 'Restore failed. No file found.'
+            print('Restore failed. No file found.')
         try:
             self.letterWords = {letter: [word.strip() for word in open('/usr/share/dict/words', 'r')
                                 if word.capitalize().startswith(letter)] for letter in self.alphabet}
-            print 'Dictionary loaded'
+            print('Dictionary loaded')
         except:
-            print 'Dictionary failed to load!'
-            print 'Make sure you\'re running this on Linux!'
+            print('Dictionary failed to load!')
+            print('Make sure you\'re running this on Linux!')
             exit('Dictionary fail')
         try:
             self.restoreMutedUsersFromFile()
-            print 'Muted Users Restored'
+            print('Muted Users Restored')
         except:
-            print 'No Muted Users Found'
+            print('No Muted Users Found')
 
     def signedOn(self):
         self.join(self.chatroom)
 
     def isTooManyEntries(self, timesNameAppeared):
-        return (timesNameAppeared >= self.numberPlayLimit)
+        return timesNameAppeared >= self.numberPlayLimit
 
     def resetGame(self):
         self.gameRunning = False
         self.resetUsers()
         self.timestampBuffer = 3
-        print 'GAME RESET!'
+        print('GAME RESET!')
         return
 
     def resetWieners(self):
-        print "Reset wieners"
+        print("Reset wieners")
         for i in range(len(self.nameList)):
             if (self.nameList[i].dayOfLastWiener != datetime.now().day):
                 self.nameList[i].hasNewWieners = False
@@ -157,7 +159,7 @@ class countBot(irc.IRCClient):
         # There we go... Should see a lot less games where 1, 2, 30, and 31 win
         self.playLimit()
         self.wordForGame = self.chooseWordForGame()
-        print 'Winning number: {} (kick on: {})'.format(self.numberForGame, self.numberPlayLimit)
+        print('Winning number: {} (kick on: {})'.format(self.numberForGame, self.numberPlayLimit))
         self.msg(self.chatroom, "COUNTBOT INITIATED. The counting game is beginning. " +
                  "Start with 1 {}.".format(self.wordForGame))
         self.currentNumber = 1
@@ -187,6 +189,7 @@ class countBot(irc.IRCClient):
             self.msg(self.chatroom, '{} is the winner with {} {}!'.format(name, self.numberForGame, self.wordForGame))
             self.msg(self.chatroom, "*ahahah*")
         self.nameList[userIndex].timesWon += 1
+        self.nameList[userIndex].winning_words.append(self.wordForGame)
         return
 
     def incrementCount(self, name):
@@ -265,7 +268,7 @@ class countBot(irc.IRCClient):
             self.currentDay = day
 
     def getWinningUser(self):
-        topUser = player("")
+        topUser = Player("")
         firstLoop = True;
         for user in range(len(self.nameList)):
             if (self.nameList[user].timesWon > 0):
@@ -277,64 +280,62 @@ class countBot(irc.IRCClient):
         return topUser
 
     def adminCommands(self, message):
-        if ((message == self.nickname + ', stop') or (message == self.nickname + ': stop')  or (message == self.nickname + ' stop')):
+        if message.startswith(self.nickname + ', ') or message.startswith(self.nickname + ': '):
+            command = message[len(self.nickname) + 2:].strip()
+        elif message.startswith(self.nickname + ' '):
+            command = message[len(self.nickname) + 1:].strip()
+        else:
+            return
+
+        if command.startswith('stop'):
             self.resetGame()
             self.msg(self.chatroom, "The counting game has been quit.")
-        elif ((message == self.nickname + ", start") or (message == self.nickname + ": start") or (message == self.nickname + ' start')):
+        elif command.startswith('start'):
             self.resetGame()
             self.startGame()
-        elif ((message.startswith(self.nickname + ', set')) or (message.startswith(self.nickname + ': set'))):
+        elif command.startswith('set'): 
             try:
                 self.setUserTimesWon(message)
             except:
                 return
-        elif ((message.startswith(self.nickname + ', del')) or (message.startswith(self.nickname + ': del'))):
+        elif command.startswith('del'): 
             try:
                 self.delUserFromList(message)
             except:
                 return
-        elif ((message == self.nickname + ', users') or (message == self.nickname + ': users') or (message == self.nickname + ' users')):
+        elif command.startswith('users'):
             self.printAllUsers()
-        elif ((message == self.nickname + ', restore') or (message == self.nickname + ': restore') or (message == self.nickname + ' restore')):
+        elif command.startswith('restore'):
             self.restoreUsersFromFile()
-            print 'Scores restored'
-        elif ((message == self.nickname + ', save') or (message == self.nickname + ': save') or (message == self.nickname + ' save')):
+            print('Scores restored')
+        elif command.startswith('save'):
             self.saveScores()
-            print 'Scores saved'
-        elif ((message.startswith(self.nickname + ', say')) or (message.startswith(self.nickname + ': say'))):
-            self.msg(self.chatroom, message[len(self.nickname)+6:])
-        elif (message.startswith(self.nickname + ' say')):
-            self.msg(self.chatroom, message[len(self.nickname)+5:])
-        elif ((message.startswith(self.nickname + ', me')) or (message.startswith(self.nickname + ': me'))):
-            self.describe(self.chatroom, message[len(self.nickname)+5:])
-        elif (message.startswith(self.nickname + ' me')):
-            self.describe(self.chatroom, message[len(self.nickname)+4:])
-        elif (message.startswith(self.nickname + ', quit') or message.startswith(self.nickname + ': quit')):
-            if (message[len(self.nickname)+7:]):
-                self.quit(message[len(self.nickname)+7:])
+            print('Scores saved')
+        elif command.startswith('say '):
+            self.msg(self.chatroom, command.replace('say ', '', 1))
+        elif command.startswith('me '):
+            self.describe(self.chatroom, command.replace('me ', '', 1))
+        elif command.startswith('quit'):
+            if len(command) > len('quit '):
+                self.quit(command.replace('quit ', '', 1))
             else:
                 self.quit('*ah..ah..ah :\'( goodbye.')
-        elif (message.startswith(self.nickname + ' quit')):
-            if (message[len(self.nickname)+6:]):
-                self.quit(message[len(self.nickname)+6:])
-            else:
-                self.quit('*ah..ah..ah :\'( goodbye.')
-        elif (message.startswith(self.nickname + ', mute') or message.startswith(self.nickname + ': mute') or message.startswith(self.nickname + ' mute')):
+        elif command.startswith('mute'):
             self.mute(message.split()[2])
-        elif (message.startswith(self.nickname + ', unmute') or message.startswith(self.nickname + ': unmute') or message.startswith(self.nickname + ' unmute')):
+        elif command.startswith('unmute'):
             self.unmute(message.split()[2])
-        elif (message.startswith(self.nickname + ', whois') or message.startswith(self.nickname + ': whois') or message.startswith(self.nickname + ' whois')):
+        elif command.startswith('whois'):
             self._whois(message.split()[2])
-        elif (message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock')):
+        elif command.startswith('mock'):
             self.mockUser(message.split()[2])
-        elif (message.startswith(self.nickname + ', pmock') or message.startswith(self.nickname + ': pmock') or message.startswith(self.nickname + ' pmock')):
+        elif command.startswith('pmock'):
             self.permaMockUser(message.split()[2])
-        elif (message.startswith(self.nickname + ', unpmock') or message.startswith(self.nickname + ': unpmock') or message.startswith(self.nickname + ' unpmock')):
+        elif command.startswith('unpmock'):
             self.unpermaMockUser(message.split()[2])
-        elif (message.startswith(self.nickname + ': whowho')):
+        elif command.startswith('whowho'):
             self.whowho(self.chatroom)
         else:
-            self.userCommands('noahsiano', message)
+            self.userCommands('story', command, already_stripped=True)
 
     def delUserFromList(self, message):
         nameIndex = self.getUserIndex(message.split()[2])
@@ -351,15 +352,15 @@ class countBot(irc.IRCClient):
     def setUserTimesWon(self, message):
         nameIndex = self.handleUser(message.split()[2])
         self.nameList[nameIndex].timesWon = int(message.split()[3])
-        print self.nameList[nameIndex].username + ' timesWon: ' + str(self.nameList[nameIndex].timesWon)
+        print(self.nameList[nameIndex].username + ' timesWon: ' + str(self.nameList[nameIndex].timesWon))
         return
 
     def printAllUsers(self):
         for user in range(len(self.nameList)):
-            print '{}. {}: {}: {}'.format(user,
+            print('{}. {}: {}: {}'.format(user,
                                       self.nameList[user].username,
                                       self.nameList[user].timesWon,
-                                      self.nameList[user].wienerLevel)
+                                      self.nameList[user].wienerLevel))
         return
 
     def playGame(self, name):
@@ -394,12 +395,18 @@ class countBot(irc.IRCClient):
             self.nameList[nameIndex].dayOfLastWiener = datetime.now().day
         self.msg(self.chatroom, 'Here is a list of wieners in the format \'User: Wiener Level\'')
         self.msg(self.chatroom, name + ': ' + str(self.nameList[nameIndex].wienerLevel) + self.exclPoints(self.nameList[nameIndex].wienerLevel))
+        if self.nameList[nameIndex].wienerLevel == 69:
+            self.msg(self.chatroom, 'Nice.')
+        elif self.nameList[nameIndex].wienerLevel == 0:
+            self.msg(self.chatroom, 'Oof.')
         self.saveScores()
 
     def exclPoints(self, wieners):
         excl = '!'
         if wieners == 69:
             excl += '!!!!!111!1!11!'
+        elif wieners == 0:
+            excl = '.'
         elif wieners > 80:
             excl += '!!!'
         elif wieners > 50:
@@ -442,17 +449,19 @@ class countBot(irc.IRCClient):
         for user in range(len(self.nameList)):
             if (not firstLoop):
                 users += '\n'
-            users += '{}:{}:{}:{}'.format(self.nameList[user].username,
+            users += '{}:{}:{}:{}:{}:'.format(self.nameList[user].username,
                                        self.nameList[user].timesWon,
+                                       self.nameList[user].wordsWon,
                                        self.nameList[user].wienerLevel,
-                                       self.nameList[user].dayOfLastWiener)
+                                       self.nameList[user].dayOfLastWiener,
+                                       self.get_winning_words(self.getUserIndex(self.nameList[user].username)))
             firstLoop = False
         return users
 
     def helpText(self):
         self.msg(self.chatroom, 'Hello co-ops of ADTRAN, I am countBot. My sole purpose is to spawn a quick ' +
                  'and fun counting game at 8:30, 11:00, 1:30, and 4. I can also be initialized by an admin, ' +
-                 'noahsiano. If you have any problems with me, please defer to Noah. Have a nice day :) ' +
+                 '[story]. If you have any problems with me, please defer to Nicole. Have a nice day :) ' +
                  'Also... Bots are not allowed to play this game. Please don\'t ruin the fun.')
     def rulesText(self):
         self.msg(self.chatroom,
@@ -464,29 +473,62 @@ class countBot(irc.IRCClient):
     def displayVersion(self):
         self.msg(self.chatroom, "v{} - Latest: {}".format(self.version, self.latestCommits))
 
-    def userCommands(self, name, message, isTopUser=False):
-        if ((message == self.nickname + ', help') or (message == self.nickname + ': help') or (message == self.nickname + ' help')):
+    def userCommands(self, name, message, isTopUser=False, already_stripped=False):
+        if not already_stripped:
+            if message.startswith(self.nickname + ', ') or message.startswith(self.nickname + ': '):
+                command = message[len(self.nickname) + 2:].strip()
+            elif message.startswith(self.nickname + ' '):
+                command = message[len(self.nickname) + 1:].strip()
+            else:
+                return
+        else:
+            command = message
+
+        if command.startswith('help'):
             self.helpText()
-        elif ((message == self.nickname + ', version') or (message == self.nickname + ': version') or (message == self.nickname + ' version')):
+        elif command.startswith('version'):
             self.displayVersion()
-        elif ((message == self.nickname + ', winners') or (message == self.nickname + ': winners') or (message == self.nickname + ' winners')):
+        elif command.startswith('winners'):
             self.sortUsersAscending()
             self.displayWinners()
-        elif ((message == self.nickname + ', wieners') or (message == self.nickname + ': wieners') or (message == self.nickname + ' wieners')):
+        elif command.startswith('wieners'):
             self.sortUsersAscending()
             self.displayWieners(name)
-        elif ((message == self.nickname + ', loser') or (message == self.nickname + ': loser') or (message == self.nickname + ' loser')):
-            self.showLoserMsg(name)
-        elif ((message == self.nickname + ', losers') or (message == self.nickname + ': losers') or (message == self.nickname + ' losers')):
+        elif command.startswith('losers'):
             self.displayLosers()
-        elif ((message == self.nickname + ', top') or (message == self.nickname + ': top') or (message == self.nickname + ' top')):
+        elif command.startswith('loser'):
+            self.showLoserMsg(name)
+        elif command.startswith('top'):
             self.msg(self.chatroom, self.mockMe('The current number 1 player is: ' + self.getWinningUser().username))
-        elif ((message.startswith(self.nickname + ', say') or message.startswith(self.nickname + ': say')) and isTopUser):
+        elif command.startswith('say') and isTopUser:
             self.msg(self.chatroom, message[len(self.nickname)+6:])
-        elif ((message.startswith(self.nickname + ', mock') or message.startswith(self.nickname + ': mock') or message.startswith(self.nickname + ' mock')) and isTopUser):
+        elif command.startswith('mock') and isTopUser:
             self.mockUser(message.split()[2])
-        elif ((message == self.nickname + ', rules') or (message == self.nickname + ': rules') or (message == self.nickname + ' rules')):
+        elif command.startswith('rules'):
             self.rulesText()
+        elif command.startswith('words'):
+            self.display_winning_words(name)
+
+    def display_winning_words(self, name):
+        player_index = self.getUserIndex(name)
+        if player_index is -1:
+            return
+
+        word_string = self.get_winning_words(player_index)
+
+        self.msg(self.chatroom, '{}\'s winning words:'.format(name))
+        self.msg(self.chatroom, word_string)
+
+    def get_winning_words(self, player_index):
+        word_string = ''
+        for word in self.nameList[player_index].winning_words:
+            if word:
+                word_string += word + ', '
+
+        if word_string.endswith(', '):
+            word_string = word_string[:-2]
+
+        return word_string
 
     def showLoserMsg(self, name):
         self.msg(self.chatroom, 'LOSER: {}'.format(name))
@@ -507,7 +549,7 @@ class countBot(irc.IRCClient):
         return (-1)
 
     def createNewUser(self, name):
-        self.nameList.append(player(name))
+        self.nameList.append(Player(name))
         return (len(self.nameList) - 1)
 
     def sortUsersAscending(self):
@@ -547,6 +589,9 @@ class countBot(irc.IRCClient):
             self.nameList[index].timesWon = int(user[1])
             self.nameList[index].wienerLevel = int(user[2])
             self.nameList[index].dayOfLastWiener = int(user[3])
+            self.nameList[index].winning_words = user[4].split(', ')
+            if not self.nameList[index].winning_words[0]:
+                self.nameList[index].winning_words.pop(0)
 
     def restoreMutedUsersFromFile(self):
         returnFile = open(self.mutedFilePath, 'r')
@@ -641,12 +686,12 @@ class countBot(irc.IRCClient):
                 if (not self.gameRunning and self.userPermaMocked(user.split('!')[0])):
                     self.msg(self.chatroom, self.mockMe(message))
                 if (self.gameRunning and int(message) != self.currentNumber):
-                    print "[{}] {}: {}".format(str(datetime.now().time()), user, message)
+                    print("[{}] {}: {}".format(str(datetime.now().time()), user, message))
                 elif (not self.gameRunning and self.timestampBuffer > 0):
-                    print "[{}] {}: {} LATE".format(str(datetime.now().time()), user, message)
+                    print("[{}] {}: {} LATE".format(str(datetime.now().time()), user, message))
                     self.timestampBuffer -= 1
                 if (int(message) == self.currentNumber and self.gameRunning):
-                    print "[{}] {}: {} COUNTED".format(str(datetime.now().time()), user, message)
+                    print("[{}] {}: {} COUNTED".format(str(datetime.now().time()), user, message))
                     hostname = user.split('!')[1].split('@')
                     if (hostname[0] in self.botList):
                         print("Bot!")
@@ -679,11 +724,11 @@ class countBot(irc.IRCClient):
                             self.timeLastCommand = time.time()
                             self.userCommands(user.split('!')[0], message)
         else:
-            print user
+            print(user)
         return
 
 
-class player:
+class Player:
     numbersAdded = 0
     timesWon = 0
     wienerLevel = 0
@@ -692,6 +737,7 @@ class player:
     hasNewWieners = False
     dayOfLastWiener = -1
     permaMock = False
+    winning_words = []
 
     def __init__(self, name):
         self.username = name
@@ -699,7 +745,7 @@ class player:
 
 def main():
     f = protocol.ReconnectingClientFactory()
-    f.protocol = countBot
+    f.protocol = CountBot
 
     reactor.connectTCP(serv_ip, serv_port, f)
     reactor.run()

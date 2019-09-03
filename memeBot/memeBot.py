@@ -6,6 +6,7 @@ import re
 import datetime
 from lxml import html
 import requests
+import exceptions
 
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol, defer
@@ -302,7 +303,10 @@ class memeBot(irc.IRCClient):
     def privmsg(self, user, channel, message):
         user_name = user.split("!")[0]
         user_ip = user.split("@")[1]
-        host = re.match(r"\w+!(~\w+)@", user).group(1)
+        try:
+            host = re.match(r"\w+!~(\w+)@", user).group(1)
+        except exceptions.AttributeError:
+            host = ""
         temp_time = time.time()
 
         # pm privilages
