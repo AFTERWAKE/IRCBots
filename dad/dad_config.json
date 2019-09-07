@@ -23,7 +23,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 586,
+                    "Count": 623,
                     "Type": 1
                 }
             ]
@@ -37,7 +37,7 @@
             "Response": [
                 {
                     "Message": "#c, you're now ungrounded. Don't let me catch you misbehaving again.",
-                    "Count": 24,
+                    "Count": 25,
                     "Type": 0
                 }
             ]
@@ -65,7 +65,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 8,
+                    "Count": 11,
                     "Type": 3
                 }
             ]
@@ -79,7 +79,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 6,
+                    "Count": 7,
                     "Type": 4
                 }
             ]
@@ -93,7 +93,7 @@
             "Response": [
                 {
                     "Message": "#v",
-                    "Count": 12,
+                    "Count": 26,
                     "Type": 5
                 }
             ]
@@ -184,7 +184,7 @@
             "Response": [
                 {
                     "Message": "Here is a list of grounded users:\n#c",
-                    "Count": 36,
+                    "Count": 38,
                     "Type": 0
                 }
             ]
@@ -198,12 +198,12 @@
             "Response": [
                 {
                     "Message": "I know you are but what am I? :v)",
-                    "Count": 6,
+                    "Count": 7,
                     "Type": 0
                 },
                 {
                     "Message": "no u :v)",
-                    "Count": 3,
+                    "Count": 4,
                     "Type": 0
                 }
             ]
@@ -217,7 +217,7 @@
             "Response": [
                 {
                     "Message": "mmmmmmmmmm... no",
-                    "Count": 62,
+                    "Count": 64,
                     "Type": 0
                 }
             ]
@@ -231,7 +231,7 @@
             "Response": [
                 {
                     "Message": "Hi #v, I'm dad",
-                    "Count": 1415,
+                    "Count": 1622,
                     "Type": 0
                 }
             ]
@@ -273,7 +273,7 @@
             "Response": [
                 {
                     "Message": "Well then why don't you marry it?",
-                    "Count": 42,
+                    "Count": 43,
                     "Type": 0
                 }
             ]
@@ -287,7 +287,7 @@
             "Response": [
                 {
                     "Message": "gyroooooooooooooooossssssssssssssssssss!",
-                    "Count": 32,
+                    "Count": 44,
                     "Type": 0
                 }
             ]
@@ -315,12 +315,12 @@
             "Response": [
                 {
                     "Message": "Ask your mother.",
-                    "Count": 78,
+                    "Count": 83,
                     "Type": 0
                 },
                 {
                     "Message": "I'll tell you when you're older.",
-                    "Count": 15,
+                    "Count": 21,
                     "Type": 0
                 }
             ]
@@ -348,7 +348,7 @@
             "Response": [
                 {
                     "Message": ":v)",
-                    "Count": 80,
+                    "Count": 81,
                     "Type": 0
                 }
             ]
@@ -367,7 +367,7 @@
                 },
                 {
                     "Message": "Can February March?\nNo, but April May",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -402,7 +402,7 @@
                 },
                 {
                     "Message": "Don't trust atoms\nThey make up everything",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -427,7 +427,7 @@
                 },
                 {
                     "Message": "I hate jokes about german sausages\nThey're the wurst",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -512,7 +512,7 @@
                 },
                 {
                     "Message": "What did the buffalo say to his son when he left for college?\nBison",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -522,7 +522,7 @@
                 },
                 {
                     "Message": "What did the officer molecule say to the suspect molecule?\nI've got my ion you",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -537,7 +537,7 @@
                 },
                 {
                     "Message": "What do you call a fake noodle?\nAn Impasta",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -552,7 +552,7 @@
                 },
                 {
                     "Message": "What do you call an Argentinian with a rubber toe?\nRoberto",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -607,7 +607,7 @@
                 },
                 {
                     "Message": "Why couldn't the bicycle stand up by itself?\nIt was two tired",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -717,12 +717,12 @@
                 },
                 {
                     "Message": "Thought taking my shell of my racing snail would make it faster.\nTurns out that just made it more sluggish.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
                     "Message": "If anybody knows any salad jokes.\nLettuce know......",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -822,7 +822,7 @@
                 },
                 {
                     "Message": "What do you call a man with no arms or legs lying in front of your door?\nMatt",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -897,7 +897,7 @@
                 },
                 {
                     "Message": "What nationality are you when you're in the bathroom?\nEuropean.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -942,7 +942,7 @@
                 },
                 {
                     "Message": "I said to my wife, \"They say that childbirth is the most painful thing someone can experience...\"\nNow, maybe I was too young to remember, but I didn't think it hurt that much.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -977,17 +977,17 @@
                 },
                 {
                     "Message": "I tried to catch clouds yesterday.\nMist. Guess i'll have to fog-et about it.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
                     "Message": "Did you hear about the man who got hit in the head by a can of soda?\nDon't worry, he's fine. It was a soft drink.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
                     "Message": "Did you hear about the mathematical breakthrough in algebra?\nIt was on the hypotenews",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1007,7 +1007,7 @@
                 },
                 {
                     "Message": "How can guinea pigs cope so well in the cold?\nIt's Chile near where they're from.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1062,7 +1062,7 @@
                 },
                 {
                     "Message": "My girlfriend is so good at drawing straight lines that she would thrive in an anarchist society...\n...because she doesn't need a ruler.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1097,12 +1097,12 @@
                 },
                 {
                     "Message": "The people at my hair salon make me wanna..\nCurl up and dye.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
                     "Message": "My dad said if I use a hashtag one more time, he'd pound the sh*t out of me. I said #YOLO and woke up to this text the next morning...\n####################",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1117,7 +1117,7 @@
                 },
                 {
                     "Message": "What did the cookie say to the browser while running away?\n\"Cache me if you can!\"",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1132,7 +1132,7 @@
                 },
                 {
                     "Message": "My friend keeps telling me to stop making Rogue One puns.\nShe's told me that like 10 Erso times.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1197,7 +1197,7 @@
                 },
                 {
                     "Message": "Got the perfect title for the 10th fast and furious movie.\nFast 10: your seatbelts",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
@@ -1317,25 +1317,9 @@
                 },
                 {
                     "Message": "What's the best thing about living in Switzerland?\nI don't know but the flag is a big plus",
-                    "Count": 1,
-                    "Type": 0
-                },
-                {
-                    "Message": "I know the show was called Spongebob Squarepants\nBut we all know the star was Patrick",
-                    "Count": 1,
-                    "Type": 0
-                },
-                {
-                    "Message": " Our maintenance guy lost his legs on the job\nNow he's just a handyman.",
-                    "Count": 1,
-                    "Type": 0
-                },
-                {
-                    "Message": " Our maintenance guy lost his legs on the job\nNow he's just a handyman.",
-                    "Count": 1,
+                    "Count": 2,
                     "Type": 0
                 }
-               
             ]
         }
     ]

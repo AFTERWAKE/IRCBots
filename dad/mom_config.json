@@ -142,17 +142,17 @@
             "Response": [
                 {
                     "Message": "You better wipe that look off your face.",
-                    "Count": 3,
+                    "Count": 29,
                     "Type": 0
                 },
                 {
                     "Message": "Stop crying or I'll give you something to cry about.",
-                    "Count": 6,
+                    "Count": 24,
                     "Type": 0
                 },
                 {
                     "Message": "If you keep making that face, it'll freeze that way",
-                    "Count": 8,
+                    "Count": 35,
                     "Type": 0
                 }
             ]
@@ -166,17 +166,17 @@
             "Response": [
                 {
                     "Message": "Ask your father.",
-                    "Count": 58,
+                    "Count": 59,
                     "Type": 0
                 },
                 {
                     "Message": "God gave you a brain, why don't you use it?",
-                    "Count": 7,
+                    "Count": 9,
                     "Type": 0
                 },
                 {
                     "Message": "Ask a stupid question, get a stupid answer",
-                    "Count": 5,
+                    "Count": 6,
                     "Type": 0
                 }
             ]
@@ -204,37 +204,37 @@
             "Response": [
                 {
                     "Message": "Children are to be seen, not heard.",
-                    "Count": 1,
+                    "Count": 8,
                     "Type": 0
                 },
                 {
                     "Message": "Shut the hell up!",
-                    "Count": 3,
+                    "Count": 8,
                     "Type": 0
                 },
                 {
                     "Message": "Quiet down, I can't even hear myself think!",
-                    "Count": 3,
+                    "Count": 5,
                     "Type": 0
                 },
                 {
                     "Message": "Let's play the quiet game.",
-                    "Count": 1,
+                    "Count": 4,
                     "Type": 0
                 },
                 {
                     "Message": "Someone better be bleeding.",
-                    "Count": 1,
+                    "Count": 3,
                     "Type": 0
                 },
                 {
                     "Message": "When you have kids, I hope they're just like you.",
-                    "Count": 0,
+                    "Count": 2,
                     "Type": 0
                 },
                 {
                     "Message": "Don't you use that tone with me.",
-                    "Count": 5,
+                    "Count": 8,
                     "Type": 0
                 }
             ]

@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "admin": {}, // access to all
+    "elevated-user": {}, // user with extra privileges
+    "user": {}, // regular user
+    "targeted": {}, // user with special effects
+    "muted": {}, // ignored user
+    "bot": {} // bot, ignored
+  }
+}

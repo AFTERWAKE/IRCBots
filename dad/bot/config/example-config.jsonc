@@ -1,0 +1,46 @@
+{
+  "nick": ["nick", "backupnick", "backupnick2"],
+  "variables": [
+    // collection of bot 'global variables', most commonly probably used for common regex statements
+    {
+      "variable": "#nickRegex#", // regex variables should be surrounded by "#",
+      "description": ["captures any matches for the name"],
+      "regex": [{ "pattern": ["\\bdad\\b", "\\bpa{1,2}\\b"] }] // regex used to capture the variable
+    }
+  ],
+  "commands": [
+    {
+      "variables": [ // @ variables capture text for re-use in the response or elsewhere
+        {
+          "variable": "@blah@", // can only be a string, declare one variable at a time,
+          "description": ["the topic to change to"], // optional
+          "regex": [{ "pattern": [".{1,50}"]}],
+          "value": "what" // default value, optional, only used if nothing is matched. If no default is given, the match fails
+        }
+      ],
+      "regex": [
+        {
+          "pattern": ["#nickRegex#", "@blah@"] // match nickRegex first, then capture everything after it in @blah@ (ignore whitespace between regex and the variable)
+        }
+      ],
+      "help": {
+        "message": ["Does a thing"],
+        "hint": ["@nick@, change topic to blah"] // @nick@ should be a reserved variable (what else should???)
+      },
+      "permissions": [
+        "user"
+      ],
+      "responses": [
+        {
+          "response": ["okay, I changed the topic to ", "@blah@"],
+          "actions": [
+            {
+              "action": "topic",
+              "parameters": ["@blah@"]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
