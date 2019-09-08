@@ -11,7 +11,7 @@ type Action interface {
 type BotVariable struct {
 	Variable string `json:"variable"`
 	Description []string `json:"description"`
-	Regex []BotRegex `json:"regex"`
+	Regex []Regex `json:"regex"`
 	Value string `json:"value"`
 }
 
@@ -20,14 +20,7 @@ func (b BotVariable) parse() []string {
 	return []string {}
 }
 
-type BotRegex struct {
-	Pattern []string `json:"pattern"`
-}
 
-// Parse each element in the pattern and return true if all match
-func (b BotRegex) parse() bool {
-	return false
-}
 
 type BotResponse struct {
 	Response []string `json:"response"`
@@ -56,7 +49,7 @@ func (b BotAction) performAction() {
 
 type BotCommand struct {
 	Variables []BotVariable `json:"variables"`
-	Regex []BotRegex `json:"regex"`
+	Regex []Regex `json:"regex"`
 	Help Help `json:"help"`
 	Permissions []string `json:"permissions"`
 	Responses []BotResponse `json:"responses"`

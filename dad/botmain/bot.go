@@ -1,4 +1,4 @@
-package bot
+package main
 
 import (
 	"math/rand"
@@ -7,7 +7,7 @@ import (
 	log "gopkg.in/inconshreveable/log15.v2"
 )
 
-func Run() {
+func main() {
 	rand.Seed(time.Now().Unix())
 	serv := "irc.noahsiano.com:6667"
 	nick := "bot"

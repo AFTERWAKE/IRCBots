@@ -7,3 +7,4 @@ theCount/muted.txt
 *.swp
 .built
 tags
+.vscode
