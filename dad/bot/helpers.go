@@ -14,11 +14,11 @@ func isRegexVar(m string) bool {
 	return r.MatchString(m)
 }
 
-func convertRegexVar(m string, regexVars []Variable) []string {
-	// for _, regexVar := range regexVars {
-	// if regexVar.Variable == m {
-	// return regexVar.Regex[0].
-	// }
-	// }
-	return []string{}
+func getVar(name string, regexVars []Variable) *Variable {
+	for _, regexVar := range regexVars {
+		if regexVar.Name == name {
+			return &regexVar
+		}
+	}
+	return nil
 }
