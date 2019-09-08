@@ -6,7 +6,7 @@ import (
 	"github.com/AFTERWAKE/IRCBots/dad/bot"
 )
 
-func TestRegexParse(t *testing.T) {
+func TestRegexMatch(t *testing.T) {
 	tables := []struct {
 		regex  *bot.Regex
 		param  string
@@ -17,7 +17,7 @@ func TestRegexParse(t *testing.T) {
 		{&bot.Regex{[]string{"^test", "pattern$"}}, "blahpattern", false},
 	}
 	for i, table := range tables {
-		if table.regex.Parse(table.param) != table.expect {
+		if table.regex.Match(table.param) != table.expect {
 			t.Errorf("Failed [%d]: expected %v, got %v", i, table.expect, !table.expect)
 		}
 	}

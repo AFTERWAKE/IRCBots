@@ -9,19 +9,26 @@ type Regex struct {
 	Pattern []string `json:"pattern"`
 }
 
-// Parse each element in the pattern and return true if all match
-func (b Regex) Parse(test string) bool {
-	var pattern []string
+func (b Regex) Match(test string) bool {
+	return b.matchRec(test, 0)
+}
 
-	for _, p := range b.Pattern {
-		if isCaptureVar(p) {
-			panic("not yet supported")
-		} else if isRegexVar(p) {
-			panic("not yet supported")
-		} else {
-			pattern = append(pattern, "something else")
-		}
+func (b Regex) matchRec(test string, index int) bool {
+	if index >= len(b.Pattern) {
+		return test == ""
 	}
-	r, _ := regexp.Compile(strings.Join(b.Pattern[:], ""))
-	return r.MatchString(test)
+	p := b.Pattern[index]
+	if isCaptureVar(p) {
+		panic("not yet supported")
+	} else if isRegexVar(p) {
+		panic("not yet supported")
+	} else {
+		r, _ := regexp.Compile(p)
+		matchIndex := r.FindStringIndex(test)
+		if matchIndex == nil {
+			return false
+		}
+		substr := strings.Replace(test, test[matchIndex[0]:matchIndex[1]], "", 1)
+		return b.matchRec(substr, index+1)
+	}
 }
