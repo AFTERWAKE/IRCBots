@@ -8,10 +8,10 @@ import (
 
 func TestRegexMatch(t *testing.T) {
 	botVars := []bot.Variable{
-		bot.Variable{"#example1#", []bot.Regex{bot.Regex{[]string{"(.)\\1"}}}, []string{""}, ""},
+		bot.Variable{"#example1#", []bot.Regex{bot.Regex{[]string{"t+"}}}, []string{""}, ""},
 		bot.Variable{"#example2#", []bot.Regex{bot.Regex{[]string{"mid{3,5}le"}}}, []string{""}, ""},
 		bot.Variable{"@capture1@", []bot.Regex{bot.Regex{[]string{"[1-4][a-f]"}}}, []string{""}, ""},
-		bot.Variable{"@capture2@", []bot.Regex{bot.Regex{[]string{"((.)(.))\\2\\1"}}}, []string{""}, ""},
+		bot.Variable{"@capture2@", []bot.Regex{bot.Regex{[]string{"me+p"}}}, []string{""}, ""},
 	}
 	tables := []struct {
 		regex  *bot.Regex

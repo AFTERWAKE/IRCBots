@@ -10,12 +10,13 @@ type Regex struct {
 }
 
 func (b Regex) Match(test string, botVars []Variable) bool {
-	return b.matchRec(test, botVars, 0)
+	match, remaining := b.matchRec(test, botVars, 0)
+	return match && remaining == ""
 }
 
-func (b Regex) matchRec(test string, botVars []Variable, index int) bool {
+func (b Regex) matchRec(test string, botVars []Variable, index int) (bool, string) {
 	if index >= len(b.Pattern) {
-		return test == ""
+		return true, test
 	}
 	p := b.Pattern[index]
 	if isCaptureVar(p) {
@@ -26,19 +27,23 @@ func (b Regex) matchRec(test string, botVars []Variable, index int) bool {
 		3. Store the match in local memory (??)
 		3. Call matchRec with substring
 		*/
-		panic("not yet supported")
+		// panic("not yet supported")
+		return false, test
 	} else if isRegexVar(p) {
 		/**
-		1. Find the correct variable
-		2. Find the first match in the regex array (b.Match) or return false
-		3. Call matchRec with substring
+		1. If a match is made, we have iterated through a Regex struct in the Variable and should be left with either an empty string or what remains of the string we're trying to match (or the string we started with if the match failed)
+		2. from there, do the same return step as the else block
 		*/
-		panic("not yet supported")
+		regexVar := getVar(p, botVars)
+		if regexVar != nil && regexVar.Match(test, botVars) {
+			return b.matchRec()
+		}
+		return false, test
 	} else {
-		r, _ := regexp.Compile(p)
+		r := regexp.MustCompile(p)
 		matchIndex := r.FindStringIndex(test)
 		if matchIndex == nil {
-			return false
+			return false, test
 		}
 		substr := strings.Replace(test, test[matchIndex[0]:matchIndex[1]], "", 1)
 		return b.matchRec(substr, botVars, index+1)

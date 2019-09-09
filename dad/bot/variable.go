@@ -7,11 +7,11 @@ type Variable struct {
 	Value       string   `json:"value"`
 }
 
-// Split the string into (a) the matching variable and (b) the rest of the string
-func (b Variable) parse() []string {
-	return []string{}
-}
-
-func (b Variable) Match(test string) bool {
+func (b Variable) Match(test string, botVars []Variable) bool {
+	for _, pattern := range b.Patterns {
+		if pattern.Match(test, botVars) {
+			return true
+		}
+	}
 	return false
 }
