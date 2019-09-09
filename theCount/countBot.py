@@ -189,7 +189,7 @@ class CountBot(irc.IRCClient):
             self.msg(self.chatroom, '{} is the winner with {} {}!'.format(name, self.numberForGame, self.wordForGame))
             self.msg(self.chatroom, "*ahahah*")
         self.nameList[userIndex].timesWon += 1
-        self.nameList[userIndex].winning_words.append(self.wordForGame)
+        self.nameList[userIndex].wordsWon.append(self.wordForGame)
         return
 
     def incrementCount(self, name):
@@ -254,12 +254,14 @@ class CountBot(irc.IRCClient):
         if (self.gameRunning == False):
             hour = int(self.getCurrentTime().split(':')[0])
             minute = int(self.getCurrentTime().split(':')[1])
-            if ((hour != self.hourOfLastGame) and (hour > 7 and hour < 17)):
-                if (((hour == 8) and (minute >= 30)) or ((hour == 11) and (minute >= 0)) or
-                ((hour == 13) and (minute >= 30)) or ((hour == 16) and (minute >= 0))):
-                    self.hourOfLastGame = hour
-                    self.resetGame()
-                    self.startGame()
+            day = int(self.getCurrentTime().split(':')[2])
+            if day < 5:
+                if ((hour != self.hourOfLastGame) and (hour > 7 and hour < 17)):
+                    if (((hour == 8) and (minute >= 30)) or ((hour == 11) and (minute >= 0)) or
+                    ((hour == 13) and (minute >= 30)) or ((hour == 16) and (minute >= 0))):
+                        self.hourOfLastGame = hour
+                        self.resetGame()
+                        self.startGame()
 
     def checkResetWieners(self):
         day = datetime.now().day
@@ -335,7 +337,7 @@ class CountBot(irc.IRCClient):
         elif command.startswith('whowho'):
             self.whowho(self.chatroom)
         else:
-            self.userCommands('story', command, already_stripped=True)
+            self.userCommands('noahsiano', command, already_stripped=True)
 
     def delUserFromList(self, message):
         nameIndex = self.getUserIndex(message.split()[2])
@@ -454,7 +456,7 @@ class CountBot(irc.IRCClient):
                                        self.nameList[user].wordsWon,
                                        self.nameList[user].wienerLevel,
                                        self.nameList[user].dayOfLastWiener,
-                                       self.get_winning_words(self.getUserIndex(self.nameList[user].username)))
+                                       self.getWinningWords(self.getUserIndex(self.nameList[user].username)))
             firstLoop = False
         return users
 
@@ -507,21 +509,21 @@ class CountBot(irc.IRCClient):
         elif command.startswith('rules'):
             self.rulesText()
         elif command.startswith('words'):
-            self.display_winning_words(name)
+            self.displayWinningWords(name)
 
-    def display_winning_words(self, name):
+    def displayWinningWords(self, name):
         player_index = self.getUserIndex(name)
         if player_index is -1:
             return
 
-        word_string = self.get_winning_words(player_index)
+        word_string = self.getWinningWords(player_index)
 
         self.msg(self.chatroom, '{}\'s winning words:'.format(name))
         self.msg(self.chatroom, word_string)
 
-    def get_winning_words(self, player_index):
+    def getWinningWords(self, player_index):
         word_string = ''
-        for word in self.nameList[player_index].winning_words:
+        for word in self.nameList[player_index].wordsWon:
             if word:
                 word_string += word + ', '
 
@@ -540,7 +542,8 @@ class CountBot(irc.IRCClient):
     @staticmethod
     def getCurrentTime():
         time = match('^(\d+):(\d+)', str(datetime.now().time()))
-        return (time.group(1) + ":" + time.group(2))
+        day = datetime.today().weekday()
+        return ("{}:{}:{}".format(time.group(1), time.group(2), day))
 
     def getUserIndex(self, name):
         for index in range(len(self.nameList)):
@@ -587,11 +590,11 @@ class CountBot(irc.IRCClient):
             user = user.split(':')
             index = self.handleUser(user[0])
             self.nameList[index].timesWon = int(user[1])
-            self.nameList[index].wienerLevel = int(user[2])
-            self.nameList[index].dayOfLastWiener = int(user[3])
-            self.nameList[index].winning_words = user[4].split(', ')
-            if not self.nameList[index].winning_words[0]:
-                self.nameList[index].winning_words.pop(0)
+            self.nameList[index].wienerLevel = int(user[3])
+            self.nameList[index].dayOfLastWiener = int(user[4])
+            self.nameList[index].wordsWon = user[2].split(', ')
+            if not self.nameList[index].wordsWon[0]:
+                self.nameList[index].wordsWon.pop(0)
 
     def restoreMutedUsersFromFile(self):
         returnFile = open(self.mutedFilePath, 'r')
@@ -737,7 +740,7 @@ class Player:
     hasNewWieners = False
     dayOfLastWiener = -1
     permaMock = False
-    winning_words = []
+    wordsWon = []
 
     def __init__(self, name):
         self.username = name
