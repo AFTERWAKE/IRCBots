@@ -1,5 +1,4 @@
 FROM ubuntu:latest
-RUN readlink $(which sh)
 RUN apt-get update -y && apt-get upgrade -y
 RUN apt-get install -y \
         libffi-dev libssl-dev python python-dev python-pip curl \
