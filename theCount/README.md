@@ -30,3 +30,16 @@ ADMIN COMMANDS
          botNick, wieners (shows your wiener count for the day)
          botNick, rules (shows list of rules)
          botNick, version (shows version + link to github)
+         botNick, words (shows winning words)
+
+## Install and run
+
+Create a virtual environment and get Twisted:
+
+    virtualenv -p /usr/bin/python3 venv
+    . venv/bin/activate
+    pip install Twisted
+
+Run the bot:
+
+    python3 countBot.py
