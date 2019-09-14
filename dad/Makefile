@@ -3,4 +3,4 @@ CMD				:= go run
 ifeq ($(BOT),)
 $(error Since there are 2 bots in this dir, please define either BOT=dad.go or BOT=mom.go when calling make)
 endif
-include ../IRCBot_docker.mk
+include ../IRCBot.mk
