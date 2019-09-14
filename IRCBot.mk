@@ -8,19 +8,20 @@ endif
 
 usage:
 	@echo "Make Interface"
-	@echo "run	: run the container in interactive mode"
-	@echo "detached: run the container in detached mode (be sure to know how to stop detached containers :^))"
-	@echo "build	: build the container (timestamp in .built)"
-	@echo "clean	: you'll need to do this if you want to rebuild the bot (this will also rm the current image)"
+	@echo "run              : run the bot normally"
+	@echo "docker-run       : run the container in interactive mode"
+	@echo "docker-detached  : run the container in detached mode (be sure to know how to stop detached containers :^))"
+	@echo "build            : build the container (timestamp in .built)"
+	@echo "clean            : you'll need to do this if you want to rebuild the bot (this will also rm the current image)"
+
+run:
+	$(CMD) $(BOT)
 
 docker-run: build
 	docker run -it $(DOCKER_FLAGS) $(DOCKER_IMG) $(CMD) $(BOT)
 
 docker-detached: build
 	docker run -d $(DOCKER_FLAGS) $(DOCKER_IMG) $(CMD) $(BOT)
-
-run:
-	$(CMD) $(BOT)
 
 build: ../.built
 
