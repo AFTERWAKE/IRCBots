@@ -13,11 +13,14 @@ usage:
 	@echo "build	: build the container (timestamp in .built)"
 	@echo "clean	: you'll need to do this if you want to rebuild the bot (this will also rm the current image)"
 
-run: build
+docker-run: build
 	docker run -it $(DOCKER_FLAGS) $(DOCKER_IMG) $(CMD) $(BOT)
 
-detached: build
+docker-detached: build
 	docker run -d $(DOCKER_FLAGS) $(DOCKER_IMG) $(CMD) $(BOT)
+
+run:
+	$(CMD) $(BOT)
 
 build: ../.built
 
