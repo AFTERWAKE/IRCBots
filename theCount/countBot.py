@@ -54,7 +54,7 @@ serv_port = 6667
 
 
 class CountBot(irc.IRCClient):
-    version = "2.14.0"
+    version = "2.15.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -517,9 +517,12 @@ class CountBot(irc.IRCClient):
             return
 
         word_string = self.getWinningWords(player_index)
-
-        self.msg(self.chatroom, '{}\'s winning words:'.format(name))
-        self.msg(self.chatroom, word_string)
+        if (word_string is not ""):
+            self.msg(self.chatroom, '{}\'s winning words:'.format(name))
+            self.msg(self.chatroom, word_string)
+        else:
+            self.msg(self.chatroom, '{} has no winning words.'.format(name))
+            self.showLoserMsg(name)
 
     def getWinningWords(self, player_index):
         word_string = ", ".join(self.nameList[player_index].wordsWon)
