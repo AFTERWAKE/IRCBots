@@ -54,7 +54,7 @@ serv_port = 6667
 
 
 class CountBot(irc.IRCClient):
-    version = "2.15.0"
+    version = "2.16.0"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -330,7 +330,12 @@ class CountBot(irc.IRCClient):
         elif command.startswith('whois'):
             self._whois(message.split()[2])
         elif command.startswith('mock'):
-            self.mockUser(message.split()[2])
+            i = 0
+            for n in message.split()[2:]:
+                self.mockUser(n)
+                if (i > 3):
+                    break
+                i += 1
         elif command.startswith('pmock'):
             self.permaMockUser(message.split()[2])
         elif command.startswith('unpmock'):
@@ -505,7 +510,12 @@ class CountBot(irc.IRCClient):
         elif command.startswith('say') and isTopUser:
             self.msg(self.chatroom, message[len(self.nickname)+6:])
         elif command.startswith('mock') and isTopUser:
-            self.mockUser(message.split()[2])
+            i = 0
+            for n in message.split()[2:]:
+                self.mockUser(n)
+                if (i > 1):
+                    break
+                i += 1
         elif command.startswith('rules'):
             self.rulesText()
         elif command.startswith('words'):
