@@ -47,6 +47,7 @@ from datetime import datetime
 from re import match
 from sys import exit
 import time
+import ast
 
 serv_ip = "noahsiano.com"
 serv_port = 6667
@@ -96,7 +97,7 @@ class CountBot(irc.IRCClient):
             self.restoreUsersFromFile()
             print('Winners restored')
         except:
-            print('Restore failed. No file found.')
+            print('Restore failed.')
         try:
             self.letterWords = {letter: [word.strip() for word in open('/usr/share/dict/words', 'r')
                                 if word.capitalize().startswith(letter)] for letter in self.alphabet}
@@ -281,7 +282,7 @@ class CountBot(irc.IRCClient):
                     topUser = self.nameList[user]
         return topUser
 
-    def adminCommands(self, message):
+    def adminCommands(self, name, message):
         if message.startswith(self.nickname + ', ') or message.startswith(self.nickname + ': '):
             command = message[len(self.nickname) + 2:].strip()
         elif message.startswith(self.nickname + ' '):
@@ -337,7 +338,7 @@ class CountBot(irc.IRCClient):
         elif command.startswith('whowho'):
             self.whowho(self.chatroom)
         else:
-            self.userCommands('noahsiano', command, already_stripped=True)
+            self.userCommands(name, command, already_stripped=True)
 
     def delUserFromList(self, message):
         nameIndex = self.getUserIndex(message.split()[2])
@@ -451,12 +452,11 @@ class CountBot(irc.IRCClient):
         for user in range(len(self.nameList)):
             if (not firstLoop):
                 users += '\n'
-            users += '{}:{}:{}:{}:{}:'.format(self.nameList[user].username,
+            users += '{}:{}:{}:{}:{}'.format(self.nameList[user].username,
                                        self.nameList[user].timesWon,
-                                       self.nameList[user].wordsWon,
+                                       str(self.nameList[user].wordsWon),
                                        self.nameList[user].wienerLevel,
-                                       self.nameList[user].dayOfLastWiener,
-                                       self.getWinningWords(self.getUserIndex(self.nameList[user].username)))
+                                       self.nameList[user].dayOfLastWiener)
             firstLoop = False
         return users
 
@@ -522,14 +522,7 @@ class CountBot(irc.IRCClient):
         self.msg(self.chatroom, word_string)
 
     def getWinningWords(self, player_index):
-        word_string = ''
-        for word in self.nameList[player_index].wordsWon:
-            if word:
-                word_string += word + ', '
-
-        if word_string.endswith(', '):
-            word_string = word_string[:-2]
-
+        word_string = ", ".join(self.nameList[player_index].wordsWon)
         return word_string
 
     def showLoserMsg(self, name):
@@ -582,6 +575,7 @@ class CountBot(irc.IRCClient):
         returnFile = open(self.scoresFilePath, 'r')
         users = returnFile.readlines()
         returnFile.close()
+        print("FileFound")
         self.restoreScores(users)
         return
 
@@ -592,9 +586,7 @@ class CountBot(irc.IRCClient):
             self.nameList[index].timesWon = int(user[1])
             self.nameList[index].wienerLevel = int(user[3])
             self.nameList[index].dayOfLastWiener = int(user[4])
-            self.nameList[index].wordsWon = user[2].split(', ')
-            if not self.nameList[index].wordsWon[0]:
-                self.nameList[index].wordsWon.pop(0)
+            self.nameList[index].wordsWon = ast.literal_eval(user[2])
 
     def restoreMutedUsersFromFile(self):
         returnFile = open(self.mutedFilePath, 'r')
@@ -711,7 +703,7 @@ class CountBot(irc.IRCClient):
                 self.automateStart()
                 if (message.startswith(self.nickname)):
                     if (user.split('@')[1] in self.admin):
-                        self.adminCommands(message)
+                        self.adminCommands(user.split('!')[0], message)
                     elif (user.split('@')[1] in self.mutedList):
                         return
                     elif (user.split('!')[1].split('@')[0] in self.botList):
