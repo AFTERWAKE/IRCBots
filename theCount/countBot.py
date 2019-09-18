@@ -54,7 +54,7 @@ serv_port = 6667
 
 
 class CountBot(irc.IRCClient):
-    version = "2.16.0"
+    version = "2.16.1"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -67,6 +67,7 @@ class CountBot(irc.IRCClient):
     gameRunning = False
     nameList = []
     admin = ["localhost", "162.243.65.242"]
+    adminNames = ["noahsiano", "groot"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -467,8 +468,8 @@ class CountBot(irc.IRCClient):
 
     def helpText(self):
         self.msg(self.chatroom, 'Hello co-ops of ADTRAN, I am countBot. My sole purpose is to spawn a quick ' +
-                 'and fun counting game at 8:30, 11:00, 1:30, and 4. I can also be initialized by an admin, ' +
-                 '[story]. If you have any problems with me, please defer to Nicole. Have a nice day :) ' +
+                 'and fun counting game at 8:30, 11:00, 1:30, and 4. I can also be initialized by an admin: ' +
+                 '{}. If you have any problems with me, please defer to Noah. Have a very nice day :) '.format(", ".join(self.adminNames)) +
                  'Also... Bots are not allowed to play this game. Please don\'t ruin the fun.')
     def rulesText(self):
         self.msg(self.chatroom,
