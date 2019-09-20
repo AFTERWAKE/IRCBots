@@ -296,6 +296,11 @@ class memeBot(irc.IRCClient):
         self.msg(channel, "owie")
         self.__last_response = temp_time
 
+    def more_like(self, channel, temp_time):
+        responses = ["Hah got em", "Heh nice one"]
+        self.msg(channel, random.choice(responses))
+        self.__last_response = temp_time
+
     def help_message(self, channel):
         msg = "Hi! I'm memeBot!  Do you how do :^)"
         self.msg(channel, msg)
@@ -371,6 +376,10 @@ class memeBot(irc.IRCClient):
             # oof owie
             elif re.search(r"\boof\b|\b:oof:\b", message.lower()):
                 self.oof_owie(channel, temp_time)
+
+            # more like...
+            elif re.search(r".+\?\s*more like.+(amirite\??|am i right\??)?", message.lower(), re.IGNORECASE):
+                self.more_like(channel, temp_time)
 
             else:
                 return
