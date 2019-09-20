@@ -47,13 +47,14 @@ from datetime import datetime
 from re import match
 from sys import exit
 import time
+import ast
 
 serv_ip = "noahsiano.com"
 serv_port = 6667
 
 
 class CountBot(irc.IRCClient):
-    version = "2.14.0"
+    version = "2.16.1"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
     chatroom = "#main"
@@ -66,6 +67,7 @@ class CountBot(irc.IRCClient):
     gameRunning = False
     nameList = []
     admin = ["localhost", "162.243.65.242"]
+    adminNames = ["noahsiano", "groot"]
     letterWords = {}
     wordForGame = ''
     alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -96,7 +98,7 @@ class CountBot(irc.IRCClient):
             self.restoreUsersFromFile()
             print('Winners restored')
         except:
-            print('Restore failed. No file found.')
+            print('Restore failed.')
         try:
             self.letterWords = {letter: [word.strip() for word in open('/usr/share/dict/words', 'r')
                                 if word.capitalize().startswith(letter)] for letter in self.alphabet}
@@ -281,7 +283,7 @@ class CountBot(irc.IRCClient):
                     topUser = self.nameList[user]
         return topUser
 
-    def adminCommands(self, message):
+    def adminCommands(self, name, message):
         if message.startswith(self.nickname + ', ') or message.startswith(self.nickname + ': '):
             command = message[len(self.nickname) + 2:].strip()
         elif message.startswith(self.nickname + ' '):
@@ -329,7 +331,12 @@ class CountBot(irc.IRCClient):
         elif command.startswith('whois'):
             self._whois(message.split()[2])
         elif command.startswith('mock'):
-            self.mockUser(message.split()[2])
+            i = 0
+            for n in message.split()[2:]:
+                self.mockUser(n)
+                if (i > 3):
+                    break
+                i += 1
         elif command.startswith('pmock'):
             self.permaMockUser(message.split()[2])
         elif command.startswith('unpmock'):
@@ -337,7 +344,7 @@ class CountBot(irc.IRCClient):
         elif command.startswith('whowho'):
             self.whowho(self.chatroom)
         else:
-            self.userCommands('noahsiano', command, already_stripped=True)
+            self.userCommands(name, command, already_stripped=True)
 
     def delUserFromList(self, message):
         nameIndex = self.getUserIndex(message.split()[2])
@@ -451,19 +458,18 @@ class CountBot(irc.IRCClient):
         for user in range(len(self.nameList)):
             if (not firstLoop):
                 users += '\n'
-            users += '{}:{}:{}:{}:{}:'.format(self.nameList[user].username,
+            users += '{}:{}:{}:{}:{}'.format(self.nameList[user].username,
                                        self.nameList[user].timesWon,
-                                       self.nameList[user].wordsWon,
+                                       str(self.nameList[user].wordsWon),
                                        self.nameList[user].wienerLevel,
-                                       self.nameList[user].dayOfLastWiener,
-                                       self.getWinningWords(self.getUserIndex(self.nameList[user].username)))
+                                       self.nameList[user].dayOfLastWiener)
             firstLoop = False
         return users
 
     def helpText(self):
         self.msg(self.chatroom, 'Hello co-ops of ADTRAN, I am countBot. My sole purpose is to spawn a quick ' +
-                 'and fun counting game at 8:30, 11:00, 1:30, and 4. I can also be initialized by an admin, ' +
-                 '[story]. If you have any problems with me, please defer to Nicole. Have a nice day :) ' +
+                 'and fun counting game at 8:30, 11:00, 1:30, and 4. I can also be initialized by an admin: ' +
+                 '{}. If you have any problems with me, please defer to Noah. Have a very nice day :) '.format(", ".join(self.adminNames)) +
                  'Also... Bots are not allowed to play this game. Please don\'t ruin the fun.')
     def rulesText(self):
         self.msg(self.chatroom,
@@ -505,7 +511,12 @@ class CountBot(irc.IRCClient):
         elif command.startswith('say') and isTopUser:
             self.msg(self.chatroom, message[len(self.nickname)+6:])
         elif command.startswith('mock') and isTopUser:
-            self.mockUser(message.split()[2])
+            i = 0
+            for n in message.split()[2:]:
+                self.mockUser(n)
+                if (i > 1):
+                    break
+                i += 1
         elif command.startswith('rules'):
             self.rulesText()
         elif command.startswith('words'):
@@ -517,19 +528,15 @@ class CountBot(irc.IRCClient):
             return
 
         word_string = self.getWinningWords(player_index)
-
-        self.msg(self.chatroom, '{}\'s winning words:'.format(name))
-        self.msg(self.chatroom, word_string)
+        if (word_string is not ""):
+            self.msg(self.chatroom, '{}\'s winning words:'.format(name))
+            self.msg(self.chatroom, word_string)
+        else:
+            self.msg(self.chatroom, '{} has no winning words.'.format(name))
+            self.showLoserMsg(name)
 
     def getWinningWords(self, player_index):
-        word_string = ''
-        for word in self.nameList[player_index].wordsWon:
-            if word:
-                word_string += word + ', '
-
-        if word_string.endswith(', '):
-            word_string = word_string[:-2]
-
+        word_string = ", ".join(self.nameList[player_index].wordsWon)
         return word_string
 
     def showLoserMsg(self, name):
@@ -582,6 +589,7 @@ class CountBot(irc.IRCClient):
         returnFile = open(self.scoresFilePath, 'r')
         users = returnFile.readlines()
         returnFile.close()
+        print("FileFound")
         self.restoreScores(users)
         return
 
@@ -592,9 +600,7 @@ class CountBot(irc.IRCClient):
             self.nameList[index].timesWon = int(user[1])
             self.nameList[index].wienerLevel = int(user[3])
             self.nameList[index].dayOfLastWiener = int(user[4])
-            self.nameList[index].wordsWon = user[2].split(', ')
-            if not self.nameList[index].wordsWon[0]:
-                self.nameList[index].wordsWon.pop(0)
+            self.nameList[index].wordsWon = ast.literal_eval(user[2])
 
     def restoreMutedUsersFromFile(self):
         returnFile = open(self.mutedFilePath, 'r')
@@ -711,7 +717,7 @@ class CountBot(irc.IRCClient):
                 self.automateStart()
                 if (message.startswith(self.nickname)):
                     if (user.split('@')[1] in self.admin):
-                        self.adminCommands(message)
+                        self.adminCommands(user.split('!')[0], message)
                     elif (user.split('@')[1] in self.mutedList):
                         return
                     elif (user.split('!')[1].split('@')[0] in self.botList):
