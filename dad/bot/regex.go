@@ -9,12 +9,15 @@ type Regex struct {
 	Pattern []string `json:"pattern"`
 }
 
-func (b Regex) Match(test string, botVars []Variable) bool {
-	match, remaining := b.matchRec(test, botVars, 0)
-	return match && remaining == ""
+func (b Regex) Match(test string, botVars []Variable, depth int) (bool, string) {
+	match, remaining := b.matchRec(test, botVars, 0, depth)
+	if depth == 0 {
+		return match && remaining == "", remaining
+	}
+	return match, remaining
 }
 
-func (b Regex) matchRec(test string, botVars []Variable, index int) (bool, string) {
+func (b Regex) matchRec(test string, botVars []Variable, index int, depth int) (bool, string) {
 	if index >= len(b.Pattern) {
 		return true, test
 	}
@@ -35,8 +38,9 @@ func (b Regex) matchRec(test string, botVars []Variable, index int) (bool, strin
 		2. from there, do the same return step as the else block
 		*/
 		regexVar := getVar(p, botVars)
-		if regexVar != nil && regexVar.Match(test, botVars) {
-			return b.matchRec()
+		match, substr := regexVar.Match(test, botVars, depth+1)
+		if regexVar != nil && match {
+			return b.matchRec(substr, botVars, index+1, depth+1)
 		}
 		return false, test
 	} else {
@@ -46,6 +50,6 @@ func (b Regex) matchRec(test string, botVars []Variable, index int) (bool, strin
 			return false, test
 		}
 		substr := strings.Replace(test, test[matchIndex[0]:matchIndex[1]], "", 1)
-		return b.matchRec(substr, botVars, index+1)
+		return b.matchRec(substr, botVars, index+1, depth+1)
 	}
 }

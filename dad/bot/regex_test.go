@@ -14,21 +14,23 @@ func TestRegexMatch(t *testing.T) {
 		bot.Variable{"@capture2@", []bot.Regex{bot.Regex{[]string{"me+p"}}}, []string{""}, ""},
 	}
 	tables := []struct {
-		regex  *bot.Regex
-		param  string
-		expect bool
+		regex     *bot.Regex
+		param     string
+		expect    bool
+		remaining string
 	}{
-		{&bot.Regex{[]string{"^test", "pattern$"}}, "test pattern", false},
-		{&bot.Regex{[]string{"^test", "pattern$"}}, "testpattern", true},
-		{&bot.Regex{[]string{"^test", "pattern$"}}, "blahpattern", false},
-		{&bot.Regex{[]string{"^t{1,4}", "#example1#", "pattern$"}}, "ttttttpattern", true},
-		{&bot.Regex{[]string{"middle", "#example2#", "pattern$"}}, "middlemidddlepattern", true},
-		{&bot.Regex{[]string{".*", "@capture1@", "something"}}, "blahblah1fsomething", true},
-		{&bot.Regex{[]string{".*", "@capture2@", "something"}}, "blahmeepsomething", true},
+		{&bot.Regex{[]string{"^test", "pattern$"}}, "test pattern", false, " "},
+		{&bot.Regex{[]string{"^test", "pattern$"}}, "testpattern", true, ""},
+		{&bot.Regex{[]string{"^test", "pattern$"}}, "blahpattern", false, "blahpattern"},
+		{&bot.Regex{[]string{"^t{1,4}", "#example1#", "pattern$"}}, "ttttttpattern", true, ""},
+		{&bot.Regex{[]string{"middle", "#example2#", "pattern$"}}, "middlemidddlepattern", true, ""},
+		// {&bot.Regex{[]string{".*", "@capture1@", "something"}}, "blahblah1fsomething", true, ""},
+		// {&bot.Regex{[]string{".*", "@capture2@", "something"}}, "blahmeepsomething", true, ""},
 	}
 	for i, table := range tables {
-		if table.regex.Match(table.param, botVars) != table.expect {
-			t.Errorf("Failed [%d]: expected %v, got %v", i, table.expect, !table.expect)
+		match, remaining := table.regex.Match(table.param, botVars, 0)
+		if match != table.expect || remaining != table.remaining {
+			t.Errorf("Failed [%d]: expected match: %v, got %v, remaining: \"%s\", got \"%s\"", i, table.expect, match, table.remaining, remaining)
 		}
 	}
 }

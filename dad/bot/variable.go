@@ -7,11 +7,12 @@ type Variable struct {
 	Value       string   `json:"value"`
 }
 
-func (b Variable) Match(test string, botVars []Variable) bool {
+func (b Variable) Match(test string, botVars []Variable, depth int) (bool, string) {
 	for _, pattern := range b.Patterns {
-		if pattern.Match(test, botVars) {
-			return true
+		match, substr := pattern.Match(test, botVars, depth+1)
+		if match {
+			return true, substr
 		}
 	}
-	return false
+	return false, test
 }

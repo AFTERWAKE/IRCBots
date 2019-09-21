@@ -16,7 +16,8 @@ type Command struct {
 func (b Command) Match(message *hbot.Message, botVars []Variable) bool {
 	allVars := append(b.Variables, botVars...)
 	for _, regex := range b.Regex {
-		if regex.Match(message.Content, allVars) { // TODO This should probably return captured variables
+		match, remaining := regex.Match(message.Content, allVars, 0)
+		if match && remaining == "" {
 			return true
 		}
 	}
