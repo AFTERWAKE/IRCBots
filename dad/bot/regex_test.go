@@ -23,6 +23,7 @@ func TestRegexMatch(t *testing.T) {
 		{&bot.Regex{[]string{"^test", "pattern$"}}, "testpattern", true, ""},
 		{&bot.Regex{[]string{"^test", "pattern$"}}, "blahpattern", false, "blahpattern"},
 		{&bot.Regex{[]string{"^t{1,4}", "#example1#", "pattern$"}}, "ttttttpattern", true, ""},
+		{&bot.Regex{[]string{"#example2#"}}, "ttttttpattern", false, "ttttttpattern"},
 		{&bot.Regex{[]string{"middle", "#example2#", "pattern$"}}, "middlemidddlepattern", true, ""},
 		// {&bot.Regex{[]string{".*", "@capture1@", "something"}}, "blahblah1fsomething", true, ""},
 		// {&bot.Regex{[]string{".*", "@capture2@", "something"}}, "blahmeepsomething", true, ""},
