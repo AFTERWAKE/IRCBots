@@ -31,6 +31,11 @@ func (b Regex) matchRec(test string, botVars []Variable, index int, depth int) (
 		3. Call matchRec with substring
 		*/
 		// panic("not yet supported")
+		regexVar := getVar(p, botVars)
+		match, substr := regexVar.Match(test, botVars, depth+1)
+		if regexVar != nil && match {
+			return b.matchRec(substr, botVars, index+1, depth+1)
+		}
 		return false, test
 	} else if isRegexVar(p) {
 		/**
