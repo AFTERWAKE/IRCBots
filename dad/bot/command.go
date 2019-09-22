@@ -5,7 +5,6 @@ import (
 )
 
 type Command struct {
-	Variables   []Variable `json:"variables"`
 	Regex       []Regex    `json:"regex"`
 	Help        Help       `json:"help"`
 	Permissions []string   `json:"permissions"`
@@ -13,11 +12,10 @@ type Command struct {
 }
 
 // Return true if message matches command regex
-func (b Command) Match(message *hbot.Message, botVars []Variable) bool {
-	allVars := append(b.Variables, botVars...)
+func (b Command) Match(message *hbot.Message) bool {
 	for _, regex := range b.Regex {
-		match, remaining := regex.Match(message.Content, allVars, 0)
-		if match && remaining == "" {
+		match := regex.Match(message.Content)
+		if match != nil {
 			return true
 		}
 	}
