@@ -378,7 +378,7 @@ class memeBot(irc.IRCClient):
                 self.oof_owie(channel, temp_time)
 
             # more like...
-            elif re.search(r".+\?\s*more like.+(amirite\??|am i right\??)?", message.lower(), re.IGNORECASE):
+            elif re.search(r".+[\?|,]\s*more like.+(amirite\??|am i right\??)?", message.lower(), re.IGNORECASE):
                 self.more_like(channel, temp_time)
 
             else:
