@@ -1,33 +1,25 @@
 package bot
 
-import (
-	hbot "github.com/whyrusleeping/hellabot"
-)
-
 type Command struct {
-	Regex       []Regex    `json:"regex"`
-	Help        Help       `json:"help"`
-	Permissions []string   `json:"permissions"`
-	Responses   []Response `json:"responses"`
+	Regex       []*Regex    `json:"regex"`
+	Responses   []*Response `json:"responses"`
+	Permissions []string    `json:"permissions"`
+	Help        *Help       `json:"help"`
 }
 
 // Return true if message matches command regex
-func (b Command) Match(message *hbot.Message) bool {
+func (b Command) Match(message string) []string {
 	for _, regex := range b.Regex {
-		match := regex.Match(message.Content)
+		match := regex.Match(message)
 		if match != nil {
-			return true
+			return match
 		}
 	}
-	return false
+	return nil
 }
 
-func (b Command) getHelp() string {
-	return ""
-}
-
-func (b Command) getResponse() string {
-	return ""
+func (b Command) getResponse(matched []string) []string {
+	return []string{}
 }
 
 func (b Command) performActions() {

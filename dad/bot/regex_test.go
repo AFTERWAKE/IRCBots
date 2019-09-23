@@ -26,6 +26,5 @@ func TestRegexMatch(t *testing.T) {
 				i, table.expect, match,
 			)
 		}
-
 	}
 }
