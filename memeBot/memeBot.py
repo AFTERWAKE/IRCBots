@@ -12,9 +12,9 @@ from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol, defer
 import string
 
-serv_ip = "coop.test.adtran.com"
+serv_ip = ""
 serv_port = 6667
-channel = "#main"
+channel = ""
 
 try:
     with open("../admin_ip.txt", "r") as infile:
@@ -207,10 +207,25 @@ class memeBot(irc.IRCClient):
             '''
 
     def rip(self, channel, temp_time):
-        responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip", "RIP", "f", "F"]
+        responses = ["rip", "ripperonie", "merry RIP-mas", "ripripripriprip", "RIP"]
+        self.msg(channel, random.choice(responses))
+        self.__last_response = temp_time
+        
+    def airHorn(self, channel, temp_time):
+        responses = ["AWOOGAH", "BWWWOOOOT", "I am making an airhorn sound", "[Airhorn Sounds]", "BWABWABWABWA",
+                                                     "https://i.gifer.com/origin/21/219414c98086cb74b542314d984c9656_w200.gif", "FAAAHH FAH FAH FAH FAAAAAHHHH"]
+        self.msg(channel, random.choice(responses))
+        self.__last_response = temp_time
+        
+    def f(self, channel, temp_time):
+        responses = ["f", "F", "respects have been paid"]
         self.msg(channel, random.choice(responses))
         self.__last_response = temp_time
 
+    def uwu(self, channel, temp_time):
+        responses = ["pls stop"]
+        self.msg(channel, random.choice(responses))
+        self.__last_response = temp_time
 
     def doot(self, channel, message, temp_time):
         numDoots = message.count("doot")
@@ -337,8 +352,20 @@ class memeBot(irc.IRCClient):
                 self.murica(channel, host, temp_time)
 
             # match rip
-            elif re.search(r"(\brip\b)", message.lower()):
+            elif re.search(r"(\brip\b)", message):
                 self.rip(channel, temp_time)
+
+            # match f
+            elif re.search(r"(\bf\b)", message):
+                self.f(channel, temp_time)
+
+            # match uwu
+            elif re.search(r"(\buwu\b)", message):
+                self.uwu(channel, temp_time)
+                
+            # match airhorn
+            elif re.search(r"(\bairhorn\b)", message):
+                self.airHorn(channel, temp_time) 
 
             # doot doot
             elif re.search(r"(\bdoot\b)", message.lower()):
