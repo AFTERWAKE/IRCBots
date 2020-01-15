@@ -155,6 +155,7 @@ class memeBot(irc.IRCClient):
         print random.choice(self.memelist)
 
     def murica(self, channel, host, temp_time):
+        '''
         try:
             with open("muricans.txt", "r") as infile:
                 muricans = []
@@ -178,6 +179,23 @@ class memeBot(irc.IRCClient):
                     return
         except (IOError):
             print "ERROR: muricans.txt not found"
+        '''
+        stars1  = "\x0300,02* * * * * * *"
+        stars2  = "\x0300,02 * * * * * * "
+        stripe1 = "\x0304,04                         ,"
+        stripe2 = "\x0300,00                         ,"
+        stripe3 = "\x0304,04                                      ,"
+        stripe4 = "\x0300,00                                      ,"
+        for i in range(3):
+            self.msg(channel, stars1 + stripe1)
+                self.msg(channel, stars2 + stripe2)
+            self.msg(channel, stars1 + stripe1)
+            for i in range(3):
+                self.msg(channel, stripe4)
+                    self.msg(channel, stripe3)
+                self.__last_murica = temp_time
+
+
 
     def admin_cmds(self, channel, message):
         # if message == "get_memes":
