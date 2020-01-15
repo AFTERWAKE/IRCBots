@@ -100,6 +100,12 @@ class Seahorse(irc.IRCClient):
                     self.msg(self.__channel, m.group(2))
                     return
 
+                elif cmd == "mock":
+                    msg = "my name's %s, weesnaw" % name
+                    self.msg(self.__channel, self.mock(msg))
+                    return
+                    
+
         # bypass pms
         if channel == config["nick"]:
             return
@@ -205,6 +211,15 @@ class Seahorse(irc.IRCClient):
                    "link":"https://pokemondb.net" + pokemon_list[i].attrib["href"]}
             pokemon_list[i] = mon
         return pokemon_list
+
+    def mock(self, string):
+        s = list(string.lower())
+        out = ""
+        for i in range(len(s)):
+            if random.randint(0,1):
+                s[i] = s[i].upper()
+        return "".join(s)
+        
 
 def main():
     serv_ip = config["server"]
