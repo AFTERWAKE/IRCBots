@@ -12,15 +12,15 @@ from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol, defer
 import string
 
-serv_ip = "example ip"
+serv_ip = ""
 serv_port = 6667
-channel = "#main"
+channel = ""
 
 try:
     with open("../admin_ip.txt", "r") as infile:
         admin_ip = infile.readline().strip()
 except (IOError):
-    admin_ip = "example ip"
+    admin_ip = ""
 finally:
     if admin_ip != "":
         print("Admin IP: " + admin_ip)
@@ -135,7 +135,27 @@ class memeBot(irc.IRCClient):
                 msg += self.user_list[i]["nick"] + " "
         self.msg(channel, "Ignore list: " + msg)
 
+    def get_memes(self):
+        page = requests.get("https://www.reddit.com/r/memes/")
+        if page.ok:
+            self.memelist = []
+            tree = html.fromstring(page.content)
+            links = tree.find_class("title")
+            for each in links:
+                href = each.get("href")
+                if href != None:
+                    if "/r/memes/" in href:
+                        self.memelist.append("https://www.reddit.com" + href)
+                    else:
+                        self.memelist.append(href)
+        page.close()
+        print page.ok
+
+    def pick_meme(self):
+        print random.choice(self.memelist)
+
     def murica(self, channel, host, temp_time):
+        '''
         try:
             with open("muricans.txt", "r") as infile:
                 muricans = []
@@ -159,6 +179,23 @@ class memeBot(irc.IRCClient):
                     return
         except (IOError):
             print "ERROR: muricans.txt not found"
+        '''
+        stars1  = "\x0300,02* * * * * * *"
+        stars2  = "\x0300,02 * * * * * * "
+        stripe1 = "\x0304,04                         ,"
+        stripe2 = "\x0300,00                         ,"
+        stripe3 = "\x0304,04                                      ,"
+        stripe4 = "\x0300,00                                      ,"
+        for i in range(3):
+            self.msg(channel, stars1 + stripe1)
+                self.msg(channel, stars2 + stripe2)
+            self.msg(channel, stars1 + stripe1)
+            for i in range(3):
+                self.msg(channel, stripe4)
+                    self.msg(channel, stripe3)
+                self.__last_murica = temp_time
+
+
 
     def admin_cmds(self, channel, message):
         # if message == "get_memes":
@@ -208,12 +245,6 @@ class memeBot(irc.IRCClient):
         self.msg(channel, random.choice(responses))
         self.__last_response = temp_time
 
-    def yeet(self, channel, temp_time):
-        yeets = random.randint(0, 9)
-        responses = ["YEET " * yeets, "https://media1.tenor.com/images/b7cded2e6c866a147425f525eeb1e56e/tenor.gif?itemid=12559094"]
-        self.msg(channel, random.choice(responses))
-        self.__last_response = temp_time
-
     def doot(self, channel, message, temp_time):
         numDoots = message.count("doot")
         if numDoots > 70:
@@ -229,7 +260,7 @@ class memeBot(irc.IRCClient):
         self.__last_response = temp_time
 
     def hr(self, channel, temp_time):
-        responses = ["HR", "BECKY", "LAURA", "I'M CALLING HR", "HUMAN RESOURCES", "HELLO OFFICER? YES THEY'RE RIGHT THERE"]
+        responses = ["HR", "BECKY", "MEGAN", "HR HR HR HR", "HUMAN RESOURCES"]
         self.msg(channel, random.choice(responses))
         self.__last_response = temp_time
 
@@ -343,7 +374,7 @@ class memeBot(irc.IRCClient):
                 self.rip(channel, temp_time)
 
             # match f
-            elif re.search(r"(\bf\b|\bF has quit\b|\bF has joined\b)", message):
+            elif re.search(r"(\bf\b)", message):
                 self.f(channel, temp_time)
 
             # match uwu
@@ -351,12 +382,8 @@ class memeBot(irc.IRCClient):
                 self.uwu(channel, temp_time)
                 
             # match airhorn
-            elif re.search(r"(\bairhorn\b|\bhyped\b|\bexcited\b)", message.lower()):
-                self.airHorn(channel, temp_time)
-
-            # match yeet
-            elif re.search(r"(\byeet\b|this\sbitch\sempty)", message.lower()):
-                self.yeet(channel, temp_time) 
+            elif re.search(r"(\bairhorn\b)", message):
+                self.airHorn(channel, temp_time) 
 
             # doot doot
             elif re.search(r"(\bdoot\b)", message.lower()):
@@ -419,6 +446,9 @@ if __name__ == "__main__":
 '''
 TODO
 FEATURES
+general business
+    - <jlong> like "we should classify this as general business" -> Memebot /me salutes or -> "Ah yes, General Business"
+
 r/memes
     - look at conch's pokemon thing
 '''
