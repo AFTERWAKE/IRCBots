@@ -1,36 +1,48 @@
 {
   "nick": ["nick", "backupnick", "backupnick2"],
-  "variables": [
+  "variables": {
     // collection of common regex statements used in the config
-    {
-      "variable": "#nickRegex#", // regex variables should be surrounded by "#",
+    // used in response by prepending a "$" to the name (per RE2)
+    "nick": { // regex variables should be surrounded by "#",
       "description": ["captures any matches for the name"],
-      "pattern": "\\b(pa{1,2}|dad)\\b"  // regex used to capture the variable
+      "pattern": "(?P<nick>\b((pa){1,2}|dad)\b)"  // regex used to capture the variable. See https://github.com/google/re2/wiki/Syntax for how to define named submatches
     }
-  ],
+  },
   "commands": [
     {
       "regex": [
         {
-          "pattern": "#nickRegex#[,:]?\\s+(some capture text)end of regex" // match nickRegex first, then capture everything after it in @blah@ (ignore whitespace between regex and the variable)
+          "pattern": "(some capture text)end of regex",
+          "include": ["nick"]  // list of variables that must also be matched. Each pattern must match a unique subset of the string being tested
         }
       ],
-      "help": {
-        "message": ["Does a thing"],
-        "hint": ["@nick@, change topic to blah"] // @nick@ should be a reserved variable (what else should???) TODO find a better way to do this or get rid of it entirely
-      },
       "permissions": [
         "user"
       ],
       "responses": [
         {
-          "response": ["okay, I changed the topic to \\1"], // Use the submatches in responses...
+          "response": ["okay, I changed the topic to $1"], // Use the submatches in responses...
           "actions": [
             {
               "action": "topic",
-              "parameters": ["\\1"] // And in parameters. //0 gives the whole matched message
+              "parameters": ["$1"] // And in parameters.
             }
           ]
+        }
+      ]
+    },
+    {
+      "regex": [
+        {
+          "pattern": "(/d+)",
+          "include": [] // can be blank or absent
+        }
+      ],
+      "permissions": [], // no/empty permissions should assume anyone can use
+      "responses": [
+        {
+          // keys wrapped in "<>" could be from a list of simple words (<word> could be defined as a json array or random lines to choose from... or maybe some go code could somehow be injected into a function that processes what this should be) or reserved words (<user> could be handled in a function that processes the IRC message)
+          "response": ["<user> counted $1 <word>, ah ah ah..."]
         }
       ]
     }
