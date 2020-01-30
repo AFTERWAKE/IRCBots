@@ -10,7 +10,7 @@ type Command struct {
 // Return true if message matches command regex
 func (b Command) Match(message string) []string {
 	for _, regex := range b.Regex {
-		match := regex.Match(message)
+		match, _:= regex.Match(message)
 		if match != nil {
 			return match
 		}

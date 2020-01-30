@@ -19,7 +19,7 @@ func TestRegexMatch(t *testing.T) {
 		{&bot.Regex{"^t{1,4}(t+)pattern$"}, "ttttttpattern", []string{"ttttttpattern", "tt"}},
 	}
 	for i, table := range tables {
-		match := table.regex.Match(table.param)
+		match, _ := table.regex.Match(table.param)
 		if !reflect.DeepEqual(match, table.expect) {
 			t.Errorf(
 				"Failed [%d]: expected match: %v, got %v",

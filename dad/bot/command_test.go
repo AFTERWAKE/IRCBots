@@ -9,13 +9,12 @@ import (
 
 func TestCommandMatch(t *testing.T) {
 	command := &bot.Command{
-		[]*bot.Regex{
-			&bot.Regex{"^testpattern$"},
-			&bot.Regex{"[^a]([b-z]+)"},
+		Regex: []*bot.Regex{
+			&bot.Regex{Pattern:"^testpattern$"},
+			&bot.Regex{Pattern:"[^a]([b-z]+)"},
 		},
-		[]*bot.Response{nil},
-		[]string{},
-		nil,
+		Responses:   []*bot.Response{nil},
+		Permissions: []string{},
 	}
 	tables := []struct {
 		param  string
