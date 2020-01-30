@@ -3,7 +3,7 @@ r"""
 
     @Author: Jacob Blair
     @date: January 2020
-    @file: LonnieBot.py
+    @file: theCountCount.py
 
 """
 import random
@@ -18,9 +18,6 @@ serv_ip = ""
 serv_port = 6667
 channel = ""
 
-with open("laws.txt.", 'r') as lawsFile:
-    laws = [str(line) for line in lawsFile]
-
 try:
     admin_ip = ""
 finally:
@@ -30,14 +27,8 @@ finally:
         print("WARNING: No Admin IP recognized")
 
 
-class lonnieBot(irc.IRCClient):
-    nickname = "Lonnie"
-
-    def __init__(self):
-        self.wisdom = False
-        self.wisdomQueued = False
-        lc = task.LoopingCall(self.scheduleEvents)
-        lc.start(60)
+class countCount(irc.IRCClient):
+    nickname = "theCountCount"
 
     def signedOn(self):
         self.join(channel)
@@ -79,20 +70,6 @@ class lonnieBot(irc.IRCClient):
         usr["host"] = nargs[1][2]
         usr["ip"] = nargs[1][3]
         self.user_list.append(usr)
-
-    def scheduleEvents(self):
-        if self.wisdomQueued:
-            self.wisdomQueued = False
-            self.autoWisdom()
-            return
-        now = datetime.datetime.time(datetime.datetime.now())
-        morninglaw = datetime.time(hour=8, minute=59)
-        afternoonlaw = datetime.time(hour=13, minute=59)
-
-        if now.hour == morninglaw.hour and now.minute == morninglaw.minute:
-            self.autoWisdom()
-        elif now.hour == afternoonlaw.hour and now.minute == afternoonlaw.minute:
-            self.autoWisdom()
 
     def irc_RPL_ENDOFWHO(self, *nargs):
         "Called when WHO output is complete"
@@ -178,24 +155,49 @@ class lonnieBot(irc.IRCClient):
                 return
             '''
 
-    def spoutWisdom(self, channel, temp_time):
-        self.msg(channel, random.choice(laws))
-        self.__last_response = temp_time
+    def remindAsked(self, channel, temp_time):
+        now = datetime.datetime.time(datetime.datetime.now())
+        morningCount = datetime.time(hour=8, minute=30)
+        afternoonCount = datetime.time(hour=11, minute=0)
+        thirdCount = datetime.time(hour=13, minute=30)
+        finalCount = datetime.time(hour=16, minute=0)
+        lunch = datetime.time(hour=11, minute=30)
+        break_time = datetime.time(hour=15, minute=0)
 
-    def autoWisdom(self):
-        if self.wisdom:
-            self.wisdomQueued = True
-            return
-        self.msg(channel, random.choice(laws))
-        
-    def genBusiness(self, channel, temp_time):
-        responses = ["Ah yes. General Business", "The generalist of businesses", "Tom would be proud of your work ethic"]
-        self.msg(channel, random.choice(responses))
-        self.__last_response = temp_time
-
-    def helpText(self, channel, temp_time):
-        self.msg(channel, "Hi Everyone. I automatically say one of Lonnie\'s laws at about 9 A.M. and 2 P.M."
-                            + "However, if you would like to hear a law to better your day with some of Lonnie\'s profound wisdom, just say \"lonnie, law\" (With or without the comma i/m not picky)")
+        if now.hour < 8 or (now.hour == 8 and now.minute < 30):
+            time = [morningCount.hour - now.hour, morningCount.minute - now.minute]
+            timeMin = ((time[0] * 60) + time[1])
+            timeL = [lunch.hour - now.hour, lunch.minute - now.minute]
+            timeLmin = ((timeL[0] * 60) + timeL[1])
+            message = "Count in " + str(timeMin) + " minutes. L.unch in " + str(timeLmin) + " minutes."
+        elif now.hour >= 16 and now.minute > 2:
+            time = [now.hour - morningCount.hour, now.minute - morningCount.minute]
+            timeMin = ((time[0] * 60) + time[1])
+            message = "Count in " + str(timeMin) + " minutes."
+        elif now.hour < 11 or (now.hour == 11 and now.minute <= 1):
+            time = [afternoonCount.hour - now.hour, afternoonCount.minute - now.minute]
+            timeMin = ((time[0] * 60) + time[1])
+            timeL = [lunch.hour - now.hour, lunch.minute - now.minute]
+            timeLmin = ((timeL[0] * 60) + timeL[1])
+            message = "Count in " + str(timeMin) + " minutes. L.unch in " + str(timeLmin) + " minutes."
+        elif now.hour < 13 or (now.hour == 13 and now.minute < 30):
+            time = [thirdCount.hour - now.hour, thirdCount.minute - now.minute]
+            timeMin = ((time[0] * 60) + time[1])
+            timeL = [lunch.hour - now.hour, lunch.minute - now.minute]
+            timeLmin = ((timeL[0] * 60) + timeL[1])
+            timeB = [break_time.hour - now.hour, break_time.minute - now.minute]
+            timeBmin = ((timeB[0] * 60) + timeB[1])
+            if now.hour == 11 and now.minute < 30:
+                message = "Count in " + str(timeMin) + " minutes. L.unch in " + str(timeLmin) + " minutes."
+            else:
+                message = "Count in " + str(timeMin) + " minutes. Break in " + str(timeBmin) + " minutes."
+        elif now.hour > 14 or (now.hour == 13 and now.minute > 30):
+            time = [finalCount.hour - now.hour, finalCount.minute - now.minute]
+            timeMin = ((time[0] * 60) + time[1])
+            timeB = [break_time.hour - now.hour, break_time.minute - now.minute]
+            timeBmin = ((timeB[0] * 60) + timeB[1])
+            message = "Count in " + str(timeMin) + " minutes. Break in " + str(timeBmin) + " minutes."
+        self.msg(channel, message)
         self.__last_response = temp_time
 
     def privmsg(self, user, channel, message):
@@ -223,16 +225,8 @@ class lonnieBot(irc.IRCClient):
             if host in self.__ignore:
                 return
 
-
-            # match spoutWisdom
-            elif re.search(r'lonnie..l.w', message.lower()):
-                self.spoutWisdom(channel, temp_time)
-
-            elif re.search(r'lonnie..h..p', message.lower()):
-                self.helpText(channel, temp_time)
-
-            elif re.search("business", message.lower()):
-                self.genBusiness(channel, temp_time)
+            elif re.search(r'cc..time', message.lower()):
+                self.remindAsked(channel, temp_time)
 
             else:
                 return
@@ -240,7 +234,7 @@ class lonnieBot(irc.IRCClient):
 
 def main():
     f = protocol.ClientFactory()
-    f.protocol = lonnieBot
+    f.protocol = countCount
 
     reactor.connectTCP(serv_ip, serv_port, f)
     reactor.run()

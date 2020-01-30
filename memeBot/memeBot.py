@@ -135,27 +135,7 @@ class memeBot(irc.IRCClient):
                 msg += self.user_list[i]["nick"] + " "
         self.msg(channel, "Ignore list: " + msg)
 
-    def get_memes(self):
-        page = requests.get("https://www.reddit.com/r/memes/")
-        if page.ok:
-            self.memelist = []
-            tree = html.fromstring(page.content)
-            links = tree.find_class("title")
-            for each in links:
-                href = each.get("href")
-                if href != None:
-                    if "/r/memes/" in href:
-                        self.memelist.append("https://www.reddit.com" + href)
-                    else:
-                        self.memelist.append(href)
-        page.close()
-        print page.ok
-
-    def pick_meme(self):
-        print random.choice(self.memelist)
-
     def murica(self, channel, host, temp_time):
-        '''
         try:
             with open("muricans.txt", "r") as infile:
                 muricans = []
@@ -179,23 +159,6 @@ class memeBot(irc.IRCClient):
                     return
         except (IOError):
             print "ERROR: muricans.txt not found"
-        '''
-        stars1  = "\x0300,02* * * * * * *"
-        stars2  = "\x0300,02 * * * * * * "
-        stripe1 = "\x0304,04                         ,"
-        stripe2 = "\x0300,00                         ,"
-        stripe3 = "\x0304,04                                      ,"
-        stripe4 = "\x0300,00                                      ,"
-        for i in range(3):
-            self.msg(channel, stars1 + stripe1)
-                self.msg(channel, stars2 + stripe2)
-            self.msg(channel, stars1 + stripe1)
-            for i in range(3):
-                self.msg(channel, stripe4)
-                    self.msg(channel, stripe3)
-                self.__last_murica = temp_time
-
-
 
     def admin_cmds(self, channel, message):
         # if message == "get_memes":
@@ -230,8 +193,9 @@ class memeBot(irc.IRCClient):
         self.__last_response = temp_time
         
     def airHorn(self, channel, temp_time):
-        responses = ["AWOOGAH", "BWWWOOOOT", "I am making an airhorn sound", "[Airhorn Sounds]", "BWABWABWABWA",
-                                                     "https://i.gifer.com/origin/21/219414c98086cb74b542314d984c9656_w200.gif", "FAAAHH FAH FAH FAH FAAAAAHHHH"]
+        responses = ["AWOOGAH", "BWWWOOOOT", "I am making an airhorn sound", "[Airhorn Sounds]", "BWABWABWABWA"
+					 ,"https://tinyurl.com/tlx6uow", "FAAAHH FAH FAH FAH FAAAAAHHHH"
+					 ,"I\'M FREAKING OUT RN THAT IS SO AMAZING"]
         self.msg(channel, random.choice(responses))
         self.__last_response = temp_time
         
@@ -242,6 +206,13 @@ class memeBot(irc.IRCClient):
 
     def uwu(self, channel, temp_time):
         responses = ["pls stop"]
+        self.msg(channel, random.choice(responses))
+        self.__last_response = temp_time
+
+    def yeet(self, channel, temp_time):
+        yeets = random.randint(0, 9)
+        responses = ["YEET " * yeets, "https://tinyurl.com/se6a5gv", "https://tinyurl.com/rednvu4",
+                     "https://tinyurl.com/yx5mkj56", "BIG YEET " * yeets, "YEET " * yeets, "YEET " * yeets]
         self.msg(channel, random.choice(responses))
         self.__last_response = temp_time
 
@@ -259,8 +230,14 @@ class memeBot(irc.IRCClient):
         self.describe(channel, random.choice(responses) % user_name)
         self.__last_response = temp_time
 
+    def genBusiness(self, channel, temp_time, user_name):
+            responses = ["Ah yes. General Business", "The generalist of businesses", "Tom would be proud"]
+            self.describe(channel, random.choice(responses))
+            self.__last_response = temp_time
+            
+
     def hr(self, channel, temp_time):
-        responses = ["HR", "BECKY", "MEGAN", "HR HR HR HR", "HUMAN RESOURCES"]
+        responses = ["HR", "BECKY", "LAURA", "I'M CALLING HR", "HUMAN RESOURCES", "HELLO OFFICER? YES THEY'RE RIGHT THERE"]
         self.msg(channel, random.choice(responses))
         self.__last_response = temp_time
 
@@ -374,16 +351,20 @@ class memeBot(irc.IRCClient):
                 self.rip(channel, temp_time)
 
             # match f
-            elif re.search(r"(\bf\b)", message):
+            elif re.search(r"(\bf\b|\bF has quit\b|\bF has joined\b)", message):
                 self.f(channel, temp_time)
 
             # match uwu
-            elif re.search(r"(\buwu\b)", message):
+            elif re.search(r"(\buwu\b|\bowo\b|\buwuw\b|\bowow\b|\bTwT\b|\b@w@\b|\b>w<\b)", message.lower()):
                 self.uwu(channel, temp_time)
                 
             # match airhorn
-            elif re.search(r"(\bairhorn\b)", message):
-                self.airHorn(channel, temp_time) 
+            elif re.search(r"(\bairhorn\b|\bhyped\b|\bexcited\b|\bconfetti\b)", message.lower()):
+                self.airHorn(channel, temp_time)
+
+            # match yeet
+            elif re.search(r"(\byeet\b|this\sbitch\sempty)", message.lower()):
+                self.yeet(channel, temp_time) 
 
             # doot doot
             elif re.search(r"(\bdoot\b)", message.lower()):
@@ -392,6 +373,10 @@ class memeBot(irc.IRCClient):
             # achoo
             elif re.search(r"(\bachoo\b|\bsneeze\b|\basneeze\b)", message.lower()):
                 self.achoo(channel, temp_time, user_name)
+
+            # General Business
+            elif re.search(r"(\bBusiness\b)", message.lower()):
+                self.genBusiness(channel, temp_time, user_name)
 
             # :hr:
             elif re.search(r"(\b\:hr\:\b|\bhr\b)", message.lower()):
@@ -451,4 +436,6 @@ general business
 
 r/memes
     - look at conch's pokemon thing
+
+    Mocking Spongebob Bot?
 '''
