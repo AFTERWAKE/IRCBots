@@ -129,10 +129,6 @@ class countCount(irc.IRCClient):
         self.msg(channel, "Ignore list: " + msg)
 
     def admin_cmds(self, channel, message):
-        # if message == "get_memes":
-        #     self.get_memes()
-        # elif message == "pick_meme":
-        #     self.pick_meme()
 
         m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
         if m:

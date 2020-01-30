@@ -152,11 +152,7 @@ class lonnieBot(irc.IRCClient):
         self.msg(channel, "Ignore list: " + msg)
 
     def admin_cmds(self, channel, message):
-        # if message == "get_memes":
-        #     self.get_memes()
-        # elif message == "pick_meme":
-        #     self.pick_meme()
-
+     
         m = re.match(self.nickname + r",*\s(\w+) (.*)", message)
         if m:
             if m.group(1) == "ignore":
@@ -171,12 +167,6 @@ class lonnieBot(irc.IRCClient):
                 self.msg(self.__channel, m.group(2))
                 return
 
-            '''
-            elif m.group(1) == "list":
-                print "DEBUG"
-                self.ignore_list()
-                return
-            '''
 
     def spoutWisdom(self, channel, temp_time):
         self.msg(channel, random.choice(laws))
