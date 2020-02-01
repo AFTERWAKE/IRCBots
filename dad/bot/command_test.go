@@ -10,8 +10,8 @@ import (
 func TestCommandMatch(t *testing.T) {
 	command := &bot.Command{
 		Regex: []*bot.Regex{
-			&bot.Regex{Pattern:"^testpattern$"},
-			&bot.Regex{Pattern:"[^a]([b-z]+)"},
+			&bot.Regex{Pattern: "^testpattern$"},
+			&bot.Regex{Pattern: "[^a]([b-z]+)"},
 		},
 		Responses:   []*bot.Response{nil},
 		Permissions: []string{},

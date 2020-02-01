@@ -28,3 +28,25 @@ func TestRegexMatch(t *testing.T) {
 		}
 	}
 }
+
+func TestRegexReplace(t *testing.T) {
+	tables := []struct {
+		regex    *bot.Regex
+		message  string
+		response string
+		expect   string
+	}{
+		{&bot.Regex{Pattern: "\\bground\\s+(?P<target>\\S+)\\b"}, "blah blah ground this guy", "grounded $target", "grounded this"},
+		{&bot.Regex{Pattern: "\\bground\\s+(?P<target>\\S+)\\b"}, "ground some_dude", "grounded $target", "grounded some_dude"},
+		{&bot.Regex{Pattern: "\\bground\\s+(?P<target>\\S+)\\b"}, "unground this guy", "grounded $target", ""},
+	}
+	for i, table := range tables {
+		replace := table.regex.Replace(table.message, table.response)
+		if replace != table.expect {
+			t.Errorf(
+				"Failed [%d]: expected match: %v, got: %v",
+				i, table.expect, replace,
+			)
+		}
+	}
+}

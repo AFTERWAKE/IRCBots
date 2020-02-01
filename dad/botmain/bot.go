@@ -1,10 +1,10 @@
 package main
 
 import (
-	"math/rand"
-	"time"
 	"github.com/whyrusleeping/hellabot"
 	log "gopkg.in/inconshreveable/log15.v2"
+	"math/rand"
+	"time"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 		bot.HijackSession = false
 	}
 	channels := func(bot *hbot.Bot) {
-		bot.Channels = []string {"#main"}
+		bot.Channels = []string{"#main"}
 	}
 	bot, err := hbot.NewBot(serv, nick, hijackSession, channels)
 	checkErr(err)
