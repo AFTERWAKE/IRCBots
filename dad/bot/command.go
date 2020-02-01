@@ -1,21 +1,22 @@
 package bot
 
+import "regexp"
+
 type Command struct {
 	Regex       []*Regex    `json:"regex"`
 	Responses   []*Response `json:"responses"`
 	Permissions []string    `json:"permissions"`
-	Help        *Help       `json:"help"`
 }
 
 // Return true if message matches command regex
-func (b Command) Match(message string) []string {
+func (b Command) Match(message string) ([]string, *regexp.Regexp) {
 	for _, regex := range b.Regex {
-		match, _ := regex.Match(message)
+		match, re := regex.Match(message)
 		if match != nil {
-			return match
+			return match, re
 		}
 	}
-	return nil
+	return nil, nil
 }
 
 func (b Command) getResponse(matched []string) []string {
