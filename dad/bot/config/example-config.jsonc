@@ -1,50 +1,169 @@
 {
-  "nick": ["nick", "backupnick", "backupnick2"],
-  "variables": {
-    // collection of common regex statements used in the config
-    // used in response by prepending a "$" to the name (per RE2)
-    "nick": { // regex variables should be surrounded by "#",
-      "description": ["captures any matches for the name"],
-      "pattern": "(?P<nick>\b((pa){1,2}|dad)\b)"  // regex used to capture the variable. See https://github.com/google/re2/wiki/Syntax for how to define named submatches
-    }
-  },
-  "commands": [
-    {
-      "regex": [
-        {
-          "pattern": "(some capture text)end of regex",
-          "include": ["nick"]  // list of variables that must also be matched. Each pattern must match a unique subset of the string being tested
+    "nick": [
+        "nick",
+        "backupnick",
+        "backupnick2"
+    ],
+    "channels": [
+        "main"
+    ],
+    "variables": {
+        // collection of common regex statements used in the config
+        // used in response by prepending a "$" to the name (per RE2)
+        "nick": { // regex variables should be surrounded by "#",
+            "description": [
+                "captures any matches for the name"
+            ],
+            "pattern": "(?P<nick>\b((pa){1,2}|dad)\b)" // regex used to capture the variable. See https://github.com/google/re2/wiki/Syntax for how to define named submatches
         }
-      ],
-      "permissions": [
-        "user"
-      ],
-      "responses": [
-        {
-          "response": ["okay, I changed the topic to $1"], // Use the submatches in responses...
-          "actions": [
-            {
-              "action": "topic",
-              "parameters": ["$1"] // And in parameters.
-            }
-          ]
-        }
-      ]
     },
-    {
-      "regex": [
+    "commands": [
         {
-          "pattern": "(/d+)",
-          "include": [] // can be blank or absent
-        }
-      ],
-      "permissions": [], // no/empty permissions should assume anyone can use
-      "responses": [
+            "regex": [
+                {
+                    "pattern": "\\b(good\\s+)?mornin(g|')?\\b",
+                    "include": [
+                        "nick"
+                    ] // list of variables that must also be matched. Each pattern must match a unique subset of the string being tested
+                }
+            ],
+            "permissions": [
+                "user"
+            ],
+            "responses": [
+                {
+                    "response": [
+                        "good morning <user>!"
+                    ],
+                    "actions": [ // TODO remove this
+                        {
+                            "action": "topic",
+                            "parameters": [
+                                "$1"
+                            ] // And in parameters.
+                        }
+                    ]
+                }
+            ]
+        },
         {
-          // keys wrapped in "<>" could be from a list of simple words (<word> could be defined as a json array or random lines to choose from... or maybe some go code could somehow be injected into a function that processes what this should be) or reserved words (<user> could be handled in a function that processes the IRC message)
-          "response": ["<user> counted $1 <word>, ah ah ah..."]
+            "regex": [
+                {
+                    "pattern": "\\bground\\s+(?P<target>\\S+)\\b",
+                    "include": [
+                        "nick"
+                    ] // can be blank or absent
+                }
+            ],
+            "permissions": [
+                "admin"
+            ], // no/empty permissions should assume anyone can use
+            "responses": [
+                {
+                    // keys wrapped in "<>" could be from a list of simple words (<word> could be defined as a json array or random lines to choose from... or maybe some go code could somehow be injected into a function that processes what this should be) or reserved words (<user> could be handled in a function that processes the IRC message)
+                    "response": [
+                        "That's it, you're grounded $target!"
+                    ]
+                }
+            ]
+        },
+        {
+            "regex": [
+                {
+                    "pattern": "\\bsay\\s+(?P<say>.*)$",
+                    "include": [
+                        "nick"
+                    ]
+                }
+            ],
+            "permissions": [
+                "admin"
+            ],
+            "responses": [
+                {
+                    "response": [
+                        "$say"
+                    ]
+                }
+            ]
+        },
+        {
+            "regex": [
+                {
+                    "pattern": "\\bunground\\s+(?P<target>\\S+)\\b",
+                    "include": [
+                        "nick"
+                    ]
+                }
+            ],
+            "permissions": [
+                "admin"
+            ],
+            "responses": [
+                {
+                    "response": [
+                        "&target, you're now ungrounded. Don't let me catch you misbehaving again."
+                    ]
+                }
+            ]
+        },
+        {
+            "regex": [
+                {
+                    "pattern": "\\btopic\\s+(?P<topic>.*)$",
+                    "include": [
+                        "nick"
+                    ]
+                }
+            ],
+            "permissions": [
+                "admin"
+            ],
+            "responses": [
+                {
+                    "response": [],
+                    "actions": [
+                        {
+                            "action": "topic",
+                            "parameters": [
+                                "$topic"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "regex": [
+                {
+                    "pattern": "i[']?m\\s+(a[n]?)?(?P<mock>.*)$",
+                    "include": []
+                }
+            ],
+            "permissions": [
+                "user"
+            ],
+            "responses": [
+                {
+                    "response": [
+                        "Hi $mock, I'm dad"
+                    ]
+                }
+            ]
+        },
+        {
+            "regex": [
+                {
+                    "pattern": "",
+                    "include": []
+                }
+            ],
+            "permissions": [],
+            "responses": [
+                {
+                    "response": []
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }
