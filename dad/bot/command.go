@@ -1,6 +1,9 @@
 package bot
 
-import "regexp"
+import (
+	"math/rand"
+	"regexp"
+)
 
 type Command struct {
 	Regex       []*Regex    `json:"regex"`
@@ -19,10 +22,15 @@ func (b Command) Match(message string) ([]string, *regexp.Regexp) {
 	return nil, nil
 }
 
-func (b Command) getResponse(matched []string) []string {
-	return []string{}
+func (b Command) Replace(message, response string) string {
+	match, re := b.Match(message)
+	if len(match) > 0 {
+		return re.ReplaceAllString(match[0], response)
+	}
+	return ""
 }
 
-func (b Command) performActions() {
-
+func (b Command) getResponse() *Response {
+	chosenIndex := rand.Intn(len(b.Responses))
+	return b.Responses[chosenIndex]
 }

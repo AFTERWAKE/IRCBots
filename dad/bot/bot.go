@@ -10,6 +10,7 @@ import (
 
 type Bot struct {
 	Nick     []string  `json:"nick"`
+	Channels []string  `json:"channels"`
 	Commands []Command `json:"commands"`
 }
 
