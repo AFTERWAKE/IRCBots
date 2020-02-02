@@ -10,8 +10,8 @@ import (
 func TestCommandMatch(t *testing.T) {
 	command := &bot.Command{
 		Regex: []*bot.Regex{
-			&bot.Regex{Pattern: "^testpattern$"},
-			&bot.Regex{Pattern: "[^a]([b-z]+)"},
+			{Pattern: "^testpattern$"},
+			{Pattern: "[^a]([b-z]+)"},
 		},
 		Responses:   []*bot.Response{nil},
 		Permissions: []string{},
@@ -24,9 +24,10 @@ func TestCommandMatch(t *testing.T) {
 		{"testpattern", []string{"testpattern"}},
 		{"blahpattern", []string{"bl", "l"}},
 		{"ttttttpattern", []string{"ttttttp", "tttttp"}},
+		{"aaaa", nil},
 	}
 	for i, table := range tables {
-		match := command.Match(table.param)
+		match, _ := command.Match(table.param)
 		if !reflect.DeepEqual(match, table.expect) {
 			t.Errorf(
 				"Failed [%d]: expected match: %v, got %v",
@@ -34,5 +35,23 @@ func TestCommandMatch(t *testing.T) {
 			)
 		}
 
+	}
+}
+
+func TestCommand_GetResponse(t *testing.T) {
+	command := &bot.Command{
+		Regex: nil,
+		Responses: []*bot.Response{
+			{[]string{"1"}, nil},
+			{[]string{"2"}, nil},
+			{[]string{"3"}, nil},
+		},
+		Permissions: nil,
+	}
+	for i := 0; i <= 10; i++ {
+		resp := command.GetResponse()
+		if resp == nil {
+			t.Errorf("Failed [%d]: expected a response, but got nil", i)
+		}
 	}
 }

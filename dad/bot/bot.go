@@ -11,11 +11,21 @@ import (
 type Bot struct {
 	Nick     []string  `json:"nick"`
 	Channels []string  `json:"channels"`
-	Commands []Command `json:"commands"`
+	Commands []*Command `json:"commands"`
 }
 
-func (b Bot) MatchCommand(test string) bool {
-	return false
+func (b Bot) ShouldReply(bot *hbot.Bot, m *hbot.Message) bool {
+	return m.To == "#rents" && m.From == "awest"
+}
+
+func (b Bot) GetReply(bot *hbot.Bot, m *hbot.Message) []string {
+	for _, command := range b.Commands {
+		match, _ := command.Match(m.Content)
+		if match != nil {
+			return command.GetResponse().Response
+		}
+	}
+	return nil
 }
 
 func (b Bot) Run() {
@@ -36,8 +46,11 @@ func (b Bot) Run() {
 		},
 		Action: func(bot *hbot.Bot, m *hbot.Message) bool {
 			println(fmt.Sprintf("%+v", m))
-			if m.To == "#rents" && m.From == "awest" {
-				bot.Reply(m, m.Content)
+			if b.ShouldReply(bot, m) {
+				reply := b.GetReply(bot, m)
+				for _, r := range reply {
+					bot.Reply(m, r)
+				}
 			}
 			return false
 		},

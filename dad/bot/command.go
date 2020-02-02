@@ -30,7 +30,7 @@ func (b Command) Replace(message, response string) string {
 	return ""
 }
 
-func (b Command) getResponse() *Response {
+func (b Command) GetResponse() *Response {
 	chosenIndex := rand.Intn(len(b.Responses))
 	return b.Responses[chosenIndex]
 }
