@@ -20,11 +20,9 @@ func (b Bot) ShouldReply(bot *hbot.Bot, m *hbot.Message) bool {
 
 func (b Bot) GetReply(bot *hbot.Bot, m *hbot.Message) []string {
 	for _, command := range b.Commands {
-		match, re := command.Match(m.Content)
-		response := command.GetResponse()
-		responseText := response.ParseResponse(match, re)
-		if responseText != nil {
-			return responseText
+		response := command.Replace(m.Content)
+		if response != nil {
+			return response
 		}
 	}
 	return nil

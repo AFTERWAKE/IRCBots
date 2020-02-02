@@ -22,12 +22,13 @@ func (b Command) Match(message string) ([]string, *regexp.Regexp) {
 	return nil, nil
 }
 
-func (b Command) Replace(message, response string) string {
+func (b Command) Replace(message string) []string {
+	response := b.GetResponse()
 	match, re := b.Match(message)
 	if len(match) > 0 {
-		return re.ReplaceAllString(match[0], response)
+		return response.ParseResponse(match, re)
 	}
-	return ""
+	return nil
 }
 
 func (b Command) GetResponse() *Response {
