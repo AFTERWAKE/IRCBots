@@ -22,6 +22,9 @@ func (b Bot) GetReply(bot *hbot.Bot, m *hbot.Message) []string {
 	for _, command := range b.Commands {
 		response := command.Replace(m.Content)
 		if response != nil {
+			response = ReplaceVar("from", response, m.From)
+			response = ReplaceVar("to", response, m.To)
+			response = ReplaceVar("host", response, m.Host)
 			return response
 		}
 	}
@@ -61,3 +64,9 @@ func (b Bot) Run() {
 
 	bot.Run()
 }
+
+type Options struct {
+
+}
+
+type Option func(*Options)
