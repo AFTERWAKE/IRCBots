@@ -4,8 +4,6 @@ from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
 from re import search, IGNORECASE
 from random import randint
-import time
-import json
 import random
 
 
@@ -22,7 +20,7 @@ values = {
     'y': 4,  'z': 10
 }
 
-class Hulk(irc.IRCClient):
+class ScrabbleBot(irc.IRCClient):
     nickname = "ScrabbleBot"
     chatroom = "#testing"
 
@@ -37,25 +35,31 @@ class Hulk(irc.IRCClient):
         score = 0;
         for c in range(len(word)):
             if word[c].isalpha():
-                score += values[word[c]]
+                score += values[word[c].lower()]
         return score
 
     def privmsg(self, user, channel, message):
-        if (message.startswith(self.nickname)):
-            temp = message.split()
-            print(temp)
-            if (len(temp) > 1):
-                if (len(temp[1]) > 0):
-                    if (temp[1].lower() == 'help'):
-                        self.msg(self.chatroom, "Give me a word and I will return that word's Scrabble score. Example: \"" + self.nickname + ", [word]\"")
-                    else:
-                        val = self.computeScore(temp[1])
-                        self.msg(self.chatroom, temp[1] + ": " + str(val) + " points")
+        if(channel == self.chatroom):
+            if (message.startswith(self.nickname)):
+                temp = message.split()
+                if (len(temp) > 1):
+                    if (len(temp[1]) > 0):
+                        if (temp[1].lower() == 'help'):
+                            self.msg(self.chatroom, "Give me a word and I will return that word's Scrabble score. Example: \"" + self.nickname + ", [word]\"")
+                        else:
+                            val = self.computeScore(temp[1])
+                            self.msg(self.chatroom, temp[1] + ": " + str(val) + " points")
+            else:
+                temp = message.split()
+                for word in temp:
+                    val = self.computeScore(word)
+                    if(float(val)/float(len(word)) > 3):
+                        self.msg(self.chatroom, word + ": " + str(val) + " points")
 
 
 def main():
     f = protocol.ReconnectingClientFactory()
-    f.protocol = Hulk
+    f.protocol = ScrabbleBot
 
     reactor.connectTCP(serv_ip, serv_port, f)
     reactor.run()
