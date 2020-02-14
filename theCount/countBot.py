@@ -50,7 +50,7 @@ from sys import exit
 import time
 import ast
 
-serv_ip = "172.22.115.228"
+serv_ip = "10.4.163.34"
 serv_port = 6667
 
 
@@ -58,7 +58,7 @@ class CountBot(irc.IRCClient):
     version = "2.16.1"
     latestCommits = "https://github.com/AFTERWAKE/IRCBots/commits/master/theCount"
     nickname = "theCount"
-    chatroom = "#main"
+    chatroom = "#botroom"
     scoresFilePath = "./scores.txt"
     mutedFilePath = "./muted.txt"
     numberForGame = 17
@@ -438,6 +438,10 @@ class CountBot(irc.IRCClient):
         return winnerString
 
     def getWinnerChart(self):
+        maxlen = 0
+        for user in range(len(self.nameList)):
+            if (len(self.nameList[user].username) > maxlen):
+                maxlen = len(self.nameList[user].username)
         winnerString = ''
         maxWins = self.nameList[0].timesWon
         firstLoop = True
@@ -445,11 +449,14 @@ class CountBot(irc.IRCClient):
             if (self.nameList[user].timesWon > 0):
                 if (not firstLoop):
                     winnerString += '\n'
-                winnerString += '[' + self.nameList[user].username + ']: '
+                winnerString += self.nameList[user].username + ":"
+                remlen = maxlen - len(self.nameList[user].username)
+                for i in range(remlen + 1):
+                    winnerString += " "
                 for i in range(self.nameList[user].timesWon):
-                    winnerString += '█'
+                    winnerString += '#'
                 for i in range(maxWins - self.nameList[user].timesWon):
-                    winnerString += '▕'
+                    winnerString += '|'
                 firstLoop = False
         return winnerString
 

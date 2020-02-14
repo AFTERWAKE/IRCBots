@@ -9,13 +9,13 @@ import json
 import random
 
 
-serv_ip = "172.22.115.228"
+serv_ip = "10.4.163.34"
 serv_port = 6667
 
 
 class Hulk(irc.IRCClient):
     nickname = "Hulk"
-    chatroom = "#testing"
+    chatroom = "#botroom"
 
 
     def signedOn(self):

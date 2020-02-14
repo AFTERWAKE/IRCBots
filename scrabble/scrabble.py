@@ -7,7 +7,7 @@ from random import randint
 import random
 
 
-serv_ip = "172.22.115.228"
+serv_ip = "10.4.163.34"
 serv_port = 6667
 
 values = {
@@ -22,7 +22,7 @@ values = {
 
 class ScrabbleBot(irc.IRCClient):
     nickname = "ScrabbleBot"
-    chatroom = "#testing"
+    chatroom = "#botroom"
 
 
     def signedOn(self):
@@ -45,16 +45,20 @@ class ScrabbleBot(irc.IRCClient):
                 if (len(temp) > 1):
                     if (len(temp[1]) > 0):
                         if (temp[1].lower() == 'help'):
-                            self.msg(self.chatroom, "Give me a word and I will return that word's Scrabble score. Example: \"" + self.nickname + ", [word]\"")
+                            self.msg(self.chatroom, "Give me a word and I will return that word's Scrabble score. Example: \"" + self.nickname + ", [word]\" I also point out exceptional words!")
+                        elif (temp[1].lower() == 'points'):
+                            temp = str(values)
+                            self.msg(self.chatroom, "Point values: " + temp)
                         else:
                             val = self.computeScore(temp[1])
                             self.msg(self.chatroom, temp[1] + ": " + str(val) + " points")
             else:
                 temp = message.split()
                 for word in temp:
-                    val = self.computeScore(word)
-                    if(float(val)/float(len(word)) > 3):
-                        self.msg(self.chatroom, word + ": " + str(val) + " points")
+                    if(len(word) > 5):
+                        val = self.computeScore(word)
+                        if(float(val)/float(len(word)) > 3):
+                            self.msg(self.chatroom, word + ": " + str(val) + " points")
 
 
 def main():
