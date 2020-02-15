@@ -2,10 +2,12 @@ package bot_test
 
 import (
 	"crypto/tls"
+	"github.com/sorcix/irc"
 	hbot "github.com/whyrusleeping/hellabot"
 	"math/rand"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/AFTERWAKE/IRCBots/dad/bot"
 )
@@ -57,6 +59,14 @@ var b = bot.Bot{
 				{[]string{"6"}, nil},
 			},
 			Permissions: nil,
+		}, {
+			Regex: []*bot.Regex{
+				{Pattern: "say the (?P<customvar>\\w+)"},
+			},
+			Responses: []*bot.Response{
+				{[]string{"$customvar is <$customvar>"}, nil},
+			},
+			Permissions: nil,
 		}, &bot.Command{
 			Regex: []*bot.Regex{
 				{Pattern: "((?P<vowel>[aeiou]+)|(?P<consonant>[bcdfghjklmnpqrstvwxyz]+))+"},
@@ -74,13 +84,21 @@ func TestBot_GetReply(t *testing.T) {
 		message *hbot.Message
 		expect  []string
 	}{
-		{&hbot.Message{ Content: "1" }, []string{"3"}},
-		{&hbot.Message{ Content: "3" }, []string{"1"}},
-		{&hbot.Message{ Content: "6" }, []string{"6"}},
-		{&hbot.Message{ Content: "8" }, nil},
-		{&hbot.Message{ Content: "b" }, []string{"nice", " - b", "b - "}},
-		{&hbot.Message{ Content: "ab" }, []string{"nice", "a - b", "b - a"}},
-		{&hbot.Message{ Content: "abcdefghijklmnopqrstuvwxyz" }, []string{"nice", "u - vwxyz", "vwxyz - u"}},
+		{&hbot.Message{Content: "1"}, []string{"3"}},
+		{&hbot.Message{Content: "3"}, []string{"1"}},
+		{&hbot.Message{Content: "6"}, []string{"6"}},
+		{&hbot.Message{Content: "8"}, nil},
+		{&hbot.Message{Content: "b"}, []string{"nice", " - b", "b - "}},
+		{&hbot.Message{Content: "ab"}, []string{"nice", "a - b", "b - a"}},
+		{&hbot.Message{Content: "abcdefghijklmnopqrstuvwxyz"}, []string{"nice", "u - vwxyz", "vwxyz - u"}},
+		{&hbot.Message{Content: "say the to", To: "#main"}, []string{"to is #main"}},
+		{&hbot.Message{Content: "say the content"}, []string{"content is say the content"}},
+		{&hbot.Message{Content: "say the timestamp", TimeStamp: time.Date(2020, 4, 20, 4, 20, 20, 20, time.UTC)}, []string{"timestamp is 2020-04-20 04:20:20.00000002 +0000 UTC"}},
+		{&hbot.Message{Content: "say the command", Message: &irc.Message{Command: "comm"}}, []string{"command is comm"}},
+		{&hbot.Message{Content: "say the trailing", Message: &irc.Message{Trailing: "trail"}}, []string{"trailing is trail"}},
+		{&hbot.Message{Content: "say the name", Message: &irc.Message{Prefix: &irc.Prefix{Name: "awest"}}}, []string{"name is awest"}},
+		{&hbot.Message{Content: "say the user", Message: &irc.Message{Prefix: &irc.Prefix{User: "awest"}}}, []string{"user is awest"}},
+		{&hbot.Message{Content: "say the host", Message: &irc.Message{Prefix: &irc.Prefix{Host: "some.site.com"}}}, []string{"host is some.site.com"}},
 	}
 
 	rand.Seed(1)

@@ -22,9 +22,18 @@ func (b Bot) GetReply(bot *hbot.Bot, m *hbot.Message) []string {
 	for _, command := range b.Commands {
 		response := command.Replace(m.Content)
 		if response != nil {
-			response = ReplaceVar("from", response, m.From)
+			response = ReplaceVar("content", response, m.Content)
+			response = ReplaceVar("timestamp", response, fmt.Sprintf("%+v", m.TimeStamp))
 			response = ReplaceVar("to", response, m.To)
-			response = ReplaceVar("host", response, m.Host)
+			if m.Message != nil {
+				response = ReplaceVar("command", response, m.Command)
+				response = ReplaceVar("trailing", response, m.Trailing)
+				if m.Message.Prefix != nil {
+					response = ReplaceVar("name", response, m.Name)
+					response = ReplaceVar("user", response, m.User)
+					response = ReplaceVar("host", response, m.Host)
+				}
+			}
 			return response
 		}
 	}
