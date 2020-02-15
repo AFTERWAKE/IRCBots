@@ -61,7 +61,7 @@ var b = bot.Bot{
 			Permissions: nil,
 		}, {
 			Regex: []*bot.Regex{
-				{Pattern: "say the (?P<customvar>\\w+)"},
+				{Pattern: "say the (?P<customvar>(to|content|timestamp|command|trailing|name|user|host))"},
 			},
 			Responses: []*bot.Response{
 				{[]string{"$customvar is <$customvar>"}, nil},
@@ -99,6 +99,7 @@ func TestBot_GetReply(t *testing.T) {
 		{&hbot.Message{Content: "say the name", Message: &irc.Message{Prefix: &irc.Prefix{Name: "awest"}}}, []string{"name is awest"}},
 		{&hbot.Message{Content: "say the user", Message: &irc.Message{Prefix: &irc.Prefix{User: "awest"}}}, []string{"user is awest"}},
 		{&hbot.Message{Content: "say the host", Message: &irc.Message{Prefix: &irc.Prefix{Host: "some.site.com"}}}, []string{"host is some.site.com"}},
+		{&hbot.Message{Content: "say the unsupported"}, []string{"nice", "a - y", "y - a"}},
 	}
 
 	rand.Seed(1)

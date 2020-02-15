@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/AFTERWAKE/IRCBots/dad/bot"
-	hbot "github.com/whyrusleeping/hellabot"
 )
 
 func main() {
@@ -36,6 +35,14 @@ func main() {
 				},
 				Responses: []*bot.Response{
 					{[]string{"6"}, nil},
+				},
+				Permissions: nil,
+			}, {
+				Regex: []*bot.Regex{
+					{Pattern: "say the (?P<customvar>(to|content|timestamp|command|trailing|name|user|host))"},
+				},
+				Responses: []*bot.Response{
+					{[]string{"$customvar is <$customvar>"}, nil},
 				},
 				Permissions: nil,
 			}, &bot.Command{
