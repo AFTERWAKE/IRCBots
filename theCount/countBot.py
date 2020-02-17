@@ -557,22 +557,33 @@ class CountBot(irc.IRCClient):
 
     def donateWieners(self, name, command):
         donation = command.split()
-        donor = self.handleUser(name)
-        recipient = self.handleUser(donation[2])
-        message = ""
-        donorWieners = self.nameList[donor].wienerLevel
-        recipientWieners = self.nameList[recipient].wienerLevel
-        allowance = 100 - recipientWieners
-        if (int(donation[1]) > donorWieners):
-            message = "Insufficient Wiener Count!"
-        elif (int(donation[1]) > allowance):
-            self.nameList[recipient].wienerLevel += allowance
-            self.nameList[donor].wienerLevel -= allowance
-            message = name + " donates " + str(allowance) + " wieners to " + donation[2]
-        else:
-            self.nameList[recipient].wienerLevel += int(donation[1])
-            self.nameList[donor].wienerLevel -= int(donation[1])
-            message = name + " donates " + str(donation[1]) + " wieners to " + donation[2]
+        message = "Invalid donation syntax. Example: \"theCount, donate [wiener amount] [username]\""
+        if(len(donation) >= 3):
+            if(self.getUserIndex(name) == -1):
+                self.msg(self.chatroom, message)
+            else:
+                try :
+                    int(donation[1])
+                except:
+                    self.msg(self.chatroom, message)
+                    return
+                if (int(donation[1]) > 0 or int(donation[1]) < 101):
+                    donor = self.handleUser(name)
+                    recipient = self.handleUser(donation[2])
+                    message = ""
+                    donorWieners = self.nameList[donor].wienerLevel
+                    recipientWieners = self.nameList[recipient].wienerLevel
+                    allowance = 100 - recipientWieners
+                    if (int(donation[1]) > donorWieners):
+                        message = "Insufficient Wiener Count!"
+                    elif (int(donation[1]) > allowance):
+                        self.nameList[recipient].wienerLevel += allowance
+                        self.nameList[donor].wienerLevel -= allowance
+                        message = name + " donates " + str(allowance) + " wieners to " + donation[2]
+                    else:
+                        self.nameList[recipient].wienerLevel += int(donation[1])
+                        self.nameList[donor].wienerLevel -= int(donation[1])
+                        message = name + " donates " + str(donation[1]) + " wieners to " + donation[2]
         self.msg(self.chatroom, message)
 
     def displayWinningWords(self, name):

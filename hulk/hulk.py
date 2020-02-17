@@ -15,7 +15,7 @@ serv_port = 6667
 
 class Hulk(irc.IRCClient):
     nickname = "Hulk"
-    chatroom = "#botroom"
+    chatroom = "#main"
 
 
     def signedOn(self):

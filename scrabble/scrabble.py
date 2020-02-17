@@ -22,7 +22,7 @@ values = {
 
 class ScrabbleBot(irc.IRCClient):
     nickname = "ScrabbleBot"
-    chatroom = "#botroom"
+    chatroom = "#main"
 
 
     def signedOn(self):
@@ -47,8 +47,8 @@ class ScrabbleBot(irc.IRCClient):
                         if (temp[1].lower() == 'help'):
                             self.msg(self.chatroom, "Give me a word and I will return that word's Scrabble score. Example: \"" + self.nickname + ", [word]\" I also point out exceptional words!")
                         elif (temp[1].lower() == 'points'):
-                            temp = str(values)
-                            self.msg(self.chatroom, "Point values: " + temp)
+                            valstring = str(values)
+                            self.msg(self.chatroom, "Point values: " + valstring)
                         else:
                             val = self.computeScore(temp[1])
                             self.msg(self.chatroom, temp[1] + ": " + str(val) + " points")
@@ -57,7 +57,7 @@ class ScrabbleBot(irc.IRCClient):
                 for word in temp:
                     if(len(word) > 5):
                         val = self.computeScore(word)
-                        if(float(val)/float(len(word)) > 3):
+                        if(float(val)/float(len(word)) > 2.9):
                             self.msg(self.chatroom, word + ": " + str(val) + " points")
 
 
