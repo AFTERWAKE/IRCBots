@@ -5,10 +5,12 @@ from twisted.internet import reactor, protocol
 from re import search, IGNORECASE
 from random import randint
 import random
+import enchant
 
 
 serv_ip = "10.4.163.34"
 serv_port = 6667
+d = enchant.Dict("en_US")
 
 values = {
     'a': 1,  'b': 3, 'c': 3, 'd': 2,
@@ -51,14 +53,18 @@ class ScrabbleBot(irc.IRCClient):
                             self.msg(self.chatroom, "Point values: " + valstring)
                         else:
                             val = self.computeScore(temp[1])
-                            self.msg(self.chatroom, temp[1] + ": " + str(val) + " points")
+                            if(d.check(temp[1])):
+                                self.msg(self.chatroom, temp[1] + ": " + str(val) + " points")
+                            else:
+                                self.msg(self.chatroom, temp[1] + " is not a valid word")
             else:
                 temp = message.split()
                 for word in temp:
-                    if(len(word) > 5):
-                        val = self.computeScore(word)
-                        if(float(val)/float(len(word)) > 2.9):
-                            self.msg(self.chatroom, word + ": " + str(val) + " points")
+                    if(d.check(word)):
+                        if(len(word) > 5):
+                            val = self.computeScore(word)
+                            if(float(val)/float(len(word)) > 2.9):
+                                self.msg(self.chatroom, word + ": " + str(val) + " points")
 
 
 def main():
