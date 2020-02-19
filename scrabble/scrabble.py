@@ -6,6 +6,7 @@ from re import search, IGNORECASE
 from random import randint
 import random
 import enchant
+import twl
 
 
 serv_ip = "10.4.163.34"
@@ -60,7 +61,7 @@ class ScrabbleBot(irc.IRCClient):
                             self.msg(self.chatroom, "Point values: \n" + self.printValues())
                         else:
                             val = self.computeScore(temp[1])
-                            if(not d.check(temp[1])):
+                            if(not twl.check(temp[1])):
                                 self.msg(self.chatroom, temp[1] + " is not a valid word. Reason: was not found in dictionary.")
                             elif (len(temp[1]) > 15):
                                 self.msg(self.chatroom, temp[1] + " is not a valid word. Reason: too many letters (max 15).")
@@ -69,7 +70,7 @@ class ScrabbleBot(irc.IRCClient):
             else:
                 temp = message.split()
                 for word in temp:
-                    if(d.check(word)):
+                    if(twl.check(word)):
                         if(len(word) > 5 and len(word) < 16):
                             val = self.computeScore(word)
                             if(float(val)/float(len(word)) > 2.5):
