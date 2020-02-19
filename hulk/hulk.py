@@ -31,6 +31,8 @@ class Hulk(irc.IRCClient):
     def privmsg(self, user, channel, message):
         if search(r"(^|\s)+smash*(\s|$)+", message, IGNORECASE):
             self.msg(self.chatroom, "3HULK " + self.getVerb() + "!!!")
+        elif search(r"(^|\s)+hulk*(\s|$)+", message, IGNORECASE):
+            self.msg(self.chatroom, "3HULK SMASH!!!")
 
 
 def main():
