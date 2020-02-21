@@ -1,12 +1,11 @@
 #!/usr/bin/python
-
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
 from re import search, IGNORECASE
 from random import randint
 import time
 
-serv_ip = "10.4.163.34"
+serv_ip = "coop.test.adtran.com"
 serv_port = 6667
 
 class Doge(irc.IRCClient):
@@ -14,7 +13,7 @@ class Doge(irc.IRCClient):
     chatroom = "#main"
     timeLastCommand = 0
     timeLastTreatCommand = 0
-    owner = ["172.22.117.48", "172.22.116.80", "nsiano800w10.adtran.com", "jlogequ@jlogerqubox.adtran.com"]
+    owner = ["172.22.117.48", "172.22.116.80", "nsiano800w10.adtran.com"]
     willDoTrick = False
 
     def signedOn(self):

@@ -13,7 +13,7 @@ import requests
 
 from twisted.internet import defer
 
-serv_ip = "10.4.163.34"
+serv_ip = "coop.test.adtran.com"
 serv_port = 6667
 channel = "#main"
 
