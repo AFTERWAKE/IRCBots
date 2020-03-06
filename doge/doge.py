@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from twisted.words.protocols import irc
 from twisted.internet import reactor, protocol
 from re import search, IGNORECASE

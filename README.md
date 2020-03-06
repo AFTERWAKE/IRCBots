@@ -1,3 +1,5 @@
+# IRCChatBot
+=======
 [![Made for IRC](https://img.shields.io/badge/Made%20for-IRC-brightgreen.svg)](https://www.reddit.com/r/irc/)
 [![PRs Welcome](https://img.shields.io/badge/Pull%20Requests-Welcome-234bff.svg)](http://makeapullrequest.com/)
 [![Made with love](https://img.shields.io/badge/Built%20with-❤-f41621.svg)](https://www.merriam-webster.com/dictionary/love)

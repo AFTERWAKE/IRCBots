@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 '''
 --------------------------------------------------------------------------------------------------------------------
       Author: DavidS
@@ -49,7 +50,7 @@ from sys import exit
 import time
 import ast
 
-serv_ip = "noahsiano.com"
+serv_ip = "10.4.163.34"
 serv_port = 6667
 
 
@@ -393,6 +394,10 @@ class CountBot(irc.IRCClient):
         self.msg(self.chatroom, 'Here is a list of winners in the format \'User: Times Won\'')
         self.msg(self.chatroom, self.getWinnerString())
 
+    def displayWinnersChart(self):
+        self.msg(self.chatroom, 'Here is a chart of winners:')
+        self.msg(self.chatroom, self.getWinnerChart())
+
     def displayWieners(self, name):
         wieners = randint(0, 100)
         nameIndex = self.handleUser(name)
@@ -429,6 +434,29 @@ class CountBot(irc.IRCClient):
                     winnerString += ', '
                 winnerString += '[{}]: {}'.format(self.nameList[user].username,
                                                 self.nameList[user].timesWon)
+                firstLoop = False
+        return winnerString
+
+    def getWinnerChart(self):
+        maxlen = 0
+        for user in range(len(self.nameList)):
+            if (len(self.nameList[user].username) > maxlen):
+                maxlen = len(self.nameList[user].username)
+        winnerString = ''
+        maxWins = self.nameList[0].timesWon
+        firstLoop = True
+        for user in range(len(self.nameList)):
+            if (self.nameList[user].timesWon > 0):
+                if (not firstLoop):
+                    winnerString += '\n'
+                winnerString += self.nameList[user].username + ":"
+                remlen = maxlen - len(self.nameList[user].username)
+                for i in range(remlen + 1):
+                    winnerString += " "
+                for i in range(self.nameList[user].timesWon):
+                    winnerString += '#'
+                for i in range(maxWins - self.nameList[user].timesWon):
+                    winnerString += '|'
                 firstLoop = False
         return winnerString
 
@@ -500,6 +528,9 @@ class CountBot(irc.IRCClient):
         elif command.startswith('wieners'):
             self.sortUsersAscending()
             self.displayWieners(name)
+        elif command.startswith('chart'):
+            self.sortUsersAscending()
+            self.displayWinnersChart()
         elif command.startswith('losers'):
             self.displayLosers()
         elif command.startswith('loser'):
@@ -519,6 +550,41 @@ class CountBot(irc.IRCClient):
             self.rulesText()
         elif command.startswith('words'):
             self.displayWinningWords(name)
+        elif command.startswith('donate'):
+            print(command)
+            self.donateWieners(name, command)
+
+
+    def donateWieners(self, name, command):
+        donation = command.split()
+        message = "Invalid donation syntax. Example: \"theCount, donate [wiener amount] [username]\""
+        if(len(donation) >= 3):
+            if(self.getUserIndex(name) == -1):
+                self.msg(self.chatroom, message)
+            else:
+                try :
+                    int(donation[1])
+                except:
+                    self.msg(self.chatroom, message)
+                    return
+                if (int(donation[1]) > 0 or int(donation[1]) < 101):
+                    donor = self.handleUser(name)
+                    recipient = self.handleUser(donation[2])
+                    message = ""
+                    donorWieners = self.nameList[donor].wienerLevel
+                    recipientWieners = self.nameList[recipient].wienerLevel
+                    allowance = 100 - recipientWieners
+                    if (int(donation[1]) > donorWieners):
+                        message = "Insufficient Wiener Count!"
+                    elif (int(donation[1]) > allowance):
+                        self.nameList[recipient].wienerLevel += allowance
+                        self.nameList[donor].wienerLevel -= allowance
+                        message = name + " donates " + str(allowance) + " wieners to " + donation[2]
+                    else:
+                        self.nameList[recipient].wienerLevel += int(donation[1])
+                        self.nameList[donor].wienerLevel -= int(donation[1])
+                        message = name + " donates " + str(donation[1]) + " wieners to " + donation[2]
+        self.msg(self.chatroom, message)
 
     def displayWinningWords(self, name):
         player_index = self.getUserIndex(name)

@@ -18,7 +18,7 @@ serv_port = 6667
 channel = "#main"
 
 try:
-    with open(r'../admin_ip.txt', 'r') as infile:
+    with open(r'admin_ip.txt', 'r') as infile:
         admin_ip = infile.readline().strip()
 except (IOError):
     admin_ip = ''
