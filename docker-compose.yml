@@ -1,0 +1,39 @@
+version: '3'
+services:
+    dad:
+        image: ircbot:local
+        entrypoint: 
+            - go
+            - run
+            - dad.go
+        volumes: 
+            - ./dad:/bot
+        container_name: dad
+
+    highfivebot:
+        image: ircbot:local
+        entrypoint: 
+            - python
+            - highFiveBot.py
+        volumes: 
+            - ./highfivebot:/bot
+        container_name: highfivebot
+
+    doge:
+        image: ircbot:local
+        entrypoint: 
+            - python
+            - doge.py
+        volumes: 
+            - ./doge:/bot
+        container_name: doge
+
+    magic_conch:
+        image: ircbot:local
+        entrypoint: 
+            - python
+            - magic_conch.py
+        volumes: 
+            - ./magic_conch:/bot
+        container_name: magic_conch
+
