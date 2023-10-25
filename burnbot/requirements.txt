@@ -1,2 +1,2 @@
-Twisted==19.2.1
+Twisted==23.8.0
 
